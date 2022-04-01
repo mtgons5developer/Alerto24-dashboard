@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Auth::routes();
-
+Route::get('/logout',function(){
+    auth()->logout();
+});
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('users');
 Route::get('/tasks', [App\Http\Controllers\HomeController::class, 'tasks'])->name('tasks');

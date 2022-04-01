@@ -21,10 +21,13 @@ class AdminMiddleware
             return redirect('login');
         }
 
+        // if(!auth()->user()->is_admin){
+        //     auth()->logout();
+        // }
             abort_if(!auth()->user()->is_admin,403,'ONLY ACCESSIBLE FOR MASTER ACCOUNT');
            // sleep(3);
             // auth()->logout();
-            \Session::flush();
+            // \Session::flush();
 
             return $next($request);
 
