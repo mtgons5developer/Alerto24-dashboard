@@ -21,11 +21,9 @@ class AdminMiddleware
             return redirect('login');
         }
 
-        $user = auth()->user();
+        abort_if(auth()->user()->is_admin,403,'ONLY ACCESSIBLE FOR MASTER ACCOUNT');
 
-        if ($user->is_admin)
             return $next($request);
 
-        abort(500, 'Restricted Content');
     }
 }
