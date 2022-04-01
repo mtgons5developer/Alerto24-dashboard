@@ -26,6 +26,6 @@ class AdminMiddleware
         if ($user->is_admin)
             return $next($request);
 
-        abort(503, 'Restricted Content');
+        abort(500, 'Restricted Content');
     }
 }
