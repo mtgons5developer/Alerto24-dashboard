@@ -21,7 +21,7 @@ class AdminMiddleware
             return redirect('login');
         }
 
-        abort_if(auth()->user()->is_admin,403,'ONLY ACCESSIBLE FOR MASTER ACCOUNT');
+        abort_if(!auth()->user()->is_admin,403,'ONLY ACCESSIBLE FOR MASTER ACCOUNT');
 
             return $next($request);
 
