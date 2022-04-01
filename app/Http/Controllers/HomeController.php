@@ -11,9 +11,13 @@ class HomeController extends Controller
      *
      * @return void
      */
+    protected $database;
+
     public function __construct()
     {
         // $this->middleware('auth');
+        $this->database = app('firebase.database');
+
     }
 
     /**
@@ -23,6 +27,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('layouts.base');
+        $reference = $this->database->getReference('users');
+        $users = $reference->getValue();
+        // dd($snapshot);
+        return view('welcome',compact('users'));
+    }
+    public function tasks(){
+        $reference = $this->database->getReference('users');
+        $users = $reference->getValue();
+        // dd($snapshot);
+        return view('welcome',compact('users'));
     }
 }
