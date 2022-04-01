@@ -22,8 +22,10 @@ class AdminMiddleware
         }
 
             abort_if(!auth()->user()->is_admin,403,'ONLY ACCESSIBLE FOR MASTER ACCOUNT');
-            sleep(3);
-            auth()->logout();
+           // sleep(3);
+            // auth()->logout();
+            \Session::flush();
+
             return $next($request);
 
     }
