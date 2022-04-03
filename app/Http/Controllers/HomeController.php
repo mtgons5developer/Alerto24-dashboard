@@ -39,4 +39,29 @@ class HomeController extends Controller
         // dd($snapshot);
         return view('welcome',compact('users'));
     }
+
+    public function users(){
+        $reference = $this->database->getReference('users/{}/details');
+        $users = (object)$reference->getValue();
+        dd($users);
+        return view('welcome',compact('users'));
+    }
+    public function municipality(){
+        $reference = $this->database->getReference('users');
+        $records = (object)$reference->getValue();
+        $user_groups = [];
+        foreach($records as $record){
+            $details = $record['details'];
+            $details['id'] = $record['id'];
+            $user_groups[] = $details;
+        }
+        $user_groups = collect($user_groups)
+        ->groupBy('province')
+        ->sortByDesc(function ($users, $key) {
+            return count($users);
+       });
+        // $user =  $users->groupBy('province');
+        // dd($user_groups);
+        return view('municipality',compact('user_groups'));
+    }
 }

@@ -22,3 +22,5 @@ Route::get('/logout',function(){
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('users');
 Route::get('/tasks', [App\Http\Controllers\HomeController::class, 'tasks'])->name('tasks');
+Route::get('/users', [App\Http\Controllers\HomeController::class, 'users'])->name('users_grid');
+Route::get('/municipality', [App\Http\Controllers\HomeController::class, 'municipality'])->name('municipality');
