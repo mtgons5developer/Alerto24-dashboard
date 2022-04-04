@@ -56,7 +56,7 @@ class HomeController extends Controller
             $user_groups[] = $details;
         }
         $user_groups = collect($user_groups)
-        ->groupBy('province')
+        ->groupBy('city')
         ->sortByDesc(function ($users, $key) {
             return count($users);
        });
