@@ -75,50 +75,48 @@
                             <thead>
                             <tr class="text-left">
                                 <th >
-                                    <span class="text-dark-75">Pair</span>
+                                    <span class="text-dark-75">OrderID</span>
                                 </th>
-                                <th>Entry Price</th>
+                                <th>Side</th>
+                                <th>Price</th>
                                 <th>Quantity</th>
-                                <th>Time Frame</th>
-                                <th>Date & Time</th>
-                                <th>Action</th>
+                                <th>Quote Quantity</th>
+                                <th>Commission</th>
+                                <th>Buyer</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            @foreach ($settings as $setting)
+                            <tbody  id="myTable">
+                            @foreach ($trade_histories as $trade_history)
 
 
                                 <tr>
                                     <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->pair }}</span>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->orderId }}</span>
                                     </td>
                                     <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->entryPrice }}</span>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->side }}</span>
                                     </td>
                                     <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->qty }}</span>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->price }}</span>
                                     </td>
                                     <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->timeframe }}</span>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->qty }}</span>
                                     </td>
 
                                     <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->datetime }}</span>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->quoteQty }}</span>
                                     </td>
 
-                                    <td class="pr-0 text-right">
-                                        @if($setting->toggle == 0)
-                                            <label class="switch">
-                                                <input type="checkbox">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        @elseif($setting->toggle == 1)
-                                            <label class="switch">
-                                                <input type="checkbox" checked>
-                                                <span class="slider round"></span>
-                                            </label>
-                                        @endif
+                                    <td>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->commission }}</span>
                                     </td>
+
+
+                                    <td>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->buyer }}</span>
+                                    </td>
+
+
                                 </tr>
                             @endforeach
                             </tbody>
@@ -135,5 +133,15 @@
 @section('scripts')
     <script type="text/javascript">
         var datatable = $('#kt_datatable').DataTable();
+
+            $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+
     </script>
 @endsection

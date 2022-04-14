@@ -25,23 +25,47 @@ class CustomLoginController extends Controller
     {
 
         $this->validateLogin($request);
+        // If the class is using the ThrottlesLogins trait, we can automatically throttle
+        // the login attempts for this application. We'll key this by the username and
+        // the IP address of the client making these requests into this application.
+        if (method_exists($this, 'hasTooManyLoginAttempts') &&
+            $this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
 
-//        $user = \App\Models\User::where('email',$request->email)->first();
-
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
-
-            if (\auth()->user()->is_admin == 1){
-                return redirect()->route('users')
-                    ->withSuccess('You have Successfully loggedin');
-            }
-            return redirect()->route('admin.settings')
-                ->withSuccess('You have Successfully loggedin');
+            return $this->sendLockoutResponse($request);
         }
 
-        return redirect("login")->withSuccess('Oppes! You have entered invalid credentials');
+        $user = \App\Models\User::where('email',$request->email)->first();
 
+        if ($user->is_admin == 1){
+            if(Auth::attempt(['email'=> $request->email,'password'=>$request->password])) {
+                $user = Auth::user()->where('email','=',$request->email)->first();
+                return redirect('/');
+//                return redirect('/user');
 
+            } else {
+
+                return back()->with('error','Email Not Exists In Our Record....!');
+            }
+        } elseif($user->is_admin == 2){
+
+            if(Auth::attempt(['email'=> $request->email,'password'=>$request->password])) {
+                $user = Auth::user()->where('email','=',$request->email)->first();
+                return redirect('admin/settings');
+//                return redirect('/user');
+
+            } else {
+
+                return back()->with('error','Email Not Exists In Our Record....!');
+            }
+        }
+
+        // If the login attempt was unsuccessful we will increment the number of attempts
+        // to login and redirect the user back to the login form. Of course, when this
+        // user surpasses their maximum number of attempts they will get locked out.
+        $this->incrementLoginAttempts($request);
+
+        return $this->sendFailedLoginResponse($request);
     }
     /**
      * Validate the user login request.

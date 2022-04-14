@@ -28,4 +28,5 @@ Route::get('/municipality', [App\Http\Controllers\HomeController::class, 'munici
 
 Route::prefix('admin')->group(function () {
     Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'settings'])->name('admin.settings');
+    Route::get('/trade-history', [App\Http\Controllers\Admin\SettingController::class, 'trade_history'])->name('admin.trade.history');
 });
