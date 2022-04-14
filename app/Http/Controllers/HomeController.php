@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -64,4 +65,5 @@ class HomeController extends Controller
         // dd($user_groups);
         return view('municipality',compact('user_groups'));
     }
+
 }
