@@ -1,4 +1,4 @@
-@extends('admin_layouts.base')
+@extends('layouts.base')
 
 @section('content')
 <style>

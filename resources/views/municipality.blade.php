@@ -62,6 +62,22 @@
 
                 </div>
                 @endforeach
+                    @foreach ($city_names as $city)
+                        <div class="col-2 rounded clickable border m-2 p-2" style="cursor: pointer;" data-toggle="modal" >
+                            <div class="row">
+                                <div class="col-8">
+                                    <h5> {!! $city['city_name'] !!}</h5>
+                                </div>
+                                <div class="col-4">
+                                    <span class="badge badge-primary badge-sm">0</span>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    @endforeach
             </div>
         </div>
     </div>

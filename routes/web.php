@@ -27,5 +27,5 @@ Route::get('/users', [App\Http\Controllers\HomeController::class, 'users'])->nam
 Route::get('/municipality', [App\Http\Controllers\HomeController::class, 'municipality'])->name('municipality');
 
 Route::prefix('admin')->group(function () {
-    Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'settings'])->name('settings');
+    Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'settings'])->name('admin.settings');
 });

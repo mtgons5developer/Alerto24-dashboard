@@ -16,7 +16,7 @@ class HomeController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth','is_admin'] );
+        $this->middleware(['auth', 'is_admin']);
         // $this->middleware('is_admin');
         $this->database = app('firebase.database');
 
@@ -32,38 +32,59 @@ class HomeController extends Controller
         $reference = $this->database->getReference('users');
         $users = $reference->getValue();
         // dd($snapshot);
-        return view('welcome',compact('users'));
+        return view('welcome', compact('users'));
     }
-    public function tasks(){
+
+    public function tasks()
+    {
         $reference = $this->database->getReference('users');
         $users = $reference->getValue();
         // dd($snapshot);
-        return view('welcome',compact('users'));
+        return view('welcome', compact('users'));
     }
 
-    public function users(){
+    public function users()
+    {
         $reference = $this->database->getReference('users/{}/details');
         $users = (object)$reference->getValue();
         dd($users);
-        return view('welcome',compact('users'));
+        return view('welcome', compact('users'));
     }
-    public function municipality(){
+
+    public function municipality()
+    {
         $reference = $this->database->getReference('users');
+        $city_names = $this->database->getReference('address_lookup/cities')->getValue();
         $records = (object)$reference->getValue();
         $user_groups = [];
-        foreach($records as $record){
+        $cityThatHaveUser = [];
+//        dd($cityNames);
+
+//        foreach ($cityNames as $cityName) {
+//            $user_groups[] = ['city' => $cityName];
+//        }
+
+        foreach ($records as $record) {
             $details = $record['details'];
             $details['id'] = $record['id'];
             $user_groups[] = $details;
         }
+//        dd($user_groups);
         $user_groups = collect($user_groups)
-        ->groupBy('city')
-        ->sortByDesc(function ($users, $key) {
-            return count($users);
-       });
-        // $user =  $users->groupBy('province');
-        // dd($user_groups);
-        return view('municipality',compact('user_groups'));
+            ->groupBy('city')
+            ->sortByDesc(function ($users, $key) {
+                return count($users);
+            });
+
+        $cityThatHaveUser = array_keys($user_groups->toArray());
+        foreach ($cityThatHaveUser as $cityName) {
+            if (($key = array_search($cityName, $city_names)) !== false) {
+                unset($city_names[$key]);
+            }
+        }
+//        dd($city_names);
+
+        return view('municipality', compact('user_groups', 'city_names'));
     }
 
 }
