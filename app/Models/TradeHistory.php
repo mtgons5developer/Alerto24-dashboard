@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class TradeHistory extends Model
 {
     use HasFactory;
-    protected $table = 'tradehistory';
+    protected $table = 'tradeHistory';
 }
