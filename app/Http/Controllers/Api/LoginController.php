@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Auth\Events\Registered;
 
 class LoginController extends Controller
 {
@@ -22,24 +22,20 @@ class LoginController extends Controller
                 'email'             => 'required|email',
                 'password'          => 'required|min:8',
             ];
-
             $validator = Validator::make($request->all(), $rules);
-
             if ($validator->fails()) {
                 $error_message = '';
                 foreach ($validator->errors()->messages() as $key => $value) {
                     $error_message = $value;
                 }
-
                 return response()->json([
-                    'success'=>false,
-                    'status'=>$this->successStatus,
-                    'message' => $error_message[0]
+                    'success'   =>false,
+                    'status'    =>$this->successStatus,
+                    'message'   => $error_message[0]
                 ],
                     $this->successStatus
                 );
             }
-
             if (User::all()->count() > 0) {
 
                 $customerLogin = User::when($request->email, function ($query) use ($request) {
@@ -48,24 +44,48 @@ class LoginController extends Controller
 
                 if (!$customerLogin) {
                     if ($request->email) {
-                        return response()->json(['success'=>false,'status'=>$this->successStatus, 'message' => "No user registered with this email address"], $this->successStatus);
+                        return response()->json([
+                            'success'    =>false,
+                            'status'     =>$this->successStatus,
+                            'message'    => "No user registered with this email address"
+                        ], $this->successStatus);
                     }
 
                 }elseif (!$customerLogin || !Hash::check($request->password, $customerLogin->password)) {
-                    return response()->json(['success'=>false,'status'=>$this->successStatus, 'message' => $request->email ? "Incorrect email or password" : "Incorrect Mobile or password"], $this->successStatus);
+                    return response()->json([
+                        'success'   =>false,
+                        'status'    =>$this->successStatus,
+                        'message'   => $request->email . "Incorrect email or password"
+                    ], $this->successStatus);
 
                 }else {
-                     $response = User::where('id',$customerLogin->id)->first();
+                      $response  = User::where('email', $request->email)->firstOrFail();
+                      $token     = $response->createToken('auth_token')->plainTextToken;
 
-                    return response()->json(['success'=>true,'status'=>$this->successStatus,'message'=>"Success! you are logged in successfully", 'data'=>$response], $this->successStatus);
+                    return response()->json([
+                        'success'       =>true,
+                        'status'        =>$this->successStatus,
+                        'message'       =>"Success! you are logged in successfully",
+                        'data'          =>$response,
+                        'access_token'  => $token,
+                    ],
+                    $this->successStatus);
                 }
             } else {
-                return response()->json(['success'=>false,'status'=>$this->successStatus, 'message' => 'No customer registered found'], $this->successStatus);
+                return response()->json([
+                    'success'   =>false,
+                    'status'    =>$this->successStatus,
+                    'message'   => 'No user registered found'
+                ], $this->successStatus);
 
             }
         } catch (Exception $e) {
-            return response()->json(['success'=>false,'status'=>$this->successStatus, 'message' => @$e->getMessage()], $this->successStatus);
-
+            return response()->json([
+                'success'   =>false,
+                'status'    =>$this->successStatus,
+                'message'   => @$e->getMessage()]
+                , $this->successStatus
+            );
         }
     }
 
@@ -77,18 +97,14 @@ class LoginController extends Controller
 
 
                 $rules = [
-                    'name'          => 'required',
+                    'name'              => 'required',
 //                    'mobile'            => 'required|digits_between:10,13|unique:users',
                     'email'             => 'required|email|unique:users',
                     'password'          => 'required|min:8',
                 ];
-
-
                 $messages = [
                     'email.unique'    => 'An user with this email is already registered.',
-                    'mobile.unique'   => 'An account is already associated with this mobile number.',
                 ];
-
                 $validator = Validator::make($request->all(), $rules, $messages);
 
 
@@ -100,7 +116,11 @@ class LoginController extends Controller
                     $error_message = $value;
                 }
 
-                return response()->json(['success'=>false,'status'=>$this->successStatus, 'message' => $error_message[0]], $this->successStatus);
+                return response()->json([
+                    'success'   =>false,
+                    'status'    =>$this->successStatus,
+                    'message'   => $error_message[0]],
+                    $this->successStatus);
             }
 
             $customerDataSave = User::create([
@@ -108,29 +128,39 @@ class LoginController extends Controller
                 'email'             => $request->email,
                 'password'          => Hash::make($request->password),
             ]);
-//                $customerDataSave       =  array(
-//                    'mobile'            => $request->mobile,
-//                    'device_token'      => $request->device_token,
-//                    'device_type'       => $request->device_type,
-//                );
-//                DB::beginTransaction();
-//            $customerData=User::create($customerDataSave);
-//                $customerData =[];
 
                 if($customerDataSave) {
                     $customerLogin = User::where('email', $request->email)->first();
                     $response = $customerLogin;
 
-                    return response()->json(['success'=>true, 'status'=>$this->successStatus, 'data'=>$response, 'message' => 'Your account has been created successfully'], $this->successStatus);
+                    $token = $response->createToken('auth_token')->plainTextToken;
+                    event(new Registered($customerLogin));
+
+                    return response()->json([
+                        'success'       =>true,
+                        'status'        =>$this->successStatus,
+                        'data'          =>$response,
+                        'message'       => 'Your account has been created successfully',
+                        'access_token'  => $token
+                    ], $this->successStatus);
 
                 }else{
                     Log::info('408' );
-                    return response()->json(['success'=>false,'status'=>$this->successStatus, 'message' => 'Your registration failed! Please try again'], $this->successStatus);
+                    return response()->json([
+                        'success'   =>false,
+                        'status'    =>$this->successStatus,
+                        'message'   => 'Your registration failed! Please try again'
+                    ], $this->successStatus);
 
                 }
 
         } catch (Exception $e) {
-            return response()->json(['success'=>false,'status'=>$this->successStatus, 'message' => @$e->getMessage()], $this->successStatus);
+            return response()->json([
+                'success'   =>false,
+                'status'    =>$this->successStatus,
+                'message'   => @$e->getMessage()
+            ], $this->successStatus);
         }
     }
+
 }
