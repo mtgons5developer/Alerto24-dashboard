@@ -20,4 +20,13 @@ class SettingController extends Controller
         return view('admin.trade_history')
             ->with('trade_histories',$trade_histories);
     }
+    public function add_qty(Request $request ,$id){
+       $this->validate($request,[
+           'qty' => 'required'
+       ]);
+       Setting::where('id',$id)->update([
+            'qty' => $request->qty
+       ]);
+       return redirect()->back();
+    }
 }
