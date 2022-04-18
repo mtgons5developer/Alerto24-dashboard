@@ -95,10 +95,16 @@
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->entryPrice }}</span>
                                     </td>
-                                    <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->qty }}</span>
+                                    <td class="flex">
+
+                                        <form method="POST" action="{{route('admin.add.qty',['id'=>$setting->id])}}">
+                                            @csrf
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input name="qty" value="{{ $setting->qty }}"></span>
+                                            <button type="submit" class="btn btn-success">Submit</button>
+                                        </form>
                                     </td>
                                     <td>
+
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->timeframe }}</span>
                                     </td>
 
