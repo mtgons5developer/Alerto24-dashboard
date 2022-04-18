@@ -21,19 +21,15 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 //    return $request->user();
 //
 //});
-Route::post('/login', [LoginController::class, 'customLogin']);
-Route::post('/register', [LoginController::class, 'customRegister']);
 
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
-Route::group(['middleware' => 'auth:sanctum'], function () {
+Route::post('/login',[LoginController::class,'customLogin']);
+Route::post('/register',[LoginController::class,'customRegister']);
+Route::post('/register',[LoginController::class,'customRegister']);
 
-    Route::get('test', function () {
-        return auth()->user();
-    });
-    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        $request->fulfill();
+    Route::get('email/verify/{id}',[VerifyEmailController::class,'verify'])->name('verification.verify'); // Make sure to keep this as your route name
 
-    })->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::middleware('auth:sanctum')->group(function(){
+    Route::post('/me',[LoginController::class,'me']);
+    Route::get('email/resend', [LoginController::class,'resend'])->name('verification.resend');
 });

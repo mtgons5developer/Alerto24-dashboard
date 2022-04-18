@@ -21,11 +21,18 @@ class SettingController extends Controller
             ->with('trade_histories',$trade_histories);
     }
     public function add_qty(Request $request ,$id){
+
        $this->validate($request,[
            'qty' => 'required'
        ]);
+       if ($request->toggle == 'on') {
+           $toggle = 1;
+       } else {
+           $toggle = 0;
+       }
        Setting::where('id',$id)->update([
-            'qty' => $request->qty
+            'qty'    => $request->qty,
+            'toggle' => $toggle
        ]);
        return redirect()->back();
     }
