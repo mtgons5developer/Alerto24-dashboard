@@ -168,7 +168,7 @@
                     <!--begin::Menu Nav-->
                     <ul class="menu-nav">
                         <li class="menu-item menu-item-active" aria-haspopup="true">
-                            <a href="{{ route('users') }}" class="menu-link">
+                            <a href="{{ route('users.user.index') }}" class="menu-link">
 										<span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/media/svg/icons/Design/Layers.svg-->
 											<svg xmlns="http://www.w3.org/2000/svg"
