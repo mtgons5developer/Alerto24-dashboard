@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6e3ddb61833ad021a3ec06af4a10c37",
+    "content-hash": "9258f5aa2bd2b6dbe36d503540f062f2",
     "packages": [
         {
             "name": "beste/clock",
@@ -6461,6 +6461,81 @@
     ],
     "packages-dev": [
         {
+            "name": "crestapps/laravel-code-generator",
+            "version": "v2.4.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CrestApps/laravel-code-generator.git",
+                "reference": "9b238987abe4b9ca1db4f09b4bce23fd9769c5af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CrestApps/laravel-code-generator/zipball/9b238987abe4b9ca1db4f09b4bce23fd9769c5af",
+                "reference": "9b238987abe4b9ca1db4f09b4bce23fd9769c5af",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": ">=5.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9||~1.0",
+                "orchestra/testbench": "~3.0",
+                "phpunit/phpunit": "^5.0||^6.0||^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "CrestApps\\CodeGenerator\\CodeGeneratorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CrestApps\\CodeGenerator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Majd Alhayek (Mike)",
+                    "email": "mike@crestapps.com",
+                    "homepage": "https://www.crestapps.com"
+                }
+            ],
+            "description": "An intelligent code generator for Laravel framework that will save you time! This awesome tool will help you generate resources like views, controllers, routes, migrations, languages and/or form-requests! It is extremely flexible and customizable to cover many on the use cases. It is shipped with cross-browsers compatible template, along with a client-side validation to modernize your application.",
+            "keywords": [
+                "Alhayek",
+                "CrestApps",
+                "Majd Alhayek",
+                "Mike Alhayek",
+                "code generator",
+                "code-generator",
+                "controller creator",
+                "crud",
+                "crud builder",
+                "crud generator",
+                "generator",
+                "generators",
+                "laravel",
+                "laravel code generator",
+                "laravel crud",
+                "laravel crud builder",
+                "laravel crud generator",
+                "laravel-code-generator",
+                "routes creator",
+                "views creator"
+            ],
+            "support": {
+                "issues": "https://github.com/CrestApps/laravel-code-generator/issues",
+                "source": "https://github.com/CrestApps/laravel-code-generator/tree/v2.4.8"
+            },
+            "time": "2022-03-02T21:08:06+00:00"
+        },
+        {
             "name": "doctrine/instantiator",
             "version": "1.4.1",
             "source": {
@@ -9119,5 +9194,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }

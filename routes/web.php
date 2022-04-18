@@ -1,6 +1,12 @@
 <?php
 
+use App\Models\City;
+use App\Models\Region;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CitiesController;
+use App\Http\Controllers\BarangaysController;
+use App\Http\Controllers\ProvincesController;
+use App\Http\Controllers\RegionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +20,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
 Auth::routes();
-Route::get('/logout',function(){
+Route::get('/logout', function () {
     auth()->logout();
 });
 Route::post('/customLogin', [App\Http\Controllers\Auth\CustomLoginController::class, 'customLogin'])->name('customLogin');
@@ -30,4 +35,63 @@ Route::prefix('admin')->group(function () {
     Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'settings'])->name('admin.settings');
     Route::get('/trade-history', [App\Http\Controllers\Admin\SettingController::class, 'trade_history'])->name('admin.trade.history');
     Route::post('/add-qty/{id}', [App\Http\Controllers\Admin\SettingController::class, 'add_qty'])->name('admin.add.qty');
+
+    Route::group(['prefix' => 'cities'], function () {
+
+        Route::get('/', [CitiesController::class, 'index'])->name('cities.city.index');
+        Route::get('/create', [CitiesController::class, 'create'])->name('cities.city.create');
+        Route::get('/show/{city}', [CitiesController::class, 'show'])->name('cities.city.show')->where('id', '[0-9]+');
+        Route::get('/{city}/edit', [CitiesController::class, 'edit'])->name('cities.city.edit')->where('id', '[0-9]+');
+        Route::post('/', [CitiesController::class, 'store'])->name('cities.city.store');
+        Route::put('city/{city}', [CitiesController::class, 'update'])->name('cities.city.update')->where('id', '[0-9]+');
+        Route::delete('/city/{city}', [CitiesController::class, 'destroy'])->name('cities.city.destroy')->where('id', '[0-9]+');
+
+    });
+
+
+    Route::group(['prefix' => 'barangays'], function () {
+        Route::get('/', [BarangaysController::class, 'index'])->name('barangays.barangay.index');
+        Route::get('/create', [BarangaysController::class, 'create'])->name('barangays.barangay.create');
+        Route::get('/show/{barangay}', [BarangaysController::class, 'show'])->name('barangays.barangay.show')->where('id', '[0-9]+');
+        Route::get('/{barangay}/edit', [BarangaysController::class, 'edit'])->name('barangays.barangay.edit')->where('id', '[0-9]+');
+        Route::post('/', [BarangaysController::class, 'store'])->name('barangays.barangay.store');
+        Route::put('barangay/{barangay}', [BarangaysController::class, 'update'])->name('barangays.barangay.update')->where('id', '[0-9]+');
+        Route::delete('/barangay/{barangay}', [BarangaysController::class, 'destroy'])->name('barangays.barangay.destroy')->where('id', '[0-9]+');
+    });
+
+    Route::group(['prefix' => 'provinces'], function () {
+        Route::get('/', [ProvincesController::class, 'index'])->name('provinces.province.index');
+        Route::get('/create', [ProvincesController::class, 'create'])->name('provinces.province.create');
+        Route::get('/show/{province}', [ProvincesController::class, 'show'])->name('provinces.province.show')->where('id', '[0-9]+');
+        Route::get('/{province}/edit', [ProvincesController::class, 'edit'])->name('provinces.province.edit')->where('id', '[0-9]+');
+        Route::post('/', [ProvincesController::class, 'store'])->name('provinces.province.store');
+        Route::put('province/{province}', [ProvincesController::class, 'update'])->name('provinces.province.update')->where('id', '[0-9]+');
+        Route::delete('/province/{province}', [ProvincesController::class, 'destroy'])->name('provinces.province.destroy')->where('id', '[0-9]+');
+
+    });
+
+    Route::group(['prefix' => 'regions'], function () {
+        Route::get('/', [RegionsController::class, 'index'])->name('regions.region.index');
+        Route::get('/create', [RegionsController::class, 'create'])->name('regions.region.create');
+        Route::get('/show/{region}', [RegionsController::class, 'show'])->name('regions.region.show')->where('id', '[0-9]+');
+        Route::get('/{region}/edit', [RegionsController::class, 'edit'])->name('regions.region.edit')->where('id', '[0-9]+');
+        Route::post('/', [RegionsController::class, 'store'])->name('regions.region.store');
+        Route::put('region/{region}', [RegionsController::class, 'update'])->name('regions.region.update')->where('id', '[0-9]+');
+        Route::delete('/region/{region}', [RegionsController::class, 'destroy'])->name('regions.region.destroy')->where('id', '[0-9]+');
+    });
 });
+
+
+Route::get('/task', function (\Illuminate\Http\Request $request) {
+    $database = app('firebase.database');
+    dd('stop');
+    $reference = $database->getReference('users');
+    $city_names = $database->getReference('address_lookup/regions')->getValue();
+    $records = (object)$reference->getValue();
+    foreach ($city_names as $city_name) {
+        $city_name = (object)$city_name;
+        Region::create(['name' => $city_name->region_name, 'code' => $city_name->region_code, 'psgc_code' => $city_name->psgc_code]);
+    }
+    dd("Done");
+});
+
