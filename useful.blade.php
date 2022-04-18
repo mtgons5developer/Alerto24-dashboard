@@ -137,3 +137,10 @@
 *  php artisan resource-file:create Region --fields=id,name,code,psgc_code
 *  php artisan create:scaffold Region  --layout-name="layouts.base" --with-migration
 * */
+
+/*
+*  php artisan resource-file:create ServiceCategory --fields=id,name,is_active,description
+*  php artisan create:scaffold ServiceCategory  --layout-name="layouts.base" --with-migration
+php artisan resource-file:from-database User
+php artisan create:scaffold User  --layout-name="layouts.base"
+* */

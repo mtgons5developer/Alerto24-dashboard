@@ -7,6 +7,8 @@ use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\BarangaysController;
 use App\Http\Controllers\ProvincesController;
 use App\Http\Controllers\RegionsController;
+use App\Http\Controllers\ServiceCategoriesController;
+use App\Http\Controllers\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +81,28 @@ Route::prefix('admin')->group(function () {
         Route::put('region/{region}', [RegionsController::class, 'update'])->name('regions.region.update')->where('id', '[0-9]+');
         Route::delete('/region/{region}', [RegionsController::class, 'destroy'])->name('regions.region.destroy')->where('id', '[0-9]+');
     });
+
+    Route::group(['prefix' => 'service_categories'], function () {
+        Route::get('/', [ServiceCategoriesController::class, 'index'])->name('service_categories.service_category.index');
+        Route::get('/create', [ServiceCategoriesController::class, 'create'])->name('service_categories.service_category.create');
+        Route::get('/show/{serviceCategory}', [ServiceCategoriesController::class, 'show'])->name('service_categories.service_category.show')->where('id', '[0-9]+');
+        Route::get('/{serviceCategory}/edit', [ServiceCategoriesController::class, 'edit'])->name('service_categories.service_category.edit')->where('id', '[0-9]+');
+        Route::post('/', [ServiceCategoriesController::class, 'store'])->name('service_categories.service_category.store');
+        Route::put('service_category/{serviceCategory}', [ServiceCategoriesController::class, 'update'])->name('service_categories.service_category.update')->where('id', '[0-9]+');
+        Route::delete('/service_category/{serviceCategory}', [ServiceCategoriesController::class, 'index'])->name('service_categories.service_category.destroy')->where('id', '[0-9]+');
+
+    });
+
+    Route::group(['prefix' => 'users'], function () {
+        Route::get('/', [UsersController::class, 'index'])->name('users.user.index');
+        Route::get('/create', [UsersController::class, 'create'])->name('users.user.create');
+        Route::get('/show/{user}', [UsersController::class, 'show'])->name('users.user.show');
+        Route::get('/{user}/edit', [UsersController::class, 'edit'])->name('users.user.edit');
+        Route::post('/', [UsersController::class, 'store'])->name('users.user.store');
+        Route::put('user/{user}', [UsersController::class, 'update'])->name('users.user.update');
+        Route::delete('/user/{user}', [UsersController::class, 'index'])->name('users.user.destroy');
+
+    });
 });
 
 
@@ -94,4 +118,5 @@ Route::get('/task', function (\Illuminate\Http\Request $request) {
     }
     dd("Done");
 });
+
 

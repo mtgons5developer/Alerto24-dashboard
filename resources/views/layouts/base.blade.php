@@ -428,6 +428,14 @@
                 <div class="configuration mb-4">
                     <div class="btn-group  float-right mx-4">
 
+                        <a class="btn btn-link btn-outline-dark btn-sm mr-4"
+                           href="{{ route('users.user.index') }}">
+                            <i class="fa fa-users"></i>
+                            Users</a>
+                        <a class="btn btn-link btn-danger btn-sm mr-4"
+                           href="{{ route('service_categories.service_category.index') }}">
+                            <i class="fa fa-cog"></i>
+                            Service Category List</a>
                         <a class="btn btn-link btn-secondary btn-sm mr-4" href="{{ route('regions.region.index') }}">
                             <i class="fa fa-cog"></i>
                             Region List</a>
