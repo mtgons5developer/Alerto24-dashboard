@@ -36,30 +36,34 @@ class CustomLoginController extends Controller
         }
 
         $user = \App\Models\User::where('email',$request->email)->first();
+        if ($user) {
 
-        if ($user->is_admin == 1){
-            if(Auth::attempt(['email'=> $request->email,'password'=>$request->password])) {
-                $user = Auth::user()->where('email','=',$request->email)->first();
-                return redirect('/');
+
+            if ($user->is_admin == 1){
+                if(Auth::attempt(['email'=> $request->email,'password'=>$request->password])) {
+                    $user = Auth::user()->where('email','=',$request->email)->first();
+                    return redirect('/');
 //                return redirect('/user');
 
-            } else {
+                } else {
 
-                return back()->with('error','Email Not Exists In Our Record....!');
-            }
-        } elseif($user->is_admin == 2){
+                    return back()->with('error','Email Not Exists In Our Record....!');
+                }
+            } elseif($user->is_admin == 2){
 
-            if(Auth::attempt(['email'=> $request->email,'password'=>$request->password])) {
-                $user = Auth::user()->where('email','=',$request->email)->first();
-                return redirect('admin/settings');
+                if(Auth::attempt(['email'=> $request->email,'password'=>$request->password])) {
+                    $user = Auth::user()->where('email','=',$request->email)->first();
+                    return redirect('admin/settings');
 //                return redirect('/user');
 
-            } else {
+                } else {
 
-                return back()->with('error','Email Not Exists In Our Record....!');
+                    return back()->with('error','Email Not Exists In Our Record....!');
+                }
             }
+        } else {
+            return back()->with('error','Email Not Exists In Our Record....!');
         }
-
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
