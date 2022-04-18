@@ -29,10 +29,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $reference = $this->database->getReference('users');
-        $users = $reference->getValue();
-        // dd($snapshot);
-        return view('welcome', compact('users'));
+        return redirect()->route('users.user.index');
+//        return view('welcome', compact('users'));
     }
 
     public function tasks()
