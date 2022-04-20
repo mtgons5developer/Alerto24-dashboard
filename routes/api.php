@@ -25,8 +25,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 Route::post('/login',[LoginController::class,'customLogin']);
 Route::post('/register',[LoginController::class,'customRegister']);
 Route::post('/register',[LoginController::class,'customRegister']);
-
-    Route::get('email/verify/{id}',[VerifyEmailController::class,'verify'])->name('verification.verify'); // Make sure to keep this as your route name
+Route::get('email/verify/{id}',[VerifyEmailController::class,'verify'])->name('verification.verify'); // Make sure to keep this as your route name
 
 
 Route::middleware('auth:sanctum')->group(function(){
