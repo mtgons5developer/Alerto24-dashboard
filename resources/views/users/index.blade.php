@@ -19,6 +19,14 @@
         <div class="card-header">
 
             <h5 class="my-1 float-left">Users</h5>
+            <div class="float-left ml-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Total Users </h3>
+                        <h1>{{ count(\App\Models\User::all()) }}</h1>
+                    </div>
+                </div>
+            </div>
 
             <div class="btn-group btn-group-sm float-right" role="group">
                 <a href="{{ route('users.user.create') }}" class="btn btn-success" title="Create New User">
@@ -56,12 +64,16 @@
                                 <td>{{ $user->email }}</td>
 
                                 <td>
-                                    @if($user->email_verified_at == null)
-                                        <i class="badge badge-danger">No</i>
-                                    @else
-                                        <i class="badge badge-success">Yes</i>
 
-                                    @endif
+
+                                    <input
+                                        id="checkbox{{$user->id}}"
+                                        class="bootstrap_switch" type="checkbox"
+                                        user_id="{{ $user->id }}"
+                                        name="switch_{{$user->id}}" {{ $user->email_verified_at != null?'checked':'' }}
+                                        data-on-text="Verified" data-handle-width="80" data-off-text="Unverified"
+                                        data-on-color="primary"
+                                    >
                                 </td>
                                 <td>{{ $user->user_type }}</td>
 
@@ -112,6 +124,38 @@
 
     <script>
         $(document).ready(function () {
+// Class definition
+
+            $('#checkbox16').change(function () {
+                alert($(this).attr('user_id'))
+            });
+
+            var KTBootstrapSwitch = function () {
+
+                // Private functions
+                var demos = function () {
+                    // minimum setup
+                    $('.bootstrap_switch').bootstrapSwitch({
+                        onSwitchChange: function (event, state) {
+                            let user_id = $(event.target).attr('user_id');
+                            $.get("{{ route('change_email_verification_status') }}", {user_id: user_id, status: state});
+
+                        }
+                    });
+                };
+
+                return {
+                    // public functions
+                    init: function () {
+                        demos();
+                    },
+                };
+            }();
+
+            jQuery(document).ready(function () {
+                KTBootstrapSwitch.init();
+            });
+
 
         });
     </script>
