@@ -1,5 +1,7 @@
 <?php
 
+
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\LoginController;
@@ -36,4 +38,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         $request->fulfill();
 
     })->middleware(['auth', 'signed'])->name('verification.verify');
+
+    Route::apiResource('users', UserController::class);
+    Route::resource('service_categories', App\Http\Controllers\API\ServiceCategoryAPIController::class);
+
 });
+
+
