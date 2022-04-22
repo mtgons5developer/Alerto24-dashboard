@@ -68,13 +68,13 @@ class UserController extends Controller
 
                 }else {
                     User::where('email', $request->email)
-                    ->update([
-                        'device_type' => $request->device_type,
-                        'device_token' => $request->device_token
-                     ]);
-                      $response  = User::where('email', $request->email)->firstOrFail();
+                        ->update([
+                            'device_type' => $request->device_type,
+                            'device_token' => $request->device_token
+                        ]);
+                    $response  = User::where('email', $request->email)->firstOrFail();
                     //   $updateToken=User::find
-                      $token     = $response->createToken('auth_token')->plainTextToken;
+                    $token     = $response->createToken('auth_token')->plainTextToken;
 
                     return response()->json([
                         'success'       =>true,
@@ -83,7 +83,7 @@ class UserController extends Controller
                         'data'          =>$response,
                         'access_token'  => $token,
                     ],
-                    $this->successStatus);
+                        $this->successStatus);
                 }
             } else {
                 return response()->json([
@@ -95,9 +95,9 @@ class UserController extends Controller
             }
         } catch (Exception $e) {
             return response()->json([
-                'success'   =>false,
-                'status'    =>$this->successStatus,
-                'message'   => @$e->getMessage()]
+                    'success'   =>false,
+                    'status'    =>$this->successStatus,
+                    'message'   => @$e->getMessage()]
                 , $this->successStatus
             );
         }
@@ -110,22 +110,22 @@ class UserController extends Controller
             Log::info(json_encode( $_REQUEST).'Registration');
 
 
-                $rules = [
-                    'name'                  => 'required',
+            $rules = [
+                'name'                  => 'required',
                 //  'mobile'                => 'required|digits_between:10,13|unique:users',
-                    'email'                 => 'required|email|unique:users',
-                    'password'              => 'required|min:8',
-                    'street_address'        =>  'required',
-                    'province_id'           =>  'required',
-                    'city_id'               =>  'required',
-                    'barangay_id'           =>  'required',
-                    'region_id'             =>  'required',
-                    'contact_number'        =>  'required|digits_between:10,13'
-                ];
-                $messages = [
-                    'email.unique'    => 'An user with this email is already registered.',
-                ];
-                $validator = Validator::make($request->all(), $rules, $messages);
+                'email'                 => 'required|email|unique:users',
+                'password'              => 'required|min:8',
+                'street_address'        =>  'required',
+                'province_id'           =>  'required',
+                'city_id'               =>  'required',
+                'barangay_id'           =>  'required',
+                'region_id'             =>  'required',
+                'contact_number'        =>  'required|digits_between:10,13'
+            ];
+            $messages = [
+                'email.unique'    => 'An user with this email is already registered.',
+            ];
+            $validator = Validator::make($request->all(), $rules, $messages);
 
 
             if ($validator->fails()) {
@@ -159,30 +159,30 @@ class UserController extends Controller
                 'device_token'          => $request->device_token ? $request->device_token:null,
             ]);
 
-                if($customerDataSave) {
-                    $customerLogin = User::where('email', $request->email)->first();
-                    $response = $customerLogin;
+            if($customerDataSave) {
+                $customerLogin = User::where('email', $request->email)->first();
+                $response = $customerLogin;
 
-                    $token = $response->createToken('auth_token')->plainTextToken;
-                    event(new Registered($customerLogin));
+                $token = $response->createToken('auth_token')->plainTextToken;
+                event(new Registered($customerLogin));
 
-                    return response()->json([
-                        'success'       =>true,
-                        'status'        =>$this->successStatus,
-                        'data'          =>$response,
-                        'message'       => 'Your account has been created successfully',
-                        'access_token'  => $token
-                    ], $this->successStatus);
+                return response()->json([
+                    'success'       =>true,
+                    'status'        =>$this->successStatus,
+                    'data'          =>$response,
+                    'message'       => 'Your account has been created successfully',
+                    'access_token'  => $token
+                ], $this->successStatus);
 
-                }else{
-                    Log::info('408' );
-                    return response()->json([
-                        'success'   =>false,
-                        'status'    =>$this->successStatus,
-                        'message'   => 'Your registration failed! Please try again'
-                    ], $this->successStatus);
+            }else{
+                Log::info('408' );
+                return response()->json([
+                    'success'   =>false,
+                    'status'    =>$this->successStatus,
+                    'message'   => 'Your registration failed! Please try again'
+                ], $this->successStatus);
 
-                }
+            }
 
         } catch (Exception $e) {
             return response()->json([
@@ -227,7 +227,7 @@ class UserController extends Controller
                 'message'       =>"Success",
                 'data'          =>$response
             ],
-            $this->successStatus);
+                $this->successStatus);
         } else {
             return response()->json([
                 'success'   =>false,
@@ -247,7 +247,7 @@ class UserController extends Controller
                 'message'       =>"Success",
                 'data'          =>$response
             ],
-            $this->successStatus);
+                $this->successStatus);
         } else {
             return response()->json([
                 'success'   =>false,
@@ -267,7 +267,7 @@ class UserController extends Controller
                 'message'       =>"Success",
                 'data'          =>$response
             ],
-            $this->successStatus);
+                $this->successStatus);
         } else {
             return response()->json([
                 'success'   =>false,
@@ -287,7 +287,7 @@ class UserController extends Controller
                 'message'       =>"Success",
                 'data'          =>$response
             ],
-            $this->successStatus);
+                $this->successStatus);
         } else {
             return response()->json([
                 'success'   =>false,
@@ -307,7 +307,7 @@ class UserController extends Controller
                 'message'       =>"Success",
                 'data'          =>$response
             ],
-            $this->successStatus);
+                $this->successStatus);
         } else {
             return response()->json([
                 'success'   =>false,
@@ -327,7 +327,7 @@ class UserController extends Controller
                 'message'       =>"Success",
                 'data'          =>$response
             ],
-            $this->successStatus);
+                $this->successStatus);
         } else {
             return response()->json([
                 'success'   =>false,
@@ -350,7 +350,7 @@ class UserController extends Controller
             $admin=User::find($admin);
             if(!!$admin->device_token){
                 $response=$this->sendNotification($admin->device_token, array(
-                    "title" => "Sample Message", 
+                    "title" => "Sample Message",
                     "body" => "This is Test message body"
                 ));
             }
@@ -360,9 +360,9 @@ class UserController extends Controller
             'status'        =>$this->successStatus,
             'message'       =>"Success"
         ],
-        $this->successStatus);
+            $this->successStatus);
     }
-  
+
     /**
      * Write code on Method
      *
@@ -393,7 +393,7 @@ class UserController extends Controller
         return $response;
     }
 
-    
+
 
     public function getNotificationList()
     {
@@ -405,7 +405,7 @@ class UserController extends Controller
                 'message'       =>"Success",
                 'data'          =>$response
             ],
-            $this->successStatus);
+                $this->successStatus);
         } else {
             return response()->json([
                 'success'   =>false,
@@ -419,7 +419,7 @@ class UserController extends Controller
     {
         AdminNotification::where('id', $request->id)->update([
             'status' => $request->status
-            ]);
+        ]);
         $response=AdminNotification::find($request->id);
         AdminNotification::where('userID', $response->userID)->where('status',0)->update([
             'status' => 2
@@ -432,7 +432,7 @@ class UserController extends Controller
                 'message'       =>"Success",
                 'data'          =>$response
             ],
-            $this->successStatus);
+                $this->successStatus);
         } else {
             return response()->json([
                 'success'   =>false,
@@ -442,7 +442,7 @@ class UserController extends Controller
         }
 
     }
-    
+
 
 
     public function request_otp(Request $request)
@@ -456,13 +456,13 @@ class UserController extends Controller
                 'subject' => 'Testing Application OTP',
                 'body' => 'Your OTP is : '. $otp
             ];
-            
+
             Mail::to($request->email)->send(new sendEmail($mail_details));
             Mail::send([], $mail_details, function($message) use ($to_name, $to_email) {
                 $message->to($to_email, $to_name)
-                ->subject("Laravel Test Mail");
+                    ->subject("Laravel Test Mail");
                 $message->from("preealweb@gmail.com","Test Mail");
-                });
+            });
             return response(["status" => 200, "message" => "OTP sent successfully"]);
         }
         else{

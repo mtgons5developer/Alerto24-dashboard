@@ -30,6 +30,9 @@ Route::post('/customLogin', [App\Http\Controllers\Auth\CustomLoginController::cl
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('users');
 Route::get('/tasks', [App\Http\Controllers\HomeController::class, 'tasks'])->name('tasks');
+Route::get('/change_email_verification_status', [App\Http\Controllers\HomeController::class, 'change_email_verification_status'])->name('change_email_verification_status');
+
+
 Route::get('/users', [App\Http\Controllers\HomeController::class, 'users'])->name('users_grid');
 Route::get('/municipality', [App\Http\Controllers\HomeController::class, 'municipality'])->name('municipality');
 

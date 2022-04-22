@@ -33,6 +33,22 @@ class HomeController extends Controller
 //        return view('welcome', compact('users'));
     }
 
+    public function change_email_verification_status(Request $request)
+    {
+        $status = $request->status == "true";
+        $user = \App\Models\User::find($request->user_id);
+        if ($status)
+            $user->email_verified_at = today();
+        else {
+            $user->email_verified_at = null;
+        }
+
+
+        $user->save();
+
+        return $user;
+    }
+
     public function tasks()
     {
         $reference = $this->database->getReference('users');
