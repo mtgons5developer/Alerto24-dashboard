@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -97,10 +95,11 @@ class LoginController extends Controller
 
 
                 $rules = [
-                    'name'              => 'required',
+                    'name'               => 'required',
 //                    'mobile'            => 'required|digits_between:10,13|unique:users',
-                    'email'             => 'required|email|unique:users',
-                    'password'          => 'required|min:8',
+                    'email'              => 'required|email|unique:users',
+                    'password'           => 'required|min:8',
+
                 ];
                 $messages = [
                     'email.unique'    => 'An user with this email is already registered.',
@@ -124,28 +123,38 @@ class LoginController extends Controller
             }
 
             $customerDataSave = User::create([
-                'name'              => ucwords($request->name),
-                'email'             => $request->email,
-                'password'          => Hash::make($request->password),
+                'name'                  => ucwords($request->name),
+                'email'                 => $request->email,
+                'is_admin'              => 0,
+                'password'              => Hash::make($request->password),
+                'user_type'             => 'user',
+                'street_address'        => $request->street_address,
+                'province_id'           => $request->province_id,
+                'city_id'               => $request->city_id,
+                'barangay_id'           => $request->barangay_id,
+                'region_id'             => $request->region_id,
+                'contact_number'        => $request->contact_number,
+                'is_active'             => 1,
+                'service_category_id'   => $request->service_category_id
             ]);
 
                 if($customerDataSave) {
                     $customerLogin = User::where('email', $request->email)->first();
                     $response = $customerLogin;
-
                     $token = $response->createToken('auth_token')->plainTextToken;
                     event(new Registered($customerLogin));
 
                     return response()->json([
-                        'success'       =>true,
-                        'status'        =>$this->successStatus,
-                        'data'          =>$response,
+                        'success'       => true,
+                        'status'        => $this->successStatus,
+                        'data'          => $response,
                         'message'       => 'Your account has been created successfully',
                         'access_token'  => $token
-                    ], $this->successStatus);
+                    ],
+                        $this->successStatus);
 
-                }else{
-                    Log::info('408' );
+                } else {
+                    Log::info('408');
                     return response()->json([
                         'success'   =>false,
                         'status'    =>$this->successStatus,
