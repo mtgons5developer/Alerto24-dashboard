@@ -98,7 +98,7 @@ class LoginController extends Controller
 
                 $rules = [
                     'name'              => 'required',
-//                    'mobile'            => 'required|digits_between:10,13|unique:users',
+//                  'mobile'            => 'required|digits_between:10,13|unique:users',
                     'email'             => 'required|email|unique:users',
                     'password'          => 'required|min:8',
                 ];
