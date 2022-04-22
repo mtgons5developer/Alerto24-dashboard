@@ -11,6 +11,7 @@ use App\Http\Middleware\SuperAdminMiddleware;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\VerifyCsrfToken;
+use App\Http\Middleware\TokenVerify;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
@@ -28,6 +29,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+
 
 class Kernel extends HttpKernel
 {
@@ -90,6 +92,8 @@ class Kernel extends HttpKernel
         'verified' => EnsureEmailIsVerified::class,
         'is_admin' => AdminMiddleware::class,
         'super_admin' => SuperAdminMiddleware::class,
+        'TokenVerify' => TokenVerify::class,
+        
 
     ];
 }
