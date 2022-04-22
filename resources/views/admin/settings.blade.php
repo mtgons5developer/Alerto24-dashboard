@@ -80,7 +80,8 @@
                                 <th>Entry Price</th>
                                 <th>Quantity</th>
                                 <th>Time Frame</th>
-                                <th>Date & Time</th>
+                                <th>Date</th>
+                                <th>Error</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -108,7 +109,11 @@
                                         </td>
 
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->datetime }}</span>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input name="datetime" type="date" value="{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $setting->datetime)->format('Y-m-d') }}"></span>
+                                        </td>
+
+                                        <td>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->Error }}</span>
                                         </td>
 
                                         <td class="pr-0" style="display: flex; justify-content: space-between">

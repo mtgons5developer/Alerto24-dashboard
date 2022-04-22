@@ -9,7 +9,8 @@ class Setting extends Model
 {
     use HasFactory;
     protected $fillable=[
-      'qty'
+        'qty',
+        'datetime'
     ];
     public $timestamps = false;
 }

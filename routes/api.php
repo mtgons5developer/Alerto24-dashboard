@@ -23,12 +23,9 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 //
 //});
 
-<<<<<<< HEAD
+
     Route::post('/login',[LoginController::class,'customLogin']);
     Route::post('/register',[LoginController::class,'customRegister']);
-=======
-// Route::post('/login',[LoginController::class,'customLogin']);
-// Route::post('/register',[LoginController::class,'customRegister']);
 
 Route::middleware('TokenVerify')->group(function(){
     Route::post('/login',[UserController::class,'Login']);
@@ -41,10 +38,6 @@ Route::middleware('TokenVerify')->group(function(){
 });
 
 
-// Route::post('/register',[LoginController::class,'customRegister']);
-Route::get('email/verify/{id}',[VerifyEmailController::class,'verify'])->name('verification.verify'); // Make sure to keep this as your route name
->>>>>>> main
-
     Route::get('email/verify/{id}',[VerifyEmailController::class,'verify'])->name('verification.verify'); //
 
 Route::middleware('auth:sanctum')->group(function(){
@@ -55,6 +48,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/addAdminNotification',[UserController::class,'addAdminNotification']);
     Route::get('/getNotificationList',[UserController::class,'getNotificationList']);
     Route::post('/acceptReject',[UserController::class,'acceptReject']);
-    
+
 
 });
