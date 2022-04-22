@@ -95,11 +95,11 @@ class LoginController extends Controller
 
 
                 $rules = [
-                    'name'               => 'required',
-//                    'mobile'            => 'required|digits_between:10,13|unique:users',
-                    'email'              => 'required|email|unique:users',
-                    'password'           => 'required|min:8',
 
+                    'name'              => 'required',
+//                  'mobile'            => 'required|digits_between:10,13|unique:users',
+                    'email'             => 'required|email|unique:users',
+                    'password'          => 'required|min:8',
                 ];
                 $messages = [
                     'email.unique'    => 'An user with this email is already registered.',
