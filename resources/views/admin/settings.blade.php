@@ -89,42 +89,43 @@
 
 
                                 <tr>
-                                    <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->pair }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->entryPrice }}</span>
-                                    </td>
-                                    <td class="flex">
+                                    <form method="POST" action="{{route('admin.add.qty',['id'=>$setting->id])}}">
+                                        <td>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->pair }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->entryPrice }}</span>
+                                        </td>
+                                        <td class="flex">
 
-                                        <form method="POST" action="{{route('admin.add.qty',['id'=>$setting->id])}}">
                                             @csrf
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input name="qty" value="{{ $setting->qty }}"></span>
+
+                                        </td>
+                                        <td>
+
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->timeframe }}</span>
+                                        </td>
+
+                                        <td>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->datetime }}</span>
+                                        </td>
+
+                                        <td class="pr-0" style="display: flex; justify-content: space-between">
+                                            @if($setting->toggle == 0)
+                                                <label class="switch">
+                                                    <input type="checkbox" name="toggle" >
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            @elseif($setting->toggle == 1)
+                                                <label class="switch">
+                                                    <input type="checkbox" name="toggle"  checked>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            @endif
                                             <button type="submit" class="btn btn-success">Submit</button>
-                                        </form>
-                                    </td>
-                                    <td>
-
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->timeframe }}</span>
-                                    </td>
-
-                                    <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->datetime }}</span>
-                                    </td>
-
-                                    <td class="pr-0 text-right">
-                                        @if($setting->toggle == 0)
-                                            <label class="switch">
-                                                <input type="checkbox">
-                                                <span class="slider round"></span>
-                                            </label>
-                                        @elseif($setting->toggle == 1)
-                                            <label class="switch">
-                                                <input type="checkbox" checked>
-                                                <span class="slider round"></span>
-                                            </label>
-                                        @endif
-                                    </td>
+                                        </td>
+                                    </form>
                                 </tr>
                             @endforeach
                             </tbody>

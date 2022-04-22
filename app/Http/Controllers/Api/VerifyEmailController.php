@@ -3,23 +3,35 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use http\Client\Curl\User;
-use Illuminate\Http\Request;
+use App\Models\User;use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VerifyEmailController extends Controller
 {
-    public function __invoke(Request $request): RedirectResponse
+    public function verify($user_id, Request $request)
     {
-        $user = User::find($request->route('id'));
-
-        if ($user->hasVerifiedEmail()) {
-            return redirect(env('FRONT_URL') . '/email/verify/already-success');
+        if (!$request->hasValidSignature()) {
+            return response()->json(["msg" => "Invalid/Expired url provided."], 401);
         }
 
-        if ($user->markEmailAsVerified()) {
-            event(new Verified($user));
+        $user = User::findOrFail($user_id);
+
+        if (!$user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
         }
 
-        return redirect(env('FRONT_URL') . '/email/verify/success');
+        return redirect()->to('/');
+    }
+
+    public function resend()
+    {
+        dd(Auth::user());
+        if (auth()->user()->hasVerifiedEmail()) {
+            return response()->json(["msg" => "Email already verified."], 400);
+        }
+
+        auth()->user()->sendEmailVerificationNotification();
+
+        return response()->json(["msg" => "Email verification link sent on your email id"]);
     }
 }
