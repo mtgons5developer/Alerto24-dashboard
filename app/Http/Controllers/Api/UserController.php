@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use App\Models\Barangay;
 use App\Models\City;
 use App\Models\Province;
+use App\Models\ServiceCategory;
+use App\Models\AdminNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -64,7 +67,13 @@ class UserController extends Controller
                     ], $this->successStatus);
 
                 }else {
+                    User::where('email', $request->email)
+                    ->update([
+                        'device_type' => $request->device_type,
+                        'device_token' => $request->device_token
+                     ]);
                       $response  = User::where('email', $request->email)->firstOrFail();
+                    //   $updateToken=User::find
                       $token     = $response->createToken('auth_token')->plainTextToken;
 
                     return response()->json([
@@ -135,15 +144,19 @@ class UserController extends Controller
             }
 
             $customerDataSave = User::create([
-                'name'              => ucwords($request->name),
-                'email'             => $request->email,
-                'password'          => Hash::make($request->password),
-                'street_address'    => $request->street_address,
-                'province_id'       => $request->province_id,
-                'city_id'           => $request->city_id,
-                'barangay_id'       => $request->barangay_id,
-                'region_id'         => $request->region_id,
-                'contact_number'    => $request->contact_number
+                'name'                  => ucwords($request->name),
+                'email'                 => $request->email,
+                'password'              => Hash::make($request->password),
+                'street_address'        => $request->street_address,
+                'province_id'           => $request->province_id,
+                'city_id'               => $request->city_id,
+                'barangay_id'           => $request->barangay_id,
+                'region_id'             => $request->region_id,
+                'contact_number'        => $request->contact_number,
+                'user_type'             => $request->user_type?$request->user_type:'user',
+                'service_category_id'   => $request->service_category_id ? $request->service_category_id:null,
+                'device_type'           => $request->device_type ? $request->device_type:null,
+                'device_token'          => $request->device_token ? $request->device_token:null,
             ]);
 
                 if($customerDataSave) {
@@ -264,6 +277,26 @@ class UserController extends Controller
 
         }
     }
+    public function serviceCatListing()
+    {
+        $response  = ServiceCategory::get();
+        if (count($response) > 0) {
+            return response()->json([
+                'success'       =>true,
+                'status'        =>$this->successStatus,
+                'message'       =>"Success",
+                'data'          =>$response
+            ],
+            $this->successStatus);
+        } else {
+            return response()->json([
+                'success'   =>false,
+                'status'    =>$this->successStatus,
+                'message'   => 'No Data found'
+            ], $this->successStatus);
+
+        }
+    }
     public function Me()
     {
         $response = Auth::user();
@@ -284,6 +317,156 @@ class UserController extends Controller
 
         }
     }
+    public function adminByCat($id)
+    {
+        $response  = User::where('user_type','admin')->where('service_category_id',$id)->get();
+        if (count($response) > 0) {
+            return response()->json([
+                'success'       =>true,
+                'status'        =>$this->successStatus,
+                'message'       =>"Success",
+                'data'          =>$response
+            ],
+            $this->successStatus);
+        } else {
+            return response()->json([
+                'success'   =>false,
+                'status'    =>$this->successStatus,
+                'message'   => 'No Data found'
+            ], $this->successStatus);
+
+        }
+    }
+    public function addAdminNotification(Request $request)
+    {
+        $adminIDS=explode(',',$request->adminIDS);
+        foreach($adminIDS as $admin){
+            $enter = new AdminNotification();
+            $enter->adminID =$admin;
+            $enter->userID =Auth::user()->id;
+            $enter->categoryID=$request->categoryID;
+            $enter->message=$request->message?$request->message:null;
+            $enter->save();
+            $admin=User::find($admin);
+            if(!!$admin->device_token){
+                $response=$this->sendNotification($admin->device_token, array(
+                    "title" => "Sample Message", 
+                    "body" => "This is Test message body"
+                ));
+            }
+        }
+        return response()->json([
+            'success'       =>true,
+            'status'        =>$this->successStatus,
+            'message'       =>"Success"
+        ],
+        $this->successStatus);
+    }
+  
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    public function sendNotification($device_token, $message)
+    {
+        $SERVER_API_KEY = 'AAAABhl23yA:APA91bHOq48XLXJRObNkph_dh7qV_MzzdnTp-LGUIqAvaE1jaIbx8xBYjb24CY3xi8ZwjSfgC7vOOOwzuNTgkXfGJk0Xvd_YvSZWU76Mqz7zrMBhdqD1XaSR4HJFfU7RIjFdhGiUsiVm';
+        // payload data, it will vary according to requirement
+        $data = [
+            "to" => $device_token, // for single device id
+            "notification" => $message
+        ];
+        $dataString = json_encode($data);
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return $response;
+    }
+
+    
+
+    public function getNotificationList()
+    {
+        $response  = AdminNotification::where('status',0)->where('adminID',Auth::user()->id)->get();
+        if (count($response) > 0) {
+            return response()->json([
+                'success'       =>true,
+                'status'        =>$this->successStatus,
+                'message'       =>"Success",
+                'data'          =>$response
+            ],
+            $this->successStatus);
+        } else {
+            return response()->json([
+                'success'   =>false,
+                'status'    =>$this->successStatus,
+                'message'   => 'No Data found'
+            ], $this->successStatus);
+        }
+
+    }
+    public function acceptReject(Request $request)
+    {
+        AdminNotification::where('id', $request->id)->update([
+            'status' => $request->status
+            ]);
+        $response=AdminNotification::find($request->id);
+        AdminNotification::where('userID', $response->userID)->where('status',0)->update([
+            'status' => 2
+        ]);
+        $response  = AdminNotification::where('adminID',Auth::user()->id)->get();
+        if (count($response) > 0) {
+            return response()->json([
+                'success'       =>true,
+                'status'        =>$this->successStatus,
+                'message'       =>"Success",
+                'data'          =>$response
+            ],
+            $this->successStatus);
+        } else {
+            return response()->json([
+                'success'   =>false,
+                'status'    =>$this->successStatus,
+                'message'   => 'No Data found'
+            ], $this->successStatus);
+        }
+
+    }
+    
 
 
+    public function request_otp(Request $request)
+    {
+        $otp = rand(1000,9999);
+        $user = User::where('email',$request->email)->update(['otp' => $otp]);
+
+        if($user){
+
+            $mail_details = [
+                'subject' => 'Testing Application OTP',
+                'body' => 'Your OTP is : '. $otp
+            ];
+            
+            Mail::to($request->email)->send(new sendEmail($mail_details));
+            Mail::send([], $mail_details, function($message) use ($to_name, $to_email) {
+                $message->to($to_email, $to_name)
+                ->subject("Laravel Test Mail");
+                $message->from("preealweb@gmail.com","Test Mail");
+                });
+            return response(["status" => 200, "message" => "OTP sent successfully"]);
+        }
+        else{
+            return response(["status" => 401, 'message' => 'Invalid']);
+        }
+    }
 }

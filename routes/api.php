@@ -25,11 +25,18 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 // Route::post('/login',[LoginController::class,'customLogin']);
 // Route::post('/register',[LoginController::class,'customRegister']);
-Route::post('/login',[UserController::class,'Login']);
-Route::post('/register',[UserController::class,'Register']);
-Route::get('/provinceListing',[UserController::class,'provinceListing']);
-Route::get('/cityListing',[UserController::class,'cityListing']);
-Route::get('/barangayListing',[UserController::class,'barangayListing']);
+
+Route::middleware('TokenVerify')->group(function(){
+    Route::post('/login',[UserController::class,'Login']);
+    Route::post('/register',[UserController::class,'Register']);
+    Route::post('/provinceListing',[UserController::class,'provinceListing']);
+    Route::post('/cityListing',[UserController::class,'cityListing']);
+    Route::post('/barangayListing',[UserController::class,'barangayListing']);
+    Route::post('/serviceCatListing',[UserController::class,'serviceCatListing']);
+    Route::post('/request_otp',[UserController::class,'request_otp']);
+});
+
+
 // Route::post('/register',[LoginController::class,'customRegister']);
 Route::get('email/verify/{id}',[VerifyEmailController::class,'verify'])->name('verification.verify'); // Make sure to keep this as your route name
 
@@ -38,4 +45,10 @@ Route::middleware('auth:sanctum')->group(function(){
     // Route::post('/me',[LoginController::class,'me']);
     Route::post('/Me',[UserController::class,'Me']);
     Route::get('email/resend', [LoginController::class,'resend'])->name('verification.resend');
+    Route::get('/adminByCat/{id}',[UserController::class,'adminByCat']);
+    Route::post('/addAdminNotification',[UserController::class,'addAdminNotification']);
+    Route::get('/getNotificationList',[UserController::class,'getNotificationList']);
+    Route::post('/acceptReject',[UserController::class,'acceptReject']);
+    
+
 });
