@@ -23,7 +23,8 @@ class SettingController extends Controller
     public function add_qty(Request $request ,$id){
 
        $this->validate($request,[
-           'qty' => 'required'
+           'qty'      => 'required',
+           'datetime' => 'required'
        ]);
        if ($request->toggle == 'on') {
            $toggle = 1;
@@ -31,8 +32,9 @@ class SettingController extends Controller
            $toggle = 0;
        }
        Setting::where('id',$id)->update([
-            'qty'    => $request->qty,
-            'toggle' => $toggle
+            'qty'       => $request->qty,
+            'toggle'    => $toggle,
+            'datetime'  => $request->datetime
        ]);
        return redirect()->back();
     }

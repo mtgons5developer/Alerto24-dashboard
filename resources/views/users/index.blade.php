@@ -54,7 +54,6 @@
                                 <td>{{ (($users->currentPage() - 1) * $users->perPage()) + $loop->iteration }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
-
                                 <td>
                                     @if($user->email_verified_at == null)
                                         <i class="badge badge-danger">No</i>
