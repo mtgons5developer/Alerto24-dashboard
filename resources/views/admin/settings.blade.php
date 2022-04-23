@@ -65,6 +65,7 @@
 
     <div>
         <div class="card">
+            <h1 style=" margin-top: 15px; margin-left: 20px;"> Setting</h1>
             <div class="card-body">
 
                 <div class="table-responsive">
@@ -89,6 +90,7 @@
 
                             <tr>
                                 <form method="POST" action="{{route('admin.add.qty',['id'=>$setting->id])}}">
+                                    @csrf
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->pair }}</span>
                                     </td>
@@ -97,7 +99,7 @@
                                     </td>
                                     <td class="flex">
 
-                                        @csrf
+
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input name="qty" value="{{ $setting->qty }}"></span>
 
                                     </td>
@@ -107,7 +109,7 @@
                                     </td>
 
                                     <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input name="datetime" type="date" value="{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $setting->datetime)->format('Y-m-d') }}"></span>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input name="datetime" type="date" value="{{$setting->datetime }}"></span>
                                     </td>
 
                                     <td>
