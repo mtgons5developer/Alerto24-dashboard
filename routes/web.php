@@ -31,6 +31,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('users');
 Route::get('/tasks', [App\Http\Controllers\HomeController::class, 'tasks'])->name('tasks');
 Route::get('/change_email_verification_status', [App\Http\Controllers\HomeController::class, 'change_email_verification_status'])->name('change_email_verification_status');
+Route::get('/change_order_entry_status', [App\Http\Controllers\Admin\SettingController::class, 'change_order_entry_status'])->name('change_order_entry_status');
 
 
 Route::get('/users', [App\Http\Controllers\HomeController::class, 'users'])->name('users_grid');
@@ -40,6 +41,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'settings'])->name('admin.settings');
     Route::get('/trade-history', [App\Http\Controllers\Admin\SettingController::class, 'trade_history'])->name('admin.trade.history');
     Route::post('/add-qty/{id}', [App\Http\Controllers\Admin\SettingController::class, 'add_qty'])->name('admin.add.qty');
+    Route::get('/admin.order_entry', [App\Http\Controllers\Admin\SettingController::class, 'order_entry'])->name('admin.order_entry');
 
     Route::group(['prefix' => 'cities'], function () {
 
