@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\OrderEntry;
 use App\Models\Setting;
 use App\Models\TradeHistory;
 use Illuminate\Http\Request;
@@ -37,5 +38,24 @@ class SettingController extends Controller
             'datetime'  => $request->datetime
        ]);
        return redirect()->back();
+    }
+    public function order_entry(){
+        $data['order_entries'] = OrderEntry::all();
+        $data['counter']       = 1;
+        return view('admin.order_entries',$data);
+    }
+    public function change_order_entry_status(Request $request)
+    {
+        $status = $request->status == "true";
+        $order_entry = \App\Models\OrderEntry::find($request->order_entry_id);
+
+        if ($status)
+            $order_entry->status = 1;
+        else {
+            $order_entry->status = 2;
+        }
+
+        $order_entry->save();
+        return $order_entry;
     }
 }
