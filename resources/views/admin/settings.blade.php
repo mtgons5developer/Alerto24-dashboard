@@ -65,87 +65,82 @@
 
     <div>
         <div class="card">
-
             <div class="card-body">
 
-                <div >
-                    <!--begin::Table-->
-                    <div class="table-responsive">
-                        <table style="overflow: hidden;" id="kt_datatable" class="table table-head-custom table-vertical-center table-head-bg table-borderless">
-                            <thead>
-                            <tr class="text-left">
-                                <th >
-                                    <span class="text-dark-75">Pair</span>
-                                </th>
-                                <th>Entry Price</th>
-                                <th>Quantity</th>
-                                <th>Time Frame</th>
-                                <th>Date</th>
-                                <th>Error</th>
-                                <th>Action</th>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="kt_datatable">
+                        {{--                        <table style="overflow: hidden;"  class="table table-head-custom table-vertical-center table-head-bg table-borderless">--}}
+                        <thead>
+                        <tr class="text-left">
+                            <th >
+                                <span class="text-dark-75">Pair</span>
+                            </th>
+                            <th>Entry Price</th>
+                            <th>Quantity</th>
+                            <th>Time Frame</th>
+                            <th>Date</th>
+                            <th>Error</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($settings as $setting)
+
+
+                            <tr>
+                                <form method="POST" action="{{route('admin.add.qty',['id'=>$setting->id])}}">
+                                    <td>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->pair }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->entryPrice }}</span>
+                                    </td>
+                                    <td class="flex">
+
+                                        @csrf
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input name="qty" value="{{ $setting->qty }}"></span>
+
+                                    </td>
+                                    <td>
+
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->timeframe }}</span>
+                                    </td>
+
+                                    <td>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input name="datetime" type="date" value="{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $setting->datetime)->format('Y-m-d') }}"></span>
+                                    </td>
+
+                                    <td>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->Error }}</span>
+                                    </td>
+
+                                    <td class="pr-0" style="display: flex; justify-content: space-between">
+                                        @if($setting->toggle == 0)
+                                            <label class="switch">
+                                                <input type="checkbox" name="toggle" >
+                                                <span class="slider round"></span>
+                                            </label>
+                                        @elseif($setting->toggle == 1)
+                                            <label class="switch">
+                                                <input type="checkbox" name="toggle"  checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        @endif
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                    </td>
+                                </form>
                             </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($settings as $setting)
-
-
-                                <tr>
-                                    <form method="POST" action="{{route('admin.add.qty',['id'=>$setting->id])}}">
-                                        <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->pair }}</span>
-                                        </td>
-                                        <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->entryPrice }}</span>
-                                        </td>
-                                        <td class="flex">
-
-                                            @csrf
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input name="qty" value="{{ $setting->qty }}"></span>
-
-                                        </td>
-                                        <td>
-
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->timeframe }}</span>
-                                        </td>
-
-                                        <td>
-                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input name="datetime" type="date" value="{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $setting->datetime)->format('Y-m-d') }}"></span>
-                                        </td>
-
-                                        <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->Error }}</span>
-                                        </td>
-
-                                        <td class="pr-0" style="display: flex; justify-content: space-between">
-                                            @if($setting->toggle == 0)
-                                                <label class="switch">
-                                                    <input type="checkbox" name="toggle" >
-                                                    <span class="slider round"></span>
-                                                </label>
-                                            @elseif($setting->toggle == 1)
-                                                <label class="switch">
-                                                    <input type="checkbox" name="toggle"  checked>
-                                                    <span class="slider round"></span>
-                                                </label>
-                                            @endif
-                                            <button type="submit" class="btn btn-success">Submit</button>
-                                        </td>
-                                    </form>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <!--end::Table-->
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </div>
 
-@endsection
+        @endsection
 
-@section('scripts')
-    <script type="text/javascript">
-        var datatable = $('#kt_datatable').DataTable();
-    </script>
+        @section('scripts')
+            <script type="text/javascript">
+                var datatable = $('#kt_datatable').DataTable();
+            </script>
 @endsection
