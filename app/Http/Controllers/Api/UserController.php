@@ -317,9 +317,9 @@ class UserController extends Controller
 
         }
     }
-    public function adminByCat($id)
+    public function adminByCat(Request $request)
     {
-        $response  = User::where('user_type','admin')->where('service_category_id',$id)->get();
+        $response  = User::where('user_type','admin')->where('service_category_id',$request->categoryID)->get();
         if (count($response) > 0) {
             return response()->json([
                 'success'       =>true,
