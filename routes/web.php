@@ -105,7 +105,7 @@ Route::get('/change_order_entry_status', [App\Http\Controllers\Admin\SettingCont
         Route::get('/{user}/edit', [UsersController::class, 'edit'])->name('users.user.edit');
         Route::post('/', [UsersController::class, 'store'])->name('users.user.store');
         Route::put('user/{user}', [UsersController::class, 'update'])->name('users.user.update');
-        Route::delete('/user/{user}', [UsersController::class, 'index'])->name('users.user.destroy');
+        Route::delete('/user/{user}', [UsersController::class, 'destroy'])->name('users.user.destroy');
 
     });
 });
