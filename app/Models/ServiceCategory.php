@@ -14,19 +14,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class ServiceCategory extends Model
 {
-    use SoftDeletes;
 
     use HasFactory;
 
     public $table = 'service_categories';
-    
 
-    protected $dates = ['deleted_at'];
+
 
 
 
     public $fillable = [
-        
+
     ];
 
     /**
@@ -35,7 +33,7 @@ class ServiceCategory extends Model
      * @var array
      */
     protected $casts = [
-        
+
     ];
 
     /**
@@ -44,8 +42,8 @@ class ServiceCategory extends Model
      * @var array
      */
     public static $rules = [
-        
+
     ];
 
-    
+
 }
