@@ -44,7 +44,7 @@ Route::middleware('auth:sanctum')->group(function(){
     // Route::post('/me',[LoginController::class,'me']);
     Route::post('/Me',[UserController::class,'Me']);
     Route::get('email/resend', [LoginController::class,'resend'])->name('verification.resend');
-    Route::get('/adminByCat/{id}',[UserController::class,'adminByCat']);
+    Route::post('/adminByCat',[UserController::class,'adminByCat']);
     Route::post('/addAdminNotification',[UserController::class,'addAdminNotification']);
     Route::get('/getNotificationList',[UserController::class,'getNotificationList']);
     Route::post('/acceptReject',[UserController::class,'acceptReject']);
