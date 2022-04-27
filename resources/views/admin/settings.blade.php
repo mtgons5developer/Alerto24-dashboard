@@ -64,10 +64,30 @@
     </style>
 
     <div>
-        <div class="card">
-            <h1 style=" margin-top: 15px; margin-left: 20px;"> Setting</h1>
-            <div class="card-body">
+        @if(Session::has('success_message'))
+            <div class="alert alert-success">
+                <i class=" fas fa-fw fa-check" aria-hidden="true"></i>
+                {!! session('success_message') !!}
 
+                <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+        @endif
+        <div class="card">
+
+            <h1 style=" margin-top: 15px; margin-left: 20px;"> Settings</h1>
+            <div class="card-body">
+                <div class="row">
+                    <form method="post" action="{{route('admin.add_pair')}}">
+                        @csrf
+                        <div class="col-md-12">
+                                <input name="pair" placeholder="Add Pair" style="color: #3F4254; background-color: #ffffff; background-clip: padding-box; border: 1px solid #E4E6EF; padding-top: 10px; padding-bottom: 10px;">
+                                <button type="submit" class="btn btn-success" style="margin-left: 20px;">+ Pair</button>
+                        </div>
+                    </form>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="kt_datatable">
                         {{--                        <table style="overflow: hidden;"  class="table table-head-custom table-vertical-center table-head-bg table-borderless">--}}
@@ -76,7 +96,7 @@
                             <th >
                                 <span class="text-dark-75">Pair</span>
                             </th>
-                            <th>Entry Price</th>
+                            {{--                            <th>Entry Price</th>--}}
                             <th>Quantity</th>
                             <th>Time Frame</th>
                             <th>Date</th>
@@ -94,17 +114,13 @@
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->pair }}</span>
                                     </td>
-                                    <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->entryPrice }}</span>
-                                    </td>
+                                    {{--                                    <td>--}}
+                                    {{--                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->entryPrice }}</span>--}}
+                                    {{--                                    </td>--}}
                                     <td class="flex">
-
-
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input name="qty" value="{{ $setting->qty }}"></span>
-
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input type="number" name="qty" value="{{ $setting->qty }}"></span>
                                     </td>
                                     <td>
-
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->timeframe }}</span>
                                     </td>
 

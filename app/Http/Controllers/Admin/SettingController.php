@@ -16,6 +16,22 @@ class SettingController extends Controller
         return view('admin.settings')
             ->With('settings',$settings);
     }
+    public function add_pair(Request $request){
+        $this->validate($request,[
+            'pair' => 'required'
+        ]);
+        $setting = Setting::create([
+            'pair'      => $request->pair,
+            'qty'       => 0,
+            'timeframe' => '15m',
+            'toggle'    => 0,
+            'Error'     => 0,
+            'datetime'  => now(),
+        ]);
+
+        return redirect()->back()
+            ->with('success_message', 'Setting Pair was successfully added.');
+    }
     public function trade_history(){
         $trade_histories = TradeHistory::all();
         return view('admin.trade_history')
@@ -29,13 +45,16 @@ class SettingController extends Controller
        ]);
        if ($request->toggle == 'on') {
            $toggle = 1;
+           $error  = 0;
        } else {
            $toggle = 0;
+           $error  = 1;
        }
        Setting::where('id',$id)->update([
             'qty'       => $request->qty,
             'toggle'    => $toggle,
-            'datetime'  => $request->datetime
+            'datetime'  => $request->datetime,
+            'Error'     => $error
        ]);
        return redirect()->back();
     }

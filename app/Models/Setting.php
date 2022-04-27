@@ -10,7 +10,11 @@ class Setting extends Model
     use HasFactory;
     protected $fillable=[
         'qty',
-        'datetime'
+        'datetime',
+        'timeframe',
+        'toggle',
+        'Error',
+        'pair'
     ];
     public $timestamps = false;
 }
