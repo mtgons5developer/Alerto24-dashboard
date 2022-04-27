@@ -349,9 +349,9 @@ class UserController extends Controller
             $enter->save();
             $admin=User::find($admin);
             if(!!$admin->device_token){
-                $response=$this->sendNotification($admin->device_token, array(
-                    "title" => "Sample Message", 
-                    "body" => "This is Test message body"
+                $adminResponse=$this->sendNotification($admin->device_token, array(
+                    "title" => "Test Message", 
+                    "body" => "Test Message body"
                 ));
             }
         }
@@ -421,6 +421,12 @@ class UserController extends Controller
             'status' => $request->status
             ]);
         $response=AdminNotification::find($request->id);
+        if(!!Auth::user()->device_token){
+            $userResponse=$this->sendNotification(Auth::user()->device_token, array(
+                "title" => "Request Accepted", 
+                "body" => "Request Accepted Successfully"
+            ));
+        }
         AdminNotification::where('userID', $response->userID)->where('status',0)->update([
             'status' => 2
         ]);
