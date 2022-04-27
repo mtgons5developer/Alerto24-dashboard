@@ -63,7 +63,7 @@
         }
     </style>
 
-    <div>
+
         @if(Session::has('success_message'))
             <div class="alert alert-success">
                 <i class=" fas fa-fw fa-check" aria-hidden="true"></i>
@@ -145,6 +145,9 @@
                                             </label>
                                         @endif
                                         <button type="submit" class="btn btn-success">Submit</button>
+                                        <a href="{{route('admin.settings_delete',['id'=>$setting->id])}}"
+                                           onclick="return confirm(&quot;Click Ok to remove Pair.&quot;)"
+                                           class="btn btn-danger">Remove</a>
                                     </td>
                                 </form>
                             </tr>

@@ -23,7 +23,7 @@ class SettingController extends Controller
         $setting = Setting::create([
             'pair'      => $request->pair,
             'qty'       => 0,
-            'timeframe' => '15m',
+            'timeframe' => '5m/15m/30m/1h',
             'toggle'    => 0,
             'Error'     => 0,
             'datetime'  => now(),
@@ -31,6 +31,12 @@ class SettingController extends Controller
 
         return redirect()->back()
             ->with('success_message', 'Setting Pair was successfully added.');
+    }
+    public function settings_delete($id){
+        $setting = Setting::findOrFail($id)->delete();
+
+        return redirect()->back()
+            ->with('success_message','Setting Pair was removed Successfully');
     }
     public function trade_history(){
         $trade_histories = TradeHistory::all();
