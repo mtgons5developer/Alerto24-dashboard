@@ -2,52 +2,48 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Eloquent as Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * Class ServiceCategory
+ * @package App\Models
+ * @version April 20, 2022, 5:48 am UTC
+ *
+ */
 class ServiceCategory extends Model
 {
-    
+
+    use HasFactory;
+
+    public $table = 'service_categories';
+
+
+
+
+
+    public $fillable = [
+
+    ];
 
     /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'service_categories';
-
-    /**
-    * The database primary key value.
-    *
-    * @var string
-    */
-    protected $primaryKey = 'id';
-
-    /**
-     * Attributes that should be mass-assignable.
+     * The attributes that should be casted to native types.
      *
      * @var array
      */
-    protected $fillable = [
-                  'name',
-                  'is_active',
-                  'description'
-              ];
+    protected $casts = [
+
+    ];
 
     /**
-     * The attributes that should be mutated to dates.
+     * Validation rules
      *
      * @var array
      */
-    protected $dates = [];
-    
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [];
-    
+    public static $rules = [
 
+    ];
 
 
 }

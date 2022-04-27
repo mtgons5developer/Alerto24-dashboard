@@ -5,16 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Setting extends Model
+class OrderEntry extends Model
 {
     use HasFactory;
-    protected $fillable=[
-        'qty',
-        'datetime',
-        'timeframe',
-        'toggle',
-        'Error',
-        'pair'
+    protected $fillable = [
+      'status'
     ];
+    protected $table = "order_entry";
     public $timestamps = false;
 }

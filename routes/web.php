@@ -30,13 +30,19 @@ Route::post('/customLogin', [App\Http\Controllers\Auth\CustomLoginController::cl
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('users');
 Route::get('/tasks', [App\Http\Controllers\HomeController::class, 'tasks'])->name('tasks');
+Route::get('/change_email_verification_status', [App\Http\Controllers\HomeController::class, 'change_email_verification_status'])->name('change_email_verification_status');
+
+
 Route::get('/users', [App\Http\Controllers\HomeController::class, 'users'])->name('users_grid');
 Route::get('/municipality', [App\Http\Controllers\HomeController::class, 'municipality'])->name('municipality');
 
 Route::prefix('admin')->group(function () {
     Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'settings'])->name('admin.settings');
+    Route::post('/add-pair', [App\Http\Controllers\Admin\SettingController::class, 'add_pair'])->name('admin.add_pair');
     Route::get('/trade-history', [App\Http\Controllers\Admin\SettingController::class, 'trade_history'])->name('admin.trade.history');
     Route::post('/add-qty/{id}', [App\Http\Controllers\Admin\SettingController::class, 'add_qty'])->name('admin.add.qty');
+    Route::get('/admin.order_entry', [App\Http\Controllers\Admin\SettingController::class, 'order_entry'])->name('admin.order_entry');
+    Route::get('/change_order_entry_status', [App\Http\Controllers\Admin\SettingController::class, 'change_order_entry_status'])->name('change_order_entry_status');
 
     Route::group(['prefix' => 'cities'], function () {
 
@@ -49,7 +55,6 @@ Route::prefix('admin')->group(function () {
         Route::delete('/city/{city}', [CitiesController::class, 'destroy'])->name('cities.city.destroy')->where('id', '[0-9]+');
 
     });
-
 
     Route::group(['prefix' => 'barangays'], function () {
         Route::get('/', [BarangaysController::class, 'index'])->name('barangays.barangay.index');
@@ -100,7 +105,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/{user}/edit', [UsersController::class, 'edit'])->name('users.user.edit');
         Route::post('/', [UsersController::class, 'store'])->name('users.user.store');
         Route::put('user/{user}', [UsersController::class, 'update'])->name('users.user.update');
-        Route::delete('/user/{user}', [UsersController::class, 'index'])->name('users.user.destroy');
+        Route::delete('/user/{user}', [UsersController::class, 'destroy'])->name('users.user.destroy');
 
     });
 });
