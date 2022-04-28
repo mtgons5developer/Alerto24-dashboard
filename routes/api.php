@@ -48,6 +48,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/addAdminNotification',[UserController::class,'addAdminNotification']);
     Route::get('/getNotificationList',[UserController::class,'getNotificationList']);
     Route::post('/acceptReject',[UserController::class,'acceptReject']);
+    Route::post('/saveLatLongUser',[UserController::class,'saveLatLongUser']);
+    Route::post('/getLatLongUser',[UserController::class,'getLatLongUser']);
 
 
 });

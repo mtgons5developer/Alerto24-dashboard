@@ -12,6 +12,7 @@ class CreateServiceCategoriesTable extends Migration
      */
     public function up()
     {
+
         Schema::create('service_categories', function(Blueprint $table)
         {
             $table->increments('id');
@@ -19,6 +20,7 @@ class CreateServiceCategoriesTable extends Migration
             $table->string('name', 255)->nullable();
             $table->boolean('is_active')->nullable();
             $table->string('description', 1000)->nullable();
+            $table->softDeletes();
 
         });
     }
