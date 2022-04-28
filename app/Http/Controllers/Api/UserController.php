@@ -449,8 +449,45 @@ class UserController extends Controller
         }
 
     }
+    public function saveLatLongUser(Request $request)
+    {
+        $response = User::where('id',$request->userID)->update(['lat' => $request->lat,'long' => $request->long]);
+        if (!!$response) {
+            return response()->json([
+                'success'       =>true,
+                'status'        =>$this->successStatus,
+                'message'       =>"Success"
+            ],
+                $this->successStatus);
+        } else {
+            return response()->json([
+                'success'   =>false,
+                'status'    =>$this->successStatus,
+                'message'   => 'No Data found'
+            ], $this->successStatus);
+        }
 
+    }
+    public function getLatLongUser(Request $request)
+    {
+        $response = User::where('id',$request->userID)->first();
+        if (!!$response) {
+            return response()->json([
+                'success'       =>true,
+                'status'        =>$this->successStatus,
+                'message'       =>"Success",
+                'data'          =>$response
+            ],
+                $this->successStatus);
+        } else {
+            return response()->json([
+                'success'   =>false,
+                'status'    =>$this->successStatus,
+                'message'   => 'No Data found'
+            ], $this->successStatus);
+        }
 
+    }
 
     public function request_otp(Request $request)
     {
@@ -463,12 +500,12 @@ class UserController extends Controller
                 'subject' => 'Testing Application OTP',
                 'body' => 'Your OTP is : '. $otp
             ];
-
-            Mail::to($request->email)->send(new sendEmail($mail_details));
+            $to_name="tech";
+            $to_email="techdevelopers08@gmail.com";
             Mail::send([], $mail_details, function($message) use ($to_name, $to_email) {
                 $message->to($to_email, $to_name)
                     ->subject("Laravel Test Mail");
-                $message->from("preealweb@gmail.com","Test Mail");
+                $message->from("test@awmdev.xyz","Test Mail");
             });
             return response(["status" => 200, "message" => "OTP sent successfully"]);
         }
