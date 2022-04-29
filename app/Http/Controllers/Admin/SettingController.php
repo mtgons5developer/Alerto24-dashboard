@@ -51,28 +51,14 @@ class SettingController extends Controller
         return view('admin.trade_history')
             ->with('trade_histories',$trade_histories);
     }
-    public function add_qty(Request $request ,$id){
-
-       $this->validate($request,[
-           'qty'      => 'required',
-           'datetime' => 'required'
-       ]);
-       if ($request->toggle == 'on') {
-           $toggle = 1;
-           $error  = 0;
-       } else {
-           $toggle = 0;
-           $error  = 1;
-       }
-       Setting::where('id',$id)->update([
-            'qty'       => $request->qty,
-            'toggle'    => $toggle,
-            'datetime'  => $request->datetime,
-            'Error'     => $error
-       ]);
-       return redirect()->back();
+    public function add_qty(Request $request){
+       $setting = Setting::where('id',$request->setting_id)->update([
+            'qty'         => $request->quantity,
+            'datetime'    => $request->datetime,
+        ]);
+       return $setting;
     }
-    public function order_entry(){
+    public function order_entry() {
         $data['order_entries'] = OrderEntry::all();
         $data['counter']       = 1;
         return view('admin.order_entries',$data);
@@ -90,5 +76,20 @@ class SettingController extends Controller
 
         $order_entry->save();
         return $order_entry;
+    }
+    public function change_setting_toggle(Request $request){
+        $toggle  = $request->status  == "true";
+        $setting = Setting::find($request->seeting_id);
+
+        if ($toggle) {
+            $setting->toggle = 1;
+            $setting->Error  = 0;
+        } else {
+            $setting->toggle = 2;
+            $setting->Error  = 1;
+        }
+
+        $setting->save();
+        return $setting;
     }
 }

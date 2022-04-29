@@ -41,9 +41,10 @@ Route::prefix('admin')->group(function () {
     Route::get('/settings/delete/{id}', [App\Http\Controllers\Admin\SettingController::class, 'settings_delete'])->name('admin.settings_delete');
     Route::post('/add-pair', [App\Http\Controllers\Admin\SettingController::class, 'add_pair'])->name('admin.add_pair');
     Route::get('/trade-history', [App\Http\Controllers\Admin\SettingController::class, 'trade_history'])->name('admin.trade.history');
-    Route::post('/add-qty/{id}', [App\Http\Controllers\Admin\SettingController::class, 'add_qty'])->name('admin.add.qty');
+    Route::get('/add-qty', [App\Http\Controllers\Admin\SettingController::class, 'add_qty'])->name('admin.add.qty');
     Route::get('/admin.order_entry', [App\Http\Controllers\Admin\SettingController::class, 'order_entry'])->name('admin.order_entry');
     Route::get('/change_order_entry_status', [App\Http\Controllers\Admin\SettingController::class, 'change_order_entry_status'])->name('change_order_entry_status');
+    Route::get('/change_setting_toggle', [App\Http\Controllers\Admin\SettingController::class, 'change_setting_toggle'])->name('change_setting_toggle');
 
     Route::group(['prefix' => 'cities'], function () {
 

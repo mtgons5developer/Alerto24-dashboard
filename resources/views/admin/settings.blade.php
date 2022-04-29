@@ -109,8 +109,8 @@
 
 
                             <tr>
-                                <form method="POST" action="{{route('admin.add.qty',['id'=>$setting->id])}}">
-                                    @csrf
+{{--                                <form method="POST" action="{{route('admin.add.qty',['id'=>$setting->id])}}">--}}
+{{--                                    @csrf--}}
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->pair }}</span>
                                     </td>
@@ -118,38 +118,37 @@
                                     {{--                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->entryPrice }}</span>--}}
                                     {{--                                    </td>--}}
                                     <td class="flex">
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input type="number" name="qty" value="{{ $setting->qty }}"></span>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_id="{{ $setting->id }}" name="qty" class="quantity" value="{{ $setting->qty }}"></span>
                                     </td>
+                                    <input type="hidden" name="setting_id" class="setting_id" value="{{ $setting->id }}">
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->timeframe }}</span>
                                     </td>
 
                                     <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input name="datetime" type="date" value="{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $setting->datetime)->format('Y-m-d') }}"></span>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_id="{{ $setting->id }}" name="datetime" class="datetime" type="date" value="{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $setting->datetime)->format('Y-m-d') }}"></span>
                                     </td>
 
                                     <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->Error }}</span>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg error_log">{{ $setting->Error }}</span>
                                     </td>
 
                                     <td class="pr-0" style="display: flex; justify-content: space-between">
-                                        @if($setting->toggle == 0)
-                                            <label class="switch">
-                                                <input type="checkbox" name="toggle" >
-                                                <span class="slider round"></span>
-                                            </label>
-                                        @elseif($setting->toggle == 1)
-                                            <label class="switch">
-                                                <input type="checkbox" name="toggle"  checked>
-                                                <span class="slider round"></span>
-                                            </label>
-                                        @endif
-                                        <button type="submit" class="btn btn-success">Submit</button>
+                                        <input
+                                            id="checkbox{{$setting->id}}"
+                                            class="bootstrap_switch" type="checkbox"
+                                            seeting_id="{{ $setting->id }}"
+                                            name="switch_{{$setting->id}}" {{ $setting->toggle != 2?'checked':'' }}
+                                            data-on-text="ON" data-handle-width="40" data-off-text="OFF"
+                                            data-on-color="primary"
+                                        >
+                                    {{-- <button type="submit" class="btn btn-success">Submit</button>--}}
                                         <a href="{{route('admin.settings_delete',['id'=>$setting->id])}}"
                                            onclick="return confirm(&quot;Click Ok to remove Pair.&quot;)"
-                                           class="btn btn-danger">Remove</a>
+                                           class="btn btn-danger"
+                                        >Remove</a>
                                     </td>
-                                </form>
+{{--                                </form>--}}
                             </tr>
                         @endforeach
                         </tbody>
@@ -162,6 +161,59 @@
 
         @section('scripts')
             <script type="text/javascript">
+                $('#checkbox16').change(function () {
+                    alert($(this).attr('order_entry_id'))
+                });
+
+                var KTBootstrapSwitch = function () {
+
+                    // Private functions
+                    var demos = function () {
+                        // minimum setup
+                        $('.bootstrap_switch').bootstrapSwitch({
+                            onSwitchChange: function (event, state) {
+                                let seeting_id = $(event.target).attr('seeting_id');
+                                $.get("{{ route('change_setting_toggle') }}", {seeting_id: seeting_id, status: state});
+
+                                if(state == true){
+                                    var parent = $(this).parent().parent().parent().parent();
+                                    parent.find('.error_log').text("0");
+                                } else {
+                                    var parent = $(this).parent().parent().parent().parent();
+                                    parent.find('.error_log').text("1");
+                                }
+
+                            }
+                        });
+                    };
+                    $("body").on('keyup','.quantity',function (){
+
+                        var setting_id = $(this).attr('setting_id');
+                        var quantity   = $(this).val();
+                        console.log(quantity);
+                        $.get("{{ route('admin.add.qty') }}", {setting_id: setting_id, quantity: quantity});
+                    });
+
+                    $("body").on('change','.datetime',function (){
+                        var setting_id = $(this).attr('setting_id');
+                        var datetime   = $(this).val();
+                        $.get("{{ route('admin.add.qty') }}", {setting_id: setting_id, datetime: datetime});
+                    });
+
+                    return {
+                        // public functions
+                        init: function () {
+                            demos();
+                        },
+                    };
+                }();
+
+                jQuery(document).ready(function () {
+                    KTBootstrapSwitch.init();
+                });
+
+
+
                 var datatable = $('#kt_datatable').DataTable();
             </script>
 @endsection
