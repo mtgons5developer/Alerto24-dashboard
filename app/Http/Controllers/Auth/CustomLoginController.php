@@ -38,6 +38,8 @@ class CustomLoginController extends Controller
         $user = \App\Models\User::where('email',$request->email)->first();
         if ($user) {
 
+            if ($user->is_active == '1') {
+
 
             if ($user->is_admin == 1){
                 if(Auth::attempt(['email'=> $request->email,'password'=>$request->password])) {
@@ -47,7 +49,9 @@ class CustomLoginController extends Controller
 
                 } else {
 
-                    return back()->with('error','Email Not Exists In Our Record....!');
+                    throw ValidationException::withMessages([
+                        $this->username() => [trans('auth.failed')],
+                    ]);
                 }
             } elseif($user->is_admin == 2){
 
@@ -57,12 +61,24 @@ class CustomLoginController extends Controller
 //                return redirect('/user');
 
                 } else {
+                    throw ValidationException::withMessages([
+                        $this->username() => [trans('auth.failed')],
+                    ]);
 
-                    return back()->with('error','Email Not Exists In Our Record....!');
                 }
             }
+
+
         } else {
-            return back()->with('error','Email Not Exists In Our Record....!');
+                throw ValidationException::withMessages([
+                    $this->username() => ['The user is disable Please contact support '],
+                ]);
+        }
+
+        } else {
+            throw ValidationException::withMessages([
+                $this->username() => [trans('auth.failed')],
+            ]);
         }
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this
