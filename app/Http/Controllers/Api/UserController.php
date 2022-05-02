@@ -10,6 +10,7 @@ use App\Models\City;
 use App\Models\Province;
 use App\Models\ServiceCategory;
 use App\Models\AdminNotification;
+use App\Models\VideoUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -319,6 +320,17 @@ class UserController extends Controller
     }
     public function adminByCat(Request $request)
     {
+        $rules = [
+            'categoryID' => 'required'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'success'   =>false,
+                'status'    =>400,
+                'message'   => $validator->errors()->messages()
+            ], $this->successStatus);
+        }
         $response  = User::where('user_type','admin')->where('service_category_id',$request->categoryID)->get();
         if (count($response) > 0) {
             return response()->json([
@@ -331,7 +343,7 @@ class UserController extends Controller
         } else {
             return response()->json([
                 'success'   =>false,
-                'status'    =>$this->successStatus,
+                'status'    =>400,
                 'message'   => 'No Data found'
             ], $this->successStatus);
 
@@ -339,6 +351,19 @@ class UserController extends Controller
     }
     public function addAdminNotification(Request $request)
     {
+        $rules = [
+            'adminIDS' => 'required',
+            'categoryID' => 'required',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'success'   =>false,
+                'status'    =>400,
+                'message'   => $validator->errors()->messages()
+            ], $this->successStatus);
+        }
+
         $adminIDS=explode(',',$request->adminIDS);
         foreach($adminIDS as $admin){
             $enter = new AdminNotification();
@@ -393,9 +418,6 @@ class UserController extends Controller
         curl_close($ch);
         return $response;
     }
-
-
-
     public function getNotificationList()
     {
         $response  = AdminNotification::where('status',0)->where('adminID',Auth::user()->id)->get();
@@ -418,6 +440,20 @@ class UserController extends Controller
     }
     public function acceptReject(Request $request)
     {
+        $rules = [
+            'id' => 'required',
+            'status' => 'required',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'success'   =>false,
+                'status'    =>400,
+                'message'   => $validator->errors()->messages()
+            ], $this->successStatus);
+        }
+
+
         AdminNotification::where('id', $request->id)->update([
             'status' => $request->status
         ]);
@@ -451,6 +487,19 @@ class UserController extends Controller
     }
     public function saveLatLongUser(Request $request)
     {
+        $rules = [
+            'userID' => 'required',
+            'lat' => 'required',
+            'long' => 'required',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'success'   =>false,
+                'status'    =>400,
+                'message'   => $validator->errors()->messages()
+            ], $this->successStatus);
+        }
         $response = User::where('id',$request->userID)->update(['lat' => $request->lat,'long' => $request->long]);
         if (!!$response) {
             return response()->json([
@@ -470,6 +519,17 @@ class UserController extends Controller
     }
     public function getLatLongUser(Request $request)
     {
+        $rules = [
+            'userID' => 'required',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'success'   =>false,
+                'status'    =>400,
+                'message'   => $validator->errors()->messages()
+            ], $this->successStatus);
+        }
         $response = User::where('id',$request->userID)->first();
         if (!!$response) {
             return response()->json([
@@ -488,7 +548,60 @@ class UserController extends Controller
         }
 
     }
+    public function uploadUrl(Request $request)
+    {
+        $rules = [
+            'videoUrl' => 'required',
+            'thumbnail' => 'required',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'success'   =>false,
+                'status'    =>400,
+                'message'   => $validator->errors()->messages()
+            ], $this->successStatus);
+        }
+        $videoUrl = VideoUrl::create([
+            'task_id'          => 0,
+            'videoUrl'         => $request->videoUrl ? $request->videoUrl:null,
+            'thumbnail'        => $request->thumbnail ? $request->thumbnail:null,
+            'status'           => '1',
+        ]);
+        if($videoUrl) {
+            return response()->json([
+                'success'       =>true,
+                'status'        =>$this->successStatus,
+                'message'       =>"Success"
+            ],$this->successStatus);
+        }else{
+            return response()->json([
+                'success'   =>false,
+                'status'    =>$this->successStatus,
+                'message'   => 'No Data found'
+            ], $this->successStatus);
+        }
+    }
+    public function getVideoUrl(Request $request)
+    {
+        $response  = VideoUrl::get();
+        if (count($response) > 0) {
+            return response()->json([
+                'success'       =>true,
+                'status'        =>$this->successStatus,
+                'message'       =>"Success",
+                'data'          =>$response
+            ],
+                $this->successStatus);
+        } else {
+            return response()->json([
+                'success'   =>false,
+                'status'    =>$this->successStatus,
+                'message'   => 'No Data found'
+            ], $this->successStatus);
 
+        }
+    }
     public function request_otp(Request $request)
     {
         $otp = rand(1000,9999);
