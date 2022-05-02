@@ -50,6 +50,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/acceptReject',[UserController::class,'acceptReject']);
     Route::post('/saveLatLongUser',[UserController::class,'saveLatLongUser']);
     Route::post('/getLatLongUser',[UserController::class,'getLatLongUser']);
-
-
+    Route::post('/uploadUrl',[UserController::class,'uploadUrl']);
+    Route::post('/getVideoUrl',[UserController::class,'getVideoUrl']);
 });
