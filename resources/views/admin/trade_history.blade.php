@@ -36,13 +36,13 @@
 
                             <tr>
                                 <td>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->side }}</span>
+                                </td>
+                                <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->symbol }}</span>
                                 </td>
                                 <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->orderId }}</span>
-                                </td>
-                                <td>
-                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->side }}</span>
                                 </td>
                                 <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->price }}</span>

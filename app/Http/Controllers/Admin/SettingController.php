@@ -18,24 +18,25 @@ class SettingController extends Controller
     }
     public function add_pair(Request $request){
         $this->validate($request,[
-            'pair' => 'required'
+            'pair'      => 'required',
+            'timeframe' => 'required'
         ]);
-        $timeframes = [
-            '1' => '5m',
-            '2' => '15m',
-            '3' => '30m',
-            '4' => '1h',
-        ];
-        foreach ($timeframes as $timeframe){
+//        $timeframes = [
+//            '1' => '5m',
+//            '2' => '15m',
+//            '3' => '30m',
+//            '4' => '1h',
+//        ];
+//        foreach ($timeframes as $timeframe){
             $setting = Setting::create([
                 'pair'      => $request->pair,
                 'qty'       => 0,
-                'timeframe' => $timeframe,
-                'toggle'    => 0,
-                'Error'     => 0,
+                'timeframe' => $request->timeframe,
+                'toggle'    => 2,
+                'Error'     => 1,
                 'datetime'  => now(),
             ]);
-        }
+//        }
 
         return redirect()->back()
             ->with('success_message', 'Setting Pair was successfully added.');
