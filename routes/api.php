@@ -47,9 +47,11 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/adminByCat',[UserController::class,'adminByCat']);
     Route::post('/addAdminNotification',[UserController::class,'addAdminNotification']);
     Route::get('/getNotificationList',[UserController::class,'getNotificationList']);
+    Route::get('/getUserTaskList',[UserController::class,'getUserTaskList']);
     Route::post('/acceptReject',[UserController::class,'acceptReject']);
     Route::post('/saveLatLongUser',[UserController::class,'saveLatLongUser']);
     Route::post('/getLatLongUser',[UserController::class,'getLatLongUser']);
     Route::post('/uploadUrl',[UserController::class,'uploadUrl']);
     Route::post('/getVideoUrl',[UserController::class,'getVideoUrl']);
+    
 });
