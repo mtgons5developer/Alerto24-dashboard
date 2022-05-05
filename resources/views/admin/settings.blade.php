@@ -84,6 +84,7 @@
                         @csrf
                         <div class="col-md-12">
                                 <input name="pair" placeholder="Add Pair" style="color: #3F4254; background-color: #ffffff; background-clip: padding-box; border: 1px solid #E4E6EF; padding-top: 10px; padding-bottom: 10px;">
+                                <input name="timeframe" placeholder="Time Frame" style="color: #3F4254; background-color: #ffffff; background-clip: padding-box; border: 1px solid #E4E6EF; padding-top: 10px; padding-bottom: 10px;">
                                 <button type="submit" class="btn btn-success" style="margin-left: 20px;">+ Pair</button>
                         </div>
                     </form>
@@ -163,6 +164,12 @@
 
         @section('scripts')
             <script type="text/javascript">
+
+                var datatable = $('#kt_datatable').DataTable(
+                    {
+                        "paging":   false,
+                    }
+                );
                 $('#checkbox16').change(function () {
                     alert($(this).attr('order_entry_id'))
                 });
