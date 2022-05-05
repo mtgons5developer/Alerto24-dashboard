@@ -25,16 +25,16 @@ class SettingController extends Controller
             '2' => '15m',
             '3' => '30m',
             '4' => '1h',
-            ];
+        ];
         foreach ($timeframes as $timeframe){
-        $setting = Setting::create([
-            'pair'      => $request->pair,
-            'qty'       => 0,
-            'timeframe' => $timeframe,
-            'toggle'    => 0,
-            'Error'     => 0,
-            'datetime'  => now(),
-        ]);
+            $setting = Setting::create([
+                'pair'      => $request->pair,
+                'qty'       => 0,
+                'timeframe' => $timeframe,
+                'toggle'    => 0,
+                'Error'     => 0,
+                'datetime'  => now(),
+            ]);
         }
 
         return redirect()->back()
@@ -52,11 +52,17 @@ class SettingController extends Controller
             ->with('trade_histories',$trade_histories);
     }
     public function add_qty(Request $request){
-       $setting = Setting::where('id',$request->setting_id)->update([
-            'qty'         => $request->quantity,
-            'datetime'    => $request->datetime,
-        ]);
-       return $setting;
+        $setting = Setting::where('id',$request->setting_id)->first();
+
+        if($request->quantity){
+            $setting->qty         = $request->quantity;
+        }
+        if($request->datetime){
+
+            $setting->datetime    = $request->datetime;
+        }
+        $setting->save();
+        return $setting;
     }
     public function order_entry() {
         $data['order_entries'] = OrderEntry::all();
