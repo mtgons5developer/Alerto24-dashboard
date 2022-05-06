@@ -23,12 +23,13 @@
                     <thead>
                     <tr>
                         <th>SL</th>
-                        <th>Order Id</th>
+                        <th>OrderId</th>
                         <th>Entry Price</th>
                         <th>Quantity</th>
                         <th>Entry Date</th>
                         <th>Status</th>
-                        <th>Close Pos</th>
+                        <th>OrderIdTP</th>
+                        <th>Take Profit</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -51,6 +52,7 @@
                                     data-on-color="primary"
                                 >
                             </td>
+                            <td>{{ $order_entry->orderIdTP }}</td>
                             <td>{{ $order_entry->close_pos }}</td>
 
                         </tr>

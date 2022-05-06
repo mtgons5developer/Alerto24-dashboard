@@ -84,6 +84,7 @@
                         @csrf
                         <div class="col-md-12">
                                 <input name="pair" placeholder="Add Pair" style="color: #3F4254; background-color: #ffffff; background-clip: padding-box; border: 1px solid #E4E6EF; padding-top: 10px; padding-bottom: 10px;">
+                                <input name="timeframe" placeholder="Time Frame" style="color: #3F4254; background-color: #ffffff; background-clip: padding-box; border: 1px solid #E4E6EF; padding-top: 10px; padding-bottom: 10px;">
                                 <button type="submit" class="btn btn-success" style="margin-left: 20px;">+ Pair</button>
                         </div>
                     </form>
@@ -99,7 +100,7 @@
                             {{--                            <th>Entry Price</th>--}}
                             <th>Quantity</th>
                             <th>Time Frame</th>
-                            <th>Date</th>
+                            <th>Delta Time</th>
                             <th>Error</th>
                             <th>Action</th>
                         </tr>
@@ -125,8 +126,8 @@
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->timeframe }}</span>
                                     </td>
 
-                                    <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_id="{{ $setting->id }}" name="datetime" class="datetime" type="date" value="{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $setting->datetime)->format('Y-m-d') }}"></span>
+                                    <td class="flex">
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_id="{{ $setting->id }}" name="deltatime" class="deltatime" type="deltatime" value="{{ $setting->deltatime }}"></span>
                                     </td>
 
                                     <td>
@@ -155,12 +156,20 @@
                     </table>
                 </div>
             </div>
+
+
         </div>
 
         @endsection
 
         @section('scripts')
             <script type="text/javascript">
+
+                var datatable = $('#kt_datatable').DataTable(
+                    {
+                        "paging":   false,
+                    }
+                );
                 $('#checkbox16').change(function () {
                     alert($(this).attr('order_entry_id'))
                 });
