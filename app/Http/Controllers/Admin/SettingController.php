@@ -30,11 +30,11 @@ class SettingController extends Controller
 //        foreach ($timeframes as $timeframe){
             $setting = Setting::create([
                 'pair'      => $request->pair,
-                'qty'       => 0,
+                'qty'       => 0.001,
                 'timeframe' => $request->timeframe,
                 'toggle'    => 2,
                 'Error'     => 1,
-                'datetime'  => now(),
+                // 'datetime'  => now(),
             ]);
 //        }
 
@@ -58,13 +58,20 @@ class SettingController extends Controller
         if($request->quantity){
             $setting->qty         = $request->quantity;
         }
-        if($request->datetime){
 
-            $setting->datetime    = $request->datetime;
-        }
         $setting->save();
         return $setting;
     }
+    public function add_delta(Request $request){
+        $setting = Setting::where('id',$request->setting_delta)->first(); // setting_delta will keep the changes
+
+        if($request->deltatime){
+            $setting->delta         = $request->deltatime;
+        }
+
+        $setting->save();
+        return $setting;
+    }    
     public function order_entry() {
         $data['order_entries'] = OrderEntry::all();
         $data['counter']       = 1;
@@ -93,7 +100,7 @@ class SettingController extends Controller
             $setting->Error  = 0;
         } else {
             $setting->toggle = 2;
-            $setting->Error  = 1;
+            $setting->Error  = 0;
         }
 
         $setting->save();
