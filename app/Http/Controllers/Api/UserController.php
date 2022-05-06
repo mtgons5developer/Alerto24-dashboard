@@ -11,8 +11,6 @@ use App\Models\Province;
 use App\Models\ServiceCategory;
 use App\Models\AdminNotification;
 use App\Models\VideoUrl;
-use App\Models\UserTasks;
-use App\Models\Tasks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -356,9 +354,6 @@ class UserController extends Controller
         $rules = [
             'adminIDS' => 'required',
             'categoryID' => 'required',
-            'lat' => 'required',
-            'long' => 'required',
-            'usersCount' => 'required',
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -368,54 +363,30 @@ class UserController extends Controller
                 'message'   => $validator->errors()->messages()
             ], $this->successStatus);
         }
-        // 
-        $tasks = new Tasks();
-        $tasks->no_of_users =$request->usersCount;
-        $tasks->latitude =$request->lat;
-        $tasks->longitude =$request->long;
-        $tasks->userID =Auth::user()->id;
-        $tasks->save();
-        if(!!$tasks->id){
-            $adminIDS=explode(',',$request->adminIDS);
-            foreach($adminIDS as $adminID){
-                $enter = new AdminNotification();
-                $enter->adminID =$adminID;
-                $enter->userID =Auth::user()->id;
-                $enter->categoryID=$request->categoryID;
-                $enter->message=$request->message?$request->message:null;
-                $enter->save();
-                $admin=User::find($adminID);
-                if(!!$admin->device_token){
-                    $adminResponse=$this->sendNotification($admin->device_token, array(
-                        "title" => "Test Message", 
-                        "body" => "Test Message body"
-                    ));
-                }
-                $usertask = new UserTasks();
-                $usertask->task_id =$tasks->id;
-                $usertask->admin_id =$adminID;
-                $usertask->user_id =Auth::user()->id;
-                $usertask->save();
+
+        $adminIDS=explode(',',$request->adminIDS);
+        foreach($adminIDS as $admin){
+            $enter = new AdminNotification();
+            $enter->adminID =$admin;
+            $enter->userID =Auth::user()->id;
+            $enter->categoryID=$request->categoryID;
+            $enter->message=$request->message?$request->message:null;
+            $enter->save();
+            $admin=User::find($admin);
+            if(!!$admin->device_token){
+                $adminResponse=$this->sendNotification($admin->device_token, array(
+                    "title" => "Test Message", 
+                    "body" => "Test Message body"
+
+                ));
             }
-            $response=array(
-                'taskID'    =>  $tasks->id,
-                'lat'       =>  $request->lat,
-                'long'      =>  $request->long
-            );
-            return response()->json([
-                'success'       =>true,
-                'status'        =>$this->successStatus,
-                'message'       =>"Success",
-                'data'          =>$response
-            ],$this->successStatus);
-        }else{
-            return response()->json([
-                'success'       =>false,
-                'status'        =>400,
-                'message'       =>"Success"
-            ],$this->successStatus);
         }
-        
+        return response()->json([
+            'success'       =>true,
+            'status'        =>$this->successStatus,
+            'message'       =>"Success"
+        ],
+            $this->successStatus);
     }
 
     /**
@@ -449,7 +420,7 @@ class UserController extends Controller
     }
     public function getNotificationList()
     {
-        $response  = UserTasks::where('status',0)->where('admin_id',Auth::user()->id)->get();
+        $response  = AdminNotification::where('status',0)->where('adminID',Auth::user()->id)->get();
         if (count($response) > 0) {
             return response()->json([
                 'success'       =>true,
@@ -467,27 +438,6 @@ class UserController extends Controller
         }
 
     }
-    public function getUserTaskList()
-    {
-        $response  = Tasks::where('status',0)->where('userID',Auth::user()->id)->get();
-        if (count($response) > 0) {
-            return response()->json([
-                'success'       =>true,
-                'status'        =>$this->successStatus,
-                'message'       =>"Success",
-                'data'          =>$response
-            ],
-                $this->successStatus);
-        } else {
-            return response()->json([
-                'success'   =>false,
-                'status'    =>$this->successStatus,
-                'message'   => 'No Data found'
-            ], $this->successStatus);
-        }
-
-    }
-
     public function acceptReject(Request $request)
     {
         $rules = [
@@ -502,17 +452,22 @@ class UserController extends Controller
                 'message'   => $validator->errors()->messages()
             ], $this->successStatus);
         }
-        $usertaskupdate= UserTasks::find($request->id);
-        $usertaskupdate->status= $request->status;
-        $usertaskupdate->save();
-        $userDetail= UserTasks::where('user_id',$usertaskupdate->user_id)->first();
-        if(!!$userDetail){
-            $userResponse=$this->sendNotification($userDetail->device_token, array(
+
+
+        AdminNotification::where('id', $request->id)->update([
+            'status' => $request->status
+        ]);
+        $response=AdminNotification::find($request->id);
+        if(!!Auth::user()->device_token){
+            $userResponse=$this->sendNotification(Auth::user()->device_token, array(
                 "title" => "Request Accepted", 
                 "body" => "Request Accepted Successfully"
             ));
         }
-        $response  = UserTasks::where('admin_id',Auth::user()->id)->get();
+        AdminNotification::where('userID', $response->userID)->where('status',0)->update([
+            'status' => 2
+        ]);
+        $response  = AdminNotification::where('adminID',Auth::user()->id)->get();
         if (count($response) > 0) {
             return response()->json([
                 'success'       =>true,
@@ -575,21 +530,21 @@ class UserController extends Controller
                 'message'   => $validator->errors()->messages()
             ], $this->successStatus);
         }
-        $userIDS=explode(',',$request->userID);
-        $response = User::whereIn('id',$userIDS)->get();
+        $response = User::where('id',$request->userID)->first();
         if (!!$response) {
             return response()->json([
                 'success'       =>true,
                 'status'        =>$this->successStatus,
                 'message'       =>"Success",
                 'data'          =>$response
-            ],$this->successStatus);
+            ],
+                $this->successStatus);
         } else {
             return response()->json([
                 'success'   =>false,
                 'status'    =>$this->successStatus,
                 'message'   => 'No Data found'
-            ],$this->successStatus);
+            ], $this->successStatus);
         }
 
     }
@@ -647,7 +602,7 @@ class UserController extends Controller
 
         }
     }
-    public function requestotp(Request $request)
+    public function request_otp(Request $request)
     {
         $otp = rand(1000,9999);
         $user = User::where('email',$request->email)->update(['otp' => $otp]);
@@ -660,38 +615,15 @@ class UserController extends Controller
             ];
             $to_name="tech";
             $to_email="techdevelopers08@gmail.com";
-            // Mail::send([], $mail_details, function($message) use ($to_name, $to_email) {
-            //     $message->to($to_email, $to_name)
-            //         ->subject("Laravel Test Mail");
-            //     $message->from("test@awmdev.xyz","Test Mail");
-            // });
+            Mail::send([], $mail_details, function($message) use ($to_name, $to_email) {
+                $message->to($to_email, $to_name)
+                    ->subject("Laravel Test Mail");
+                $message->from("test@awmdev.xyz","Test Mail");
+            });
             return response(["status" => 200, "message" => "OTP sent successfully"]);
         }
         else{
             return response(["status" => 401, 'message' => 'Invalid']);
         }
     }
-    public function checkotp(Request $request)
-    {
-        $rules = [
-            'api_token' => 'required',
-            'otp' => 'required',
-            'email' => 'required',
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json([
-                'success'   =>false,
-                'status'    =>400,
-                'message'   => $validator->errors()->messages()
-            ], $this->successStatus);
-        }
-        $user = User::where('email',$request->email)->where(['otp' => $request->otp])->first();
-        if($user){
-            return response(["status" => 200, "message" => "OTP verified"]);
-        }
-        else{
-            return response(["status" => 401, 'message' => 'Invalid Email or OTP']);
-        }
-    } 
 }
