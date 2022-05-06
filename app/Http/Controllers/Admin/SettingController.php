@@ -18,24 +18,25 @@ class SettingController extends Controller
     }
     public function add_pair(Request $request){
         $this->validate($request,[
-            'pair' => 'required'
+            'pair'      => 'required',
+            'timeframe' => 'required'
         ]);
-        $timeframes = [
-            '1' => '5m',
-            '2' => '15m',
-            '3' => '30m',
-            '4' => '1h',
-            ];
-        foreach ($timeframes as $timeframe){
-        $setting = Setting::create([
-            'pair'      => $request->pair,
-            'qty'       => 0,
-            'timeframe' => $timeframe,
-            'toggle'    => 0,
-            'Error'     => 0,
-            'datetime'  => now(),
-        ]);
-        }
+//        $timeframes = [
+//            '1' => '5m',
+//            '2' => '15m',
+//            '3' => '30m',
+//            '4' => '1h',
+//        ];
+//        foreach ($timeframes as $timeframe){
+            $setting = Setting::create([
+                'pair'      => $request->pair,
+                'qty'       => 0.001,
+                'timeframe' => $request->timeframe,
+                'toggle'    => 2,
+                'Error'     => 1,
+                // 'datetime'  => now(),
+            ]);
+//        }
 
         return redirect()->back()
             ->with('success_message', 'Setting Pair was successfully added.');
@@ -52,12 +53,25 @@ class SettingController extends Controller
             ->with('trade_histories',$trade_histories);
     }
     public function add_qty(Request $request){
-       $setting = Setting::where('id',$request->setting_id)->update([
-            'qty'         => $request->quantity,
-            'datetime'    => $request->datetime,
-        ]);
-       return $setting;
+        $setting = Setting::where('id',$request->setting_id)->first();
+
+        if($request->quantity){
+            $setting->qty         = $request->quantity;
+        }
+
+        $setting->save();
+        return $setting;
     }
+    public function add_delta(Request $request){
+        $setting = Setting::where('id',$request->setting_delta)->first(); // setting_delta will keep the changes
+
+        if($request->deltatime){
+            $setting->delta         = $request->deltatime;
+        }
+
+        $setting->save();
+        return $setting;
+    }    
     public function order_entry() {
         $data['order_entries'] = OrderEntry::all();
         $data['counter']       = 1;
@@ -86,7 +100,7 @@ class SettingController extends Controller
             $setting->Error  = 0;
         } else {
             $setting->toggle = 2;
-            $setting->Error  = 1;
+            $setting->Error  = 0;
         }
 
         $setting->save();

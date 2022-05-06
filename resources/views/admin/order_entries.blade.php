@@ -48,7 +48,7 @@
                                     class="bootstrap_switch" type="checkbox"
                                     order_entry_id="{{ $order_entry->id }}"
                                     name="switch_{{$order_entry->id}}" {{ $order_entry->status != 2?'checked':'' }}
-                                    data-on-text="Intrade" data-handle-width="80" data-off-text="Cancel"
+                                    data-on-text="" data-handle-width="80" data-off-text="Cancel"
                                     data-on-color="primary"
                                 >
                             </td>
