@@ -61,7 +61,6 @@ class HomeController extends Controller
     {
         $reference = $this->database->getReference('users/{}/details');
         $users = (object)$reference->getValue();
-        dd($users);
         return view('welcome', compact('users'));
     }
 
