@@ -23,12 +23,12 @@
                     <thead>
                     <tr>
                         <th>SL</th>
-                        <th>OrderId</th>
+                        <th>Position OrderID</th>
                         <th>Entry Price</th>
                         <th>Quantity</th>
                         <th>Entry Date</th>
                         <th>Status</th>
-                        <th>OrderIdTP</th>
+                        <th>Open OrderID</th>
                         <th>Take Profit</th>
                     </tr>
                     </thead>
@@ -48,7 +48,7 @@
                                     class="bootstrap_switch" type="checkbox"
                                     order_entry_id="{{ $order_entry->id }}"
                                     name="switch_{{$order_entry->id}}" {{ $order_entry->status != 2?'checked':'' }}
-                                    data-on-text="" data-handle-width="80" data-off-text="Cancel"
+                                    data-on-text="Open" data-handle-width="40" data-off-text="Close"
                                     data-on-color="primary"
                                 >
                             </td>
