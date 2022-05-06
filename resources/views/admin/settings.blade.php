@@ -83,9 +83,48 @@
                     <form method="post" action="{{route('admin.add_pair')}}">
                         @csrf
                         <div class="col-md-12">
-                                <input name="pair" placeholder="Add Pair" style="color: #3F4254; background-color: #ffffff; background-clip: padding-box; border: 1px solid #E4E6EF; padding-top: 10px; padding-bottom: 10px;">
-                                <input name="timeframe" placeholder="Time Frame" style="color: #3F4254; background-color: #ffffff; background-clip: padding-box; border: 1px solid #E4E6EF; padding-top: 10px; padding-bottom: 10px;">
-                                <button type="submit" class="btn btn-success" style="margin-left: 20px;">+ Pair</button>
+                                
+                                <label for="color"></label>
+                                <select name="pair" placeholder="Add Pair">
+                                	<option value="">--- Select your Pair ---</option>
+                                	<option value="BTCUSDT">BTCUSDT</option>
+                                	<option value="ETHUSDT">ETHUSDT</option>
+                                	<option value="BNBUSDT">BNBUSDT</option>
+                                	<option value="XRPUSDT">XRPUSDT</option>
+                                	<option value="SOLUSDT">SOLUSDT</option>
+                                	<option value="LUNAUSDT">LUNAUSDT</option>
+                                	<option value="ADAUSDT">ADAUSDT</option>
+                                	<option value="USTUSDT">USTUSDT</option>
+                                	<option value="BUSDUSDT">BUSDUSDT</option>
+                                	<option value="DOGEUSDT">DOGEUSDT</option>
+                                	<option value="AVAXUSDT">AVAXUSDT</option>
+                                	<option value="DOTUSDT">DOTUSDT</option>
+                                	<option value="SHIBUSDT">SHIBUSDT</option>
+                                	<option value="WBTCUSDT">WBTCUSDT</option>
+                                	<option value="DAIUSDT">DAIUSDT</option>
+                                	<option value="MATICUSDT">MATICUSDT</option>
+                                	<option value="EMPTY">EMPTY</option>
+                                	
+                                </select>     
+                                
+                                <label for="color"></label>
+                                <select name="timeframe" placeholder="Time Frame">
+                                	<option value="">--- Select Time Frame ---</option>
+                                	<option value="5m">5 minutes</option>
+                                	<option value="15m">15 minutes</option>
+                                	<option value="30m">30 minutes</option>
+                                	<option value="1h">1 hour</option>
+                                	<option value="2h">2 hours</option>
+                                	<option value="4h">4 hours</option>
+                                	<option value="6h">6 hours</option>
+                                	<option value="8h">8 hours</option>
+                                	<option value="12h">12 hours</option>
+                                	<option value="1d">1 day</option>
+                                	
+                                </select>   
+                                
+                                <button type="submit" class="btn btn-success" style="margin-left: 20px;">+ADD</button>  
+                                
                         </div>
                     </form>
                 </div>
@@ -100,7 +139,7 @@
                             {{--                            <th>Entry Price</th>--}}
                             <th>Quantity</th>
                             <th>Time Frame</th>
-                            <th>Date</th>
+                            <th>Delta Time Hours (ex. '24' hours)</th>
                             <th>Error</th>
                             <th>Action</th>
                         </tr>
@@ -121,13 +160,16 @@
                                     <td class="flex">
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_id="{{ $setting->id }}" name="qty" class="quantity" value="{{ $setting->qty }}"></span>
                                     </td>
+                                    
                                     <input type="hidden" name="setting_id" class="setting_id" value="{{ $setting->id }}">
+                                    <input type="hidden" name="setting_delta" class="setting_delta" value="{{ $setting->id }}">
+                                    
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->timeframe }}</span>
                                     </td>
 
-                                    <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_id="{{ $setting->id }}" name="datetime" class="datetime" type="date" value="{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $setting->datetime)->format('Y-m-d') }}"></span>
+                                    <td class="flex">
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_delta="{{ $setting->id }}" name="delta" class="deltatime" value="{{ $setting->delta }}"></span>
                                     </td>
 
                                     <td>
@@ -140,7 +182,7 @@
                                             class="bootstrap_switch" type="checkbox"
                                             seeting_id="{{ $setting->id }}"
                                             name="switch_{{$setting->id}}" {{ $setting->toggle != 2?'checked':'' }}
-                                            data-on-text="ON" data-handle-width="40" data-off-text="OFF"
+                                            data-on-text="ON" data-handle-width="30" data-off-text="OFF"
                                             data-on-color="primary"
                                         >
                                     {{-- <button type="submit" class="btn btn-success">Submit</button>--}}
@@ -149,7 +191,8 @@
                                            class="btn btn-danger"
                                         >Remove</a>
                                     </td>
-{{--                                </form>--}}
+                                </form>
+
                             </tr>
                         @endforeach
                         </tbody>
@@ -187,27 +230,32 @@
                                 if(state == true){
                                     var parent = $(this).parent().parent().parent().parent();
                                     parent.find('.error_log').text("0");
-                                } else {
-                                    var parent = $(this).parent().parent().parent().parent();
-                                    parent.find('.error_log').text("1");
-                                }
+                                } 
 
                             }
                         });
                     };
+                    
                     $("body").on('keyup','.quantity',function (){
 
                         var setting_id = $(this).attr('setting_id');
                         var quantity   = $(this).val();
-                        console.log(quantity);
+                        // console.log(quantity);
                         $.get("{{ route('admin.add.qty') }}", {setting_id: setting_id, quantity: quantity});
                     });
 
-                    $("body").on('change','.datetime',function (){
-                        var setting_id = $(this).attr('setting_id');
-                        var datetime   = $(this).val();
-                        $.get("{{ route('admin.add.qty') }}", {setting_id: setting_id, datetime: datetime});
+                    $("body").on('keyup','.deltatime',function (){
+                        
+                        var setting_delta = $(this).attr('setting_delta');
+                        var deltatime   = $(this).val();
+                        // console.log(deltatime);
+                        $.get("{{ route('admin.add.delta') }}", {setting_delta: setting_delta, deltatime: deltatime});
                     });
+                    
+                    // $('body').on('keyup', function() {
+                    //      alert('testing');
+                    // });
+
 
                     return {
                         // public functions
