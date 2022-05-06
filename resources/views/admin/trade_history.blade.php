@@ -12,6 +12,7 @@
                         {{--                        <table style="overflow: hidden;"  class="table table-head-custom table-vertical-center table-head-bg table-borderless">--}}
                         <thead>
                         <tr class="text-left">
+                            <th>ID</th>
                             <th>Side</th>
                             <th>Symbol</th>
                             <th >
@@ -26,8 +27,7 @@
                             <th>Commission Asset</th>
                             <th>Time</th>
                             <th>Position Side</th>
-                            <th>Buyer</th>
-                            <th>Maker</th>
+
                         </tr>
                         </thead>
                         <tbody  id="myTable">
@@ -35,6 +35,9 @@
 
 
                             <tr>
+                                <td>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->uuid }}</span>
+                                </td>                                
                                 <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->side }}</span>
                                 </td>
@@ -76,13 +79,7 @@
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->positionSide }}</span>
                                 </td>
 
-
-                                <td>
-                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->buyer }}</span>
-                                </td>
-                                <td>
-                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->maker }}</span>
-                                </td>
+                                
                             </tr>
                         @endforeach
                         </tbody>
