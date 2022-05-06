@@ -110,6 +110,8 @@
                                 <label for="color"></label>
                                 <select name="timeframe" placeholder="Time Frame">
                                 	<option value="">--- Select Time Frame ---</option>
+                                	<option value="1m">1 minute</option>
+                                	<option value="3m">3 minutes</option>
                                 	<option value="5m">5 minutes</option>
                                 	<option value="15m">15 minutes</option>
                                 	<option value="30m">30 minutes</option>
@@ -136,8 +138,8 @@
                             <th >
                                 <span class="text-dark-75">Pair</span>
                             </th>
-                            {{--                            <th>Entry Price</th>--}}
                             <th>Quantity</th>
+                            <th>Volume Trigger</th>                            
                             <th>Time Frame</th>
                             <th>Delta Time Hours (ex. '24' hours)</th>
                             <th>Error</th>
@@ -157,19 +159,23 @@
                                     {{--                                    <td>--}}
                                     {{--                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->entryPrice }}</span>--}}
                                     {{--                                    </td>--}}
-                                    <td class="flex">
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_id="{{ $setting->id }}" name="qty" class="quantity" value="{{ $setting->qty }}"></span>
+                                    <td>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_id="{{ $setting->id }}" name="qty" class="quantity" value="{{ $setting->qty }}" size="5"></span>
                                     </td>
-                                    
-                                    <input type="hidden" name="setting_id" class="setting_id" value="{{ $setting->id }}">
-                                    <input type="hidden" name="setting_delta" class="setting_delta" value="{{ $setting->id }}">
+                                    <td>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_volume="{{ $setting->id }}" name="vol" class="volume" value="{{ $setting->vol }}" size="5"></span>
+                                    </td>
+
+                                    <!--<input type="hidden" name="setting_id" class="setting_id" value="{{ $setting->id }}">-->
+                                    <!--<input type="hidden" name="setting_delta" class="setting_delta" value="{{ $setting->id }}">-->
+                                    <input type="hidden" name="setting_volume" class="setting_volume" value="{{ $setting->id }}">
                                     
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->timeframe }}</span>
                                     </td>
 
-                                    <td class="flex">
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_delta="{{ $setting->id }}" name="delta" class="deltatime" value="{{ $setting->delta }}"></span>
+                                    <td>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_delta="{{ $setting->id }}" name="delta" class="deltatime" value="{{ $setting->delta }}" size="5"></span>
                                     </td>
 
                                     <td>
@@ -191,7 +197,7 @@
                                            class="btn btn-danger"
                                         >Remove</a>
                                     </td>
-                                </form>
+{{--                                </form>--}}
 
                             </tr>
                         @endforeach
@@ -251,12 +257,15 @@
                         // console.log(deltatime);
                         $.get("{{ route('admin.add.delta') }}", {setting_delta: setting_delta, deltatime: deltatime});
                     });
+
+                    $("body").on('keyup','.volume',function (){
+                        
+                        var setting_volume = $(this).attr('setting_volume');
+                        var volume   = $(this).val();
+                        // console.log(volume);
+                        $.get("{{ route('admin.add.vol') }}", {setting_volume: setting_volume, volume: volume});
+                    });
                     
-                    // $('body').on('keyup', function() {
-                    //      alert('testing');
-                    // });
-
-
                     return {
                         // public functions
                         init: function () {

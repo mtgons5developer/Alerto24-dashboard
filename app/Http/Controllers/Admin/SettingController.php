@@ -21,19 +21,15 @@ class SettingController extends Controller
             'pair'      => 'required',
             'timeframe' => 'required'
         ]);
-//        $timeframes = [
-//            '1' => '5m',
-//            '2' => '15m',
-//            '3' => '30m',
-//            '4' => '1h',
-//        ];
-//        foreach ($timeframes as $timeframe){
+
             $setting = Setting::create([
                 'pair'      => $request->pair,
                 'qty'       => 0.001,
+                'vol'       => 1,
+                'delta'       => 24,
                 'timeframe' => $request->timeframe,
                 'toggle'    => 2,
-                'Error'     => 1,
+                'Error'     => 0,
                 // 'datetime'  => now(),
             ]);
 //        }
@@ -58,7 +54,7 @@ class SettingController extends Controller
         if($request->quantity){
             $setting->qty         = $request->quantity;
         }
-
+        
         $setting->save();
         return $setting;
     }
@@ -71,7 +67,16 @@ class SettingController extends Controller
 
         $setting->save();
         return $setting;
-    }    
+    }   
+    public function add_volume(Request $request){
+        $setting = Setting::where('id',$request->setting_volume)->first();
+
+        if($request->volume){
+            $setting->vol         = $request->volume;
+        }
+        $setting->save();
+        return $setting;
+    }  
     public function order_entry() {
         $data['order_entries'] = OrderEntry::all();
         $data['counter']       = 1;
