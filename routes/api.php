@@ -34,7 +34,9 @@ Route::middleware('TokenVerify')->group(function(){
     Route::post('/cityListing',[UserController::class,'cityListing']);
     Route::post('/barangayListing',[UserController::class,'barangayListing']);
     Route::post('/serviceCatListing',[UserController::class,'serviceCatListing']);
-    Route::post('/request_otp',[UserController::class,'request_otp']);
+    Route::post('/requestotp',[UserController::class,'requestotp']);
+    Route::post('/checkotp',[UserController::class,'checkotp']);
+
 });
 
 
