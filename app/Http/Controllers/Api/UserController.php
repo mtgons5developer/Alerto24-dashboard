@@ -575,21 +575,21 @@ class UserController extends Controller
                 'message'   => $validator->errors()->messages()
             ], $this->successStatus);
         }
-        $response = User::where('id',$request->userID)->first();
+        $userIDS=explode(',',$request->userID);
+        $response = User::whereIn('id',$userIDS)->get();
         if (!!$response) {
             return response()->json([
                 'success'       =>true,
                 'status'        =>$this->successStatus,
                 'message'       =>"Success",
                 'data'          =>$response
-            ],
-                $this->successStatus);
+            ],$this->successStatus);
         } else {
             return response()->json([
                 'success'   =>false,
                 'status'    =>$this->successStatus,
                 'message'   => 'No Data found'
-            ], $this->successStatus);
+            ],$this->successStatus);
         }
 
     }
@@ -647,7 +647,7 @@ class UserController extends Controller
 
         }
     }
-    public function request_otp(Request $request)
+    public function requestotp(Request $request)
     {
         $otp = rand(1000,9999);
         $user = User::where('email',$request->email)->update(['otp' => $otp]);
@@ -660,15 +660,38 @@ class UserController extends Controller
             ];
             $to_name="tech";
             $to_email="techdevelopers08@gmail.com";
-            Mail::send([], $mail_details, function($message) use ($to_name, $to_email) {
-                $message->to($to_email, $to_name)
-                    ->subject("Laravel Test Mail");
-                $message->from("test@awmdev.xyz","Test Mail");
-            });
+            // Mail::send([], $mail_details, function($message) use ($to_name, $to_email) {
+            //     $message->to($to_email, $to_name)
+            //         ->subject("Laravel Test Mail");
+            //     $message->from("test@awmdev.xyz","Test Mail");
+            // });
             return response(["status" => 200, "message" => "OTP sent successfully"]);
         }
         else{
             return response(["status" => 401, 'message' => 'Invalid']);
         }
     }
+    public function checkotp(Request $request)
+    {
+        $rules = [
+            'api_token' => 'required',
+            'otp' => 'required',
+            'email' => 'required',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'success'   =>false,
+                'status'    =>400,
+                'message'   => $validator->errors()->messages()
+            ], $this->successStatus);
+        }
+        $user = User::where('email',$request->email)->where(['otp' => $request->otp])->first();
+        if($user){
+            return response(["status" => 200, "message" => "OTP verified"]);
+        }
+        else{
+            return response(["status" => 401, 'message' => 'Invalid Email or OTP']);
+        }
+    } 
 }
