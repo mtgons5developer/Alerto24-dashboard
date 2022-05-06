@@ -72,7 +72,12 @@
                                 </td>
 
                                 <td>
-                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->time }}</span>
+                                    <!--$timestamp={{ $trade_history->time }};-->
+                                    <!--echo $display_date->format('d-m-Y H:i:s')-->
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        {{ 
+                                            gmdate("Y-m-d h:m:s", substr($trade_history->time, 0, -3) )                                       
+                                        }}</span>
                                 </td>
 
                                 <td>
