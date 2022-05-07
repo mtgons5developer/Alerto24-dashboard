@@ -82,10 +82,9 @@
                 <div class="row">
                     <form method="post" action="{{route('admin.add_pair')}}">
                         @csrf
-                        <div class="col-md-12">
-                                
-                                <label for="color"></label>
-                                <select name="pair" placeholder="Add Pair">
+                        <div class="d-flex">
+
+                                <select class="form-control mr-2" name="pair" placeholder="Add Pair">
                                 	<option value="">--- Select your Pair ---</option>
                                 	<option value="BTCUSDT">BTCUSDT</option>
                                 	<option value="ETHUSDT">ETHUSDT</option>
@@ -104,11 +103,10 @@
                                 	<option value="DAIUSDT">DAIUSDT</option>
                                 	<option value="MATICUSDT">MATICUSDT</option>
                                 	<option value="EMPTY">EMPTY</option>
-                                	
-                                </select>     
-                                
-                                <label for="color"></label>
-                                <select name="timeframe" placeholder="Time Frame">
+
+                                </select>
+
+                                <select class="form-control mr-2" name="timeframe" placeholder="Time Frame">
                                 	<option value="">--- Select Time Frame ---</option>
                                 	<option value="1m">1 minute</option>
                                 	<option value="3m">3 minutes</option>
@@ -122,14 +120,15 @@
                                 	<option value="8h">8 hours</option>
                                 	<option value="12h">12 hours</option>
                                 	<option value="1d">1 day</option>
-                                	
-                                </select>   
-                                
-                                <button type="submit" class="btn btn-success" style="margin-left: 20px;">+ADD</button>  
-                                
+
+                                </select>
+
+                                <button type="submit" class="btn btn-success" style="margin-left: 20px;">+ADD</button>
+
                         </div>
                     </form>
                 </div>
+                <br>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="kt_datatable">
                         {{--                        <table style="overflow: hidden;"  class="table table-head-custom table-vertical-center table-head-bg table-borderless">--}}
@@ -139,9 +138,9 @@
                                 <span class="text-dark-75">Pair</span>
                             </th>
                             <th>Quantity</th>
-                            <th>Volume Trigger</th>                            
+                            <th>Volume Trigger</th>
                             <th>Time Frame</th>
-                            <th>Delta Time Hours (ex. '24' hours)</th>
+                            <th>Delta Time <br> Hours (ex. '24' hours)</th>
                             <th>Error</th>
                             <th>Action</th>
                         </tr>
@@ -160,22 +159,22 @@
                                     {{--                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->entryPrice }}</span>--}}
                                     {{--                                    </td>--}}
                                     <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_id="{{ $setting->id }}" name="qty" class="quantity" value="{{ $setting->qty }}" size="5"></span>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input  setting_id="{{ $setting->id }}" name="qty" class="quantity form-control form-control-sm" value="{{ $setting->qty }}" size="5"></span>
                                     </td>
                                     <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_volume="{{ $setting->id }}" name="vol" class="volume" value="{{ $setting->vol }}" size="5"></span>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_volume="{{ $setting->id }}" name="vol" class="volume form-control form-control-sm" value="{{ $setting->vol }}" size="5"></span>
                                     </td>
 
                                     <!--<input type="hidden" name="setting_id" class="setting_id" value="{{ $setting->id }}">-->
                                     <!--<input type="hidden" name="setting_delta" class="setting_delta" value="{{ $setting->id }}">-->
                                     <input type="hidden" name="setting_volume" class="setting_volume" value="{{ $setting->id }}">
-                                    
+
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->timeframe }}</span>
                                     </td>
 
                                     <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_delta="{{ $setting->id }}" name="delta" class="deltatime" value="{{ $setting->delta }}" size="5"></span>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_delta="{{ $setting->id }}" name="delta" class="deltatime form-control form-control-sm" value="{{ $setting->delta }}" size="5"></span>
                                     </td>
 
                                     <td>
@@ -214,11 +213,11 @@
         @section('scripts')
             <script type="text/javascript">
 
-                var datatable = $('#kt_datatable').DataTable(
-                    {
-                        "paging":   false,
-                    }
-                );
+                // var datatable = $('#kt_datatable').DataTable(
+                //     {
+                //         "paging":   false,
+                //     }
+                // );
                 $('#checkbox16').change(function () {
                     alert($(this).attr('order_entry_id'))
                 });
@@ -236,12 +235,12 @@
                                 if(state == true){
                                     var parent = $(this).parent().parent().parent().parent();
                                     parent.find('.error_log').text("0");
-                                } 
+                                }
 
                             }
                         });
                     };
-                    
+
                     $("body").on('keyup','.quantity',function (){
 
                         var setting_id = $(this).attr('setting_id');
@@ -251,7 +250,7 @@
                     });
 
                     $("body").on('keyup','.deltatime',function (){
-                        
+
                         var setting_delta = $(this).attr('setting_delta');
                         var deltatime   = $(this).val();
                         // console.log(deltatime);
@@ -259,13 +258,13 @@
                     });
 
                     $("body").on('keyup','.volume',function (){
-                        
+
                         var setting_volume = $(this).attr('setting_volume');
                         var volume   = $(this).val();
                         // console.log(volume);
                         $.get("{{ route('admin.add.vol') }}", {setting_volume: setting_volume, volume: volume});
                     });
-                    
+
                     return {
                         // public functions
                         init: function () {
@@ -280,6 +279,6 @@
 
 
 
-                var datatable = $('#kt_datatable').DataTable();
+                // var datatable = $('#kt_datatable').DataTable();
             </script>
 @endsection
