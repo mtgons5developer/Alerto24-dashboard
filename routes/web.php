@@ -42,7 +42,10 @@ Route::prefix('admin')->group(function () {
     Route::post('/add-pair', [App\Http\Controllers\Admin\SettingController::class, 'add_pair'])->name('admin.add_pair');
     Route::get('/trade-history', [App\Http\Controllers\Admin\SettingController::class, 'trade_history'])->name('admin.trade.history');
     Route::get('/add-qty', [App\Http\Controllers\Admin\SettingController::class, 'add_qty'])->name('admin.add.qty');
-    Route::get('/add-delta', [App\Http\Controllers\Admin\SettingController::class, 'add_delta'])->name('admin.add.delta');
+    Route::get('/add-deltaSMA', [App\Http\Controllers\Admin\SettingController::class, 'add_deltaSMA'])->name('admin.add.deltaSMA');
+    Route::get('/add-deltaRSI', [App\Http\Controllers\Admin\SettingController::class, 'add_deltaRSI'])->name('admin.add.deltaRSI');
+    Route::get('/add-rsiLong', [App\Http\Controllers\Admin\SettingController::class, 'add_rsiLong'])->name('admin.add.rsiLong');
+    Route::get('/add-rsiShort', [App\Http\Controllers\Admin\SettingController::class, 'add_rsiShort'])->name('admin.add.rsiShort');
     Route::get('/add-vol', [App\Http\Controllers\Admin\SettingController::class, 'add_volume'])->name('admin.add.vol');
     Route::get('/admin.order_entry', [App\Http\Controllers\Admin\SettingController::class, 'order_entry'])->name('admin.order_entry');
     Route::get('/change_order_entry_status', [App\Http\Controllers\Admin\SettingController::class, 'change_order_entry_status'])->name('change_order_entry_status');

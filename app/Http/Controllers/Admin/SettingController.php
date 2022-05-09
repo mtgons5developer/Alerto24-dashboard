@@ -26,7 +26,10 @@ class SettingController extends Controller
                 'pair'      => $request->pair,
                 'qty'       => 0.001,
                 'vol'       => 1,
-                'delta'       => 24,
+                'deltaSMA'       => 24,
+                'deltaRSI'       => 24,
+                'rsiLong'       => 1,
+                'rsiShort'       => 80,
                 'timeframe' => $request->timeframe,
                 'toggle'    => 2,
                 'Error'     => 0,
@@ -58,16 +61,49 @@ class SettingController extends Controller
         $setting->save();
         return $setting;
     }
-    public function add_delta(Request $request){
-        $setting = Setting::where('id',$request->setting_delta)->first(); // setting_delta will keep the changes
+    public function add_deltaSMA(Request $request){
+        $setting = Setting::where('id',$request->setting_deltaSMA)->first();
 
-        if($request->deltatime){
-            $setting->delta         = $request->deltatime;
+        if($request->deltatimeSMA){
+            $setting->deltaSMA         = $request->deltatimeSMA;
         }
 
         $setting->save();
         return $setting;
     }   
+    public function add_deltaRSI(Request $request){
+        $setting = Setting::where('id',$request->setting_deltaRSI)->first();
+
+        if($request->deltatimeRSI){
+            $setting->deltaRSI         = $request->deltatimeRSI;
+        }
+
+        $setting->save();
+        return $setting;
+    }  
+
+    public function add_rsiLong(Request $request){
+                $setting = Setting::where('id',$request->setting_rsiLong)->first();
+
+        if($request->drsiLong){
+            $setting->rsiLong         = $request->drsiLong;
+        }
+
+        $setting->save();
+        return $setting;
+    }    
+
+    public function add_rsiShort(Request $request){
+        $setting = Setting::where('id',$request->setting_rsiShort)->first();
+
+        if($request->drsiShort){
+            $setting->rsiShort         = $request->drsiShort;
+        }
+
+        $setting->save();
+        return $setting;
+    }    
+    
     public function add_volume(Request $request){
         $setting = Setting::where('id',$request->setting_volume)->first();
 

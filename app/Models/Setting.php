@@ -10,7 +10,10 @@ class Setting extends Model
     use HasFactory;
     protected $fillable=[
         'qty',
-        'delta',
+        'deltaRSI',
+        'deltaSMA',
+        'rsiLong',
+        'rsiShort',
         'vol',
         'timeframe',
         'toggle',
