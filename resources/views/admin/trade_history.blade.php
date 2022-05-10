@@ -33,7 +33,6 @@
                         <tbody  id="myTable">
                         @foreach ($trade_histories as $trade_history)
 
-
                             <tr>
                                 <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->uuid }}</span>
