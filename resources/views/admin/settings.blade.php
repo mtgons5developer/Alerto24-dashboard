@@ -62,6 +62,7 @@
         .slider.round:before {
             border-radius: 50%;
         }
+
     </style>
 
 
@@ -77,8 +78,7 @@
         <!--    </div>-->
         <!--@endif-->
         <div class="card">
-
-            <h1 style=" margin-top: 15px; margin-left: 20px;"> Settings</h1>
+            <h1 style=" margin-top: 15px; margin-left: 20px;" data-toggle="tooltip" data-html="true" title="<em><u>Tooltip</u></em>"> Settings (Advance)</h1>
             <div class="card-body">
                 <div class="row">
                     <form method="post" action="{{route('admin.add_pair')}}">
@@ -103,7 +103,6 @@
                                 	<option value="WBTCUSDT">WBTCUSDT</option>
                                 	<option value="DAIUSDT">DAIUSDT</option>
                                 	<option value="MATICUSDT">MATICUSDT</option>
-                                	<option value="EMPTY">EMPTY</option>
 
                                 </select>
 
@@ -137,16 +136,16 @@
                             <th >
                                 <span class="text-dark-75">Pair</span>
                             </th>
-                            <th data-toggle="tooltip" data-html="true" title="<em>Tooltip</em>"><u>QTY</u></th>
-                            <th data-toggle="tooltip" data-html="true" title="<em>Tooltip</em>"><u>VOL</u></th>
-                            <th data-toggle="tooltip" data-html="true" title="<em>Tooltip</em>"><u>RSI Long</u></th>
-                            <th data-toggle="tooltip" data-html="true" title="<em>Tooltip</em>"><u>RSI Short</u></th>
-                            <th data-toggle="tooltip" data-html="true" title="<em>Example: '24' hours.<br> If timeframe is 5 minutes. Dataframe will be 60 minutes multiplied by 10 hours is equal to<br> 120 dataframes. <b> <br>Dataframes needs to be minimum 120</b> <br>SMA: 1 Day DF=724 </em>"><u>DT SMA</u></th>
+                            <th data-toggle="tooltip" data-html="true" title="<em>The amount of trade for the entry.</em>"><u>QTY</u></th>
+                            <th data-toggle="tooltip" data-html="true" title="<em>This will trigger if Volume is set to a certain amount. Example: If you set Volume to 500, soon as the Volume trade >= 500 this will be triggered.</em>"><u>VOL</u></th>
+                            <th data-toggle="tooltip" data-html="true" title="<em>This will trigger RSI for LONG position. Example: If RSI is set to 80 soon as the indicator detected >= 80 this will be triggered.</em>"><u>RSI Long</u></th>
                             
-                            <th data-toggle="tooltip" data-html="true" title="<em>Example: '24' hours.<br> If timeframe is 5 minutes. Dataframe will be 60 minutes multiplied by 10 hours is equal to<br> 120 dataframes. <b> <br>Dataframes needs to be minimum 120</b> <br>SMA: 1 Day DF=724 </em>"><u>DT RSI</u></th>
+                            <th data-toggle="tooltip" data-html="true" title="<em>This will trigger RSI for SHORT position. Example: If RSI is set to 80 soon as the indicator detected >= 80 this will be triggered.</em>"><u>RSI Short</u></th>
+                            
+                            <th data-toggle="tooltip" data-html="true" title="<em>-DEFAULT-<br>SMA+RSI:<br> 1 Day DF=1000<br> 12 Hours DF=500 <br> 8 Hours=300 <br> 6 Hours=200<br> 4 Hours=140 </em>"><u>DT SMA+RSI</u></th>
                             
                             <th data-toggle="tooltip" data-html="true" title="<em>This column will show if you have Error on your Delta Time column.</em>"><u>Error</u></th>
-                            <th>Action</th>
+                            <th data-toggle="tooltip" data-html="true" title="<em>This will Enable or Disable trading for a specific Pair.<br><br>Red button will remove a specific pair of choice.</em><br><br>Hence: Remove duplicate pair to prevent multiple entries from the same pair.<br>OR<br>Activate only a single Pair."><u>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -158,27 +157,23 @@
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input  setting_id="{{ $setting->id }}" name="qty" class="quantity form-control form-control-sm" value="{{ $setting->qty }}" size="1"></span>
                                     </td>
+                                    
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_volume="{{ $setting->id }}" name="vol" class="volume form-control form-control-sm" value="{{ $setting->vol }}" size="1"></span>
                                     </td>
 
                                     <input type="hidden" name="setting_volume" class="setting_volume" value="{{ $setting->id }}">
 
-
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_rsiLong="{{ $setting->id }}" name="rsiLong" class="drsiLong form-control form-control-sm" value="{{ $setting->rsiLong }}" size="1"></span>
                                     </td>
-
+                                        
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_rsiShort="{{ $setting->id }}" name="rsiShort" class="drsiShort form-control form-control-sm" value="{{ $setting->rsiShort }}" size="1"></span>
                                     </td>
                                     
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_deltaSMA="{{ $setting->id }}" name="deltaSMA" class="deltatimeSMA form-control form-control-sm" value="{{ $setting->deltaSMA }}" size="1"></span>
-                                    </td>
-
-                                    <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_deltaRSI="{{ $setting->id }}" name="deltaRSI" class="deltatimeRSI form-control form-control-sm" value="{{ $setting->deltaRSI }}" size="1"></span>
                                     </td>
                                     
                                     <td>
