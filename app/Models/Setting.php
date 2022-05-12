@@ -18,6 +18,7 @@ class Setting extends Model
         'timeframe',
         'toggle',
         'Error',
+        'order_type',
         'pair'
     ];
     public $timestamps = false;

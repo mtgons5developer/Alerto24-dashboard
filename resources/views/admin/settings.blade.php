@@ -106,7 +106,7 @@
 
                                 </select>
 
-                                <select class="form-control mr-2" name="timeframe" placeholder="Time Frame">
+                                <select class="form-control mr-2" name="timeframe" placeholder="Time Frame" style="margin-left: 10px;">
                                 	<option value="">--- Select Time Frame ---</option>
                                 	<option value="3m">3 minutes</option>
                                 	<option value="5m">5 minutes</option>
@@ -122,8 +122,8 @@
 
                                 </select>
 
-                                <button type="submit" class="btn btn-success" style="margin-left: 20px;">+ADD</button>
-
+                                <button type="submit" class="btn btn-success" style="margin-left: 10px;">+ADD</button>
+                                
                         </div>
                     </form>
                 </div>
@@ -145,6 +145,9 @@
                             <th data-toggle="tooltip" data-html="true" title="<em>-DEFAULT-<br>SMA+RSI:<br> 1 Day DF=1000<br> 12 Hours DF=500 <br> 8 Hours=300 <br> 6 Hours=200<br> 4 Hours=140 </em>"><u>DT SMA+RSI</u></th>
                             
                             <th data-toggle="tooltip" data-html="true" title="<em>This column will show if you have Error on your Delta Time column.</em>"><u>Error</u></th>
+                            
+                            <th data-toggle="tooltip" data-html="true" title="<em>Order Type of Entry.</em>"><u>Order Type</u></th>
+                            
                             <th data-toggle="tooltip" data-html="true" title="<em>This will Enable or Disable trading for a specific Pair.<br><br>Red button will remove a specific pair of choice.</em><br><br>Hence: Remove duplicate pair to prevent multiple entries from the same pair.<br>OR<br>Activate only a single Pair."><u>Action</th>
                         </tr>
                         </thead>
@@ -179,7 +182,19 @@
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg error_log">{{ $setting->Error }}</span>
                                     </td>
+                                    
+                                    <td class="pr-0" >
+                                        <input
+                                            id="checkbox{{$setting->id}}"
+                                            class="bootstrap_switch" type="checkbox"
+                                            seeting_orderType="{{ $setting->id }}"
+                                            name="switch_{{$setting->id}}" {{ $setting->order_type != "LIMIT"?'checked':'' }}
+                                            data-on-text="MARKET" data-handle-width="60" data-off-text="LIMIT"
+                                            data-on-color="primary"
+                                        >
 
+                                    </td>
+                                    
                                     <td class="pr-0" >
                                         <input
                                             id="checkbox{{$setting->id}}"
@@ -191,7 +206,7 @@
                                         >
                                         <a href="{{route('admin.settings_delete',['id'=>$setting->id])}}"
                                            onclick="return confirm(&quot;<b>Click Ok to remove Pair.&quot;)"
-                                           class="btn btn-danger"
+                                           class="btn btn-danger" style="margin-left: 10px;"
                                         >-</a>
                                     </td>
 
@@ -227,9 +242,12 @@
                         $('.bootstrap_switch').bootstrapSwitch({
                             onSwitchChange: function (event, state) 
                             {
+                                let seeting_orderType = $(event.target).attr('seeting_orderType');
+                                $.get("{{ route('change_setting_orderType') }}", {seeting_orderType: seeting_orderType, status: state});
+
                                 let seeting_id = $(event.target).attr('seeting_id');
                                 $.get("{{ route('change_setting_toggle') }}", {seeting_id: seeting_id, status: state});
-
+                                
                                 if(state == true){
                                     var parent = $(this).parent().parent().parent().parent();
                                     parent.find('.error_log').text("0");

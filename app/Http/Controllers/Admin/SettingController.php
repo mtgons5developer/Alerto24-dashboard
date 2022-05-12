@@ -147,4 +147,29 @@ class SettingController extends Controller
         $setting->save();
         return $setting;
     }
+    public function change_setting_orderType(Request $request){
+        $toggle  = $request->status  == "true";
+        $setting = Setting::find($request->seeting_orderType);
+
+        if ($toggle) {
+            $setting->order_type = "MARKET";
+        } else {
+            $setting->order_type = "LIMIT";
+        }
+
+        $setting->save();
+        return $setting;
+    }    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

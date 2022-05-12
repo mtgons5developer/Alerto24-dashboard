@@ -50,6 +50,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/admin.order_entry', [App\Http\Controllers\Admin\SettingController::class, 'order_entry'])->name('admin.order_entry');
     Route::get('/change_order_entry_status', [App\Http\Controllers\Admin\SettingController::class, 'change_order_entry_status'])->name('change_order_entry_status');
     Route::get('/change_setting_toggle', [App\Http\Controllers\Admin\SettingController::class, 'change_setting_toggle'])->name('change_setting_toggle');
+    Route::get('/change_setting_orderType', [App\Http\Controllers\Admin\SettingController::class, 'change_setting_orderType'])->name('change_setting_orderType');
 
     Route::group(['prefix' => 'cities'], function () {
 
