@@ -75,7 +75,7 @@
 @section('scripts')
 
     <script>
-        var datatable = $('#kt_datatable').DataTable();
+        // var datatable = $('#kt_datatable').DataTable();
         $(document).ready(function () {
 // Class definition
 
