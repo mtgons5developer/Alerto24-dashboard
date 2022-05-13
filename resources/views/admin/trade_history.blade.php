@@ -47,7 +47,7 @@
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->orderId }}</span>
                                 </td>
                                 <td>
-                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->price }}</span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ number_format($trade_history->price) }}</span>
                                 </td>
                                 <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $trade_history->qty }}</span>

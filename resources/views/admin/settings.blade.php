@@ -137,7 +137,7 @@
                                 <span class="text-dark-75">Pair</span>
                             </th>
                             <th data-toggle="tooltip" data-html="true" title="<em>The amount of trade for the entry.</em>"><u>QTY</u></th>
-                            <th data-toggle="tooltip" data-html="true" title="<em>This will trigger if Volume is set to a certain amount. Example: If you set Volume to 500, soon as the Volume trade >= 500 this will be triggered.</em>"><u>VOL</u></th>
+                            <th data-toggle="tooltip" data-html="true" title="<em>This will trigger if Volume is set to a certain amount. Example: If you set Volume to 500, soon as the Volume trade >= 500 this will be triggered.<br><br>Hence: Volume is different for each Pair so choose wisely.</em>"><u>VOL</u></th>
                             <th data-toggle="tooltip" data-html="true" title="<em>This will trigger RSI for LONG position. Example: If RSI is set to 80 soon as the indicator detected >= 80 this will be triggered.</em>"><u>RSI Long</u></th>
                             
                             <th data-toggle="tooltip" data-html="true" title="<em>This will trigger RSI for SHORT position. Example: If RSI is set to 80 soon as the indicator detected >= 80 this will be triggered.</em>"><u>RSI Short</u></th>
@@ -146,9 +146,9 @@
                             
                             <th data-toggle="tooltip" data-html="true" title="<em>This column will show if you have Error on your Delta Time column.</em>"><u>Error</u></th>
                             
-                            <th data-toggle="tooltip" data-html="true" title="<em>Order Type of Entry.</em>"><u>Order Type</u></th>
+                            <th class="text-center" data-toggle="tooltip" data-html="true" title="<em>Order Type of Entry.<br><br><b>Market Order</b> will create your position on realtime based on selected time frame.<br><br><b>Test Order</b> will only record to your Order Entry page and show Win/Lose entries.</em>"><u>Order Type</u></th>
                             
-                            <th data-toggle="tooltip" data-html="true" title="<em>This will Enable or Disable trading for a specific Pair.<br><br>Red button will remove a specific pair of choice.</em><br><br>Hence: Remove duplicate pair to prevent multiple entries from the same pair.<br>OR<br>Activate only a single Pair."><u>Action</th>
+                            <th class="text-center" data-toggle="tooltip" data-html="true" title="<em>This will Enable or Disable trading for a specific Pair.<br><br>Red button will remove a specific pair of choice.</em><br><br>Hence: Remove duplicate pair to prevent multiple entries from the same pair.<br>OR<br>Activate only a single Pair."><u>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -188,8 +188,8 @@
                                             id="checkbox{{$setting->id}}"
                                             class="bootstrap_switch" type="checkbox"
                                             seeting_orderType="{{ $setting->id }}"
-                                            name="switch_{{$setting->id}}" {{ $setting->order_type != "LIMIT"?'checked':'' }}
-                                            data-on-text="MARKET" data-handle-width="60" data-off-text="LIMIT"
+                                            name="switch_{{$setting->id}}" {{ $setting->order_type != "TEST"?'checked':'' }}
+                                            data-on-text="MARKET" data-handle-width="60" data-off-text="TEST"
                                             data-on-color="primary"
                                         >
 

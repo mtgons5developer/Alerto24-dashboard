@@ -154,7 +154,7 @@ class SettingController extends Controller
         if ($toggle) {
             $setting->order_type = "MARKET";
         } else {
-            $setting->order_type = "LIMIT";
+            $setting->order_type = "TEST";
         }
 
         $setting->save();

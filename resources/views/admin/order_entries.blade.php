@@ -23,25 +23,30 @@
                     <thead>
                     <tr>
                         <th>SL</th>
+                        <th>Symbol</th>
+                        <th>Side</th>
                         <th>Position OrderID</th>
                         <th>Entry Price</th>
                         <th>Quantity</th>
                         <th>Entry Date</th>
-                        <th>Status</th>
-                        <th>Open OrderID</th>
-                        <th>Take Profit</th>
+                        <th class="text-center">Status</th>
+                        <th>TP OrderID</th>
+                        <th>TP Price</th>
+                        <th>Order Type</th>
+                        <th>Win/Lose</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($order_entries as $order_entry)
                         <tr>
                             <td>{{ $counter++ }}</td>
+                            <td>{{ $order_entry->pair }} {{ $order_entry->timeframe }}</td>
+                            <td>{{ $order_entry->side }}</td>
                             <td>{{ $order_entry->orderId }}</td>
-                            <td>{{ $order_entry->entryPrice }}</td>
+                            <td>{{ number_format($order_entry->entryPrice) }}</td>
                             <td>{{ $order_entry->qty }}</td>
                             <td>{{ $order_entry->entry_date }}</td>
                             <td>
-
 
                                 <input
                                     id="checkbox{{$order_entry->id}}"
@@ -53,7 +58,9 @@
                                 >
                             </td>
                             <td>{{ $order_entry->orderIdTP }}</td>
-                            <td>{{ $order_entry->close_pos }}</td>
+                            <td>{{ number_format($order_entry->close_pos) }}</td>
+                            <td>{{ $order_entry->order_type }}</td>
+                            <td>{{ $order_entry->win_lose }}</td>
 
                         </tr>
                     @endforeach
