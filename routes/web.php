@@ -37,6 +37,9 @@ Route::get('/users', [App\Http\Controllers\HomeController::class, 'users'])->nam
 Route::get('/municipality', [App\Http\Controllers\HomeController::class, 'municipality'])->name('municipality');
 
 Route::prefix('admin')->group(function () {
+
+
+
     Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'settings'])->name('admin.settings');
     Route::get('/settings/delete/{id}', [App\Http\Controllers\Admin\SettingController::class, 'settings_delete'])->name('admin.settings_delete');
     Route::post('/add-pair', [App\Http\Controllers\Admin\SettingController::class, 'add_pair'])->name('admin.add_pair');
@@ -51,6 +54,9 @@ Route::prefix('admin')->group(function () {
     Route::get('/change_order_entry_status', [App\Http\Controllers\Admin\SettingController::class, 'change_order_entry_status'])->name('change_order_entry_status');
     Route::get('/change_setting_toggle', [App\Http\Controllers\Admin\SettingController::class, 'change_setting_toggle'])->name('change_setting_toggle');
     Route::get('/change_setting_orderType', [App\Http\Controllers\Admin\SettingController::class, 'change_setting_orderType'])->name('change_setting_orderType');
+    Route::get('/payment_list', [\App\Http\Controllers\PaymentController::class, 'index'])->name('admin.payment_list');
+
+
 
     Route::group(['prefix' => 'cities'], function () {
 
