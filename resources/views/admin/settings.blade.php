@@ -137,10 +137,6 @@
                                 <span class="text-dark-75">Pair</span>
                             </th>
                             <th data-toggle="tooltip" data-html="true" title="<em>The amount of trade for the entry.</em>"><u>QTY</u></th>
-                            <!--<th data-toggle="tooltip" data-html="true" title="<em>This will trigger if Volume is set to a certain amount. Example: If you set Volume to 500, soon as the Volume trade >= 500 this will be triggered.<br><br><b>Hence:</b> Volume is different for each Pair so choose wisely.</em>"><u>VOL</u></th>-->
-                            <!--<th data-toggle="tooltip" data-html="true" title="<em>This will trigger RSI for LONG position. Example: If RSI is set to 80 soon as the indicator detected >= 80 this will be triggered.</em>"><u>RSI Long</u></th>-->
-                            
-                            <!--<th data-toggle="tooltip" data-html="true" title="<em>This will trigger RSI for SHORT position. Example: If RSI is set to 80 soon as the indicator detected >= 80 this will be triggered.</em>"><u>RSI Short</u></th>-->
                             
                             <th data-toggle="tooltip" data-html="true" title="<em>-DEFAULT-<br> 1 Day DF=1000<br> 12 Hours DF=500 <br> 8 Hours=300 <br> 6 Hours=200<br> 4 Hours=140<br>2 Hours=80<br> 1 Hour=40<br> 30 Minutes=24<br> 15 Minutes=16<br>5 Minutes=12<br>3 Minutes=10 </em>"><u>Delta Time</u></th>
                             
@@ -160,20 +156,8 @@
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input  setting_id="{{ $setting->id }}" name="qty" class="quantity form-control form-control-sm" value="{{ $setting->qty }}" size="1"></span>
                                     </td>
-                                    
-                                    <!--<td>-->
-                                    <!--    <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_volume="{{ $setting->id }}" name="vol" class="volume form-control form-control-sm" value="{{ $setting->vol }}" size="1"></span>-->
-                                    <!--</td>-->
 
                                     <input type="hidden" name="setting_volume" class="setting_volume" value="{{ $setting->id }}">
-
-                                    <!--<td>-->
-                                    <!--    <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_rsiLong="{{ $setting->id }}" name="rsiLong" class="drsiLong form-control form-control-sm" value="{{ $setting->rsiLong }}" size="1"></span>-->
-                                    <!--</td>-->
-                                        
-                                    <!--<td>-->
-                                    <!--    <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_rsiShort="{{ $setting->id }}" name="rsiShort" class="drsiShort form-control form-control-sm" value="{{ $setting->rsiShort }}" size="1"></span>-->
-                                    <!--</td>-->
                                     
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_deltaSMA="{{ $setting->id }}" name="deltaSMA" class="deltatimeSMA form-control form-control-sm" value="{{ $setting->deltaSMA }}" size="1"></span>
