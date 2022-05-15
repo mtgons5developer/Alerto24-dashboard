@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StripeController;
 use App\Models\City;
 use App\Models\Region;
 use Illuminate\Support\Facades\Route;
@@ -57,6 +58,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/payment_list', [\App\Http\Controllers\PaymentController::class, 'index'])->name('admin.payment_list');
 
 
+    Route::get('stripe', [StripeController::class, 'stripe']);
+    Route::post('stripe', [StripeController::class, 'stripePost'])->name('stripe.post');
 
     Route::group(['prefix' => 'cities'], function () {
 
