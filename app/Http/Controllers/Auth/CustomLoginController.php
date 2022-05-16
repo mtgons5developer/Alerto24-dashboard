@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use http\Client\Curl\User;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
@@ -13,6 +14,11 @@ class CustomLoginController extends Controller
 {
     use  ThrottlesLogins;
 
+    public function login(){
+        $settings = Setting::all();
+        return view('auth.login')
+            ->With('settings',$settings);
+    }
     /**
      * Handle a login request to the application.
      *
