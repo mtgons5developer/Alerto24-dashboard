@@ -28,6 +28,7 @@ Route::get('/logout', function () {
     auth()->logout();
 });
 Route::post('/customLogin', [App\Http\Controllers\Auth\CustomLoginController::class, 'customLogin'])->name('customLogin');
+Route::post('/bnbRegistration', [App\Http\Controllers\Auth\CustomRegistrationController::class, 'bnbRegistration'])->name('bnbRegistration');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('users');
 Route::get('/tasks', [App\Http\Controllers\HomeController::class, 'tasks'])->name('tasks');
