@@ -21,21 +21,21 @@ class SettingController extends Controller
             'pair'      => 'required',
             'timeframe' => 'required'
         ]);
-
             $setting = Setting::create([
+
                 'pair'           => $request->pair,
                 'qty'            => 0.001,
                 'vol'            => 1,
                 'deltaSMA'       => 24,
                 'deltaRSI'       => 24,
                 'rsiLong'        => 1,
-                'rsiShort'       => 80,
+                'rsiShort'       => 80,                
                 'timeframe'      => $request->timeframe,
                 'toggle'         => 2,
                 'Error'          => 0,
                 // 'datetime'  => now(),
+
             ]);
-//        }
 
         return redirect()->back()
             ->with('success_message', 'Setting Pair was successfully added.');
@@ -71,38 +71,7 @@ class SettingController extends Controller
         $setting->save();
         return $setting;
     }
-    public function add_deltaRSI(Request $request){
-        $setting = Setting::where('id',$request->setting_deltaRSI)->first();
-
-        if($request->deltatimeRSI){
-            $setting->deltaRSI         = $request->deltatimeRSI;
-        }
-
-        $setting->save();
-        return $setting;
-    }
-
-    public function add_rsiLong(Request $request){
-                $setting = Setting::where('id',$request->setting_rsiLong)->first();
-
-        if($request->drsiLong){
-            $setting->rsiLong         = $request->drsiLong;
-        }
-
-        $setting->save();
-        return $setting;
-    }
-
-    public function add_rsiShort(Request $request){
-        $setting = Setting::where('id',$request->setting_rsiShort)->first();
-
-        if($request->drsiShort){
-            $setting->rsiShort         = $request->drsiShort;
-        }
-
-        $setting->save();
-        return $setting;
-    }
+    
 
     public function add_volume(Request $request){
         $setting = Setting::where('id',$request->setting_volume)->first();
@@ -113,12 +82,15 @@ class SettingController extends Controller
         $setting->save();
         return $setting;
     }
+    
     public function order_entry() {
         $data['order_entries'] = OrderEntry::all();
         $data['counter']       = 1;
         return view('admin.order_entries',$data);
     }
+    
     public function change_order_entry_status(Request $request)
+    
     {
         $status = $request->status == "true";
         $order_entry = \App\Models\OrderEntry::find($request->order_entry_id);
@@ -159,17 +131,7 @@ class SettingController extends Controller
 
         $setting->save();
         return $setting;
-    }
-
-
-
-
-
-
-
-
-
-
-
+    }    
+    
 
 }
