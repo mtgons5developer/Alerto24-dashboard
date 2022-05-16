@@ -130,7 +130,6 @@ Route::prefix('admin')->group(function () {
 
 Route::get('/task', function (\Illuminate\Http\Request $request) {
     $database = app('firebase.database');
-    dd('stop');
     $reference = $database->getReference('users');
     $city_names = $database->getReference('address_lookup/regions')->getValue();
     $records = (object)$reference->getValue();
@@ -138,7 +137,6 @@ Route::get('/task', function (\Illuminate\Http\Request $request) {
         $city_name = (object)$city_name;
         Region::create(['name' => $city_name->region_name, 'code' => $city_name->region_code, 'psgc_code' => $city_name->psgc_code]);
     }
-    dd("Done");
 });
 
 
