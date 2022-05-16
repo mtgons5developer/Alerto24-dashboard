@@ -11,11 +11,6 @@ use Illuminate\Support\Facades\Auth;
 
 class SettingController extends Controller
 {
-    public function settings(){
-        $settings = Setting::all();
-        return view('admin.settings')
-            ->With('settings',$settings);
-    }
     public function add_pair(Request $request){
         $this->validate($request,[
             'pair'      => 'required',

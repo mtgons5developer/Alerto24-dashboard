@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\PaypalController;
 use App\Models\City;
 use App\Models\Region;
 use Illuminate\Support\Facades\Route;
@@ -41,7 +42,6 @@ Route::get('/municipality', [App\Http\Controllers\HomeController::class, 'munici
 Route::prefix('admin')->group(function () {
 
 
-
     Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'settings'])->name('admin.settings');
     Route::get('/settings/delete/{id}', [App\Http\Controllers\Admin\SettingController::class, 'settings_delete'])->name('admin.settings_delete');
     Route::post('/add-pair', [App\Http\Controllers\Admin\SettingController::class, 'add_pair'])->name('admin.add_pair');
@@ -61,6 +61,11 @@ Route::prefix('admin')->group(function () {
 
     Route::get('stripe', [StripeController::class, 'stripe']);
     Route::post('stripe', [StripeController::class, 'stripePost'])->name('stripe.post');
+
+
+    Route::get('paywithpaypal', [PaypalController::class, 'payWithPaypal'])->name('paywithpaypal');
+    Route::post('paypal', [PaypalController::class, 'postPaymentWithpaypal'])->name('paypal');
+    Route::get('paypal', [PaypalController::class, 'getPaymentStatus'])->name('status');
 
     Route::group(['prefix' => 'cities'], function () {
 
@@ -131,7 +136,6 @@ Route::prefix('admin')->group(function () {
 
 Route::get('/task', function (\Illuminate\Http\Request $request) {
     $database = app('firebase.database');
-    dd('stop');
     $reference = $database->getReference('users');
     $city_names = $database->getReference('address_lookup/regions')->getValue();
     $records = (object)$reference->getValue();
@@ -139,7 +143,6 @@ Route::get('/task', function (\Illuminate\Http\Request $request) {
         $city_name = (object)$city_name;
         Region::create(['name' => $city_name->region_name, 'code' => $city_name->region_code, 'psgc_code' => $city_name->psgc_code]);
     }
-    dd("Done");
 });
 
 

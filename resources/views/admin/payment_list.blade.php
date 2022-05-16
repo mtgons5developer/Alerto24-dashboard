@@ -1,10 +1,22 @@
 @extends('admin_layouts.base')
 
 @section('content')
+
+    <style>
+        .hide {
+            display: none;
+        }
+    </style>
     @if (Session::has('success'))
         <div class="alert alert-success text-center">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
             <p>{{ Session::get('success') }}</p>
+        </div>
+    @endif
+    @if (Session::has('error'))
+        <div class="alert alert-danger text-center">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+            <p>{{ Session::get('error') }}</p>
         </div>
     @endif
     <div class="" style="margin-left: 100px;margin-right: 100px">
@@ -81,31 +93,62 @@
                 <!--begin::Nav Content-->
                 <div class="tab-content m-0 p-0">
                     <div class="tab-pane " id="paypal" role="tabpanel">
-                        <div class="paypal_form_container row align-items-center justify-content-center" style="min-height: 300px">
-                            <h1>Paypal Payment System</h1>
+                        <div class="paypal_form_container row align-items-center justify-content-center"
+                             style="min-height: 300px">
+                            <h1>
+                                <form method="POST" id="payment-form" role="form" action="{!! URL::route('paypal') !!}">
+                                    {{ csrf_field() }}
+
+                                    <input id="amount" type="hidden" class="form-control" name="amount" value="500" autofocus>
+                                    <button class="btn">
+                                        <div role="link" data-button="" data-funding-source="paypal"
+                                             style="width: 400px;"
+                                             class="paypal-button btn btn-warning btn-lg paypal-button-number-0 paypal-button-layout-vertical paypal-button-shape-rect paypal-button-number-multiple paypal-button-env-sandbox paypal-button-color-gold paypal-button-text-color-black paypal-logo-color-blue "
+                                             tabindex="0" aria-label="PayPal">
+                                            <div class="paypal-button-label-container"><img
+                                                    src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAxcHgiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAxMDEgMzIiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaW5ZTWluIG1lZXQiIHhtbG5zPSJodHRwOiYjeDJGOyYjeDJGO3d3dy53My5vcmcmI3gyRjsyMDAwJiN4MkY7c3ZnIj48cGF0aCBmaWxsPSIjMDAzMDg3IiBkPSJNIDEyLjIzNyAyLjggTCA0LjQzNyAyLjggQyAzLjkzNyAyLjggMy40MzcgMy4yIDMuMzM3IDMuNyBMIDAuMjM3IDIzLjcgQyAwLjEzNyAyNC4xIDAuNDM3IDI0LjQgMC44MzcgMjQuNCBMIDQuNTM3IDI0LjQgQyA1LjAzNyAyNC40IDUuNTM3IDI0IDUuNjM3IDIzLjUgTCA2LjQzNyAxOC4xIEMgNi41MzcgMTcuNiA2LjkzNyAxNy4yIDcuNTM3IDE3LjIgTCAxMC4wMzcgMTcuMiBDIDE1LjEzNyAxNy4yIDE4LjEzNyAxNC43IDE4LjkzNyA5LjggQyAxOS4yMzcgNy43IDE4LjkzNyA2IDE3LjkzNyA0LjggQyAxNi44MzcgMy41IDE0LjgzNyAyLjggMTIuMjM3IDIuOCBaIE0gMTMuMTM3IDEwLjEgQyAxMi43MzcgMTIuOSAxMC41MzcgMTIuOSA4LjUzNyAxMi45IEwgNy4zMzcgMTIuOSBMIDguMTM3IDcuNyBDIDguMTM3IDcuNCA4LjQzNyA3LjIgOC43MzcgNy4yIEwgOS4yMzcgNy4yIEMgMTAuNjM3IDcuMiAxMS45MzcgNy4yIDEyLjYzNyA4IEMgMTMuMTM3IDguNCAxMy4zMzcgOS4xIDEzLjEzNyAxMC4xIFoiPjwvcGF0aD48cGF0aCBmaWxsPSIjMDAzMDg3IiBkPSJNIDM1LjQzNyAxMCBMIDMxLjczNyAxMCBDIDMxLjQzNyAxMCAzMS4xMzcgMTAuMiAzMS4xMzcgMTAuNSBMIDMwLjkzNyAxMS41IEwgMzAuNjM3IDExLjEgQyAyOS44MzcgOS45IDI4LjAzNyA5LjUgMjYuMjM3IDkuNSBDIDIyLjEzNyA5LjUgMTguNjM3IDEyLjYgMTcuOTM3IDE3IEMgMTcuNTM3IDE5LjIgMTguMDM3IDIxLjMgMTkuMzM3IDIyLjcgQyAyMC40MzcgMjQgMjIuMTM3IDI0LjYgMjQuMDM3IDI0LjYgQyAyNy4zMzcgMjQuNiAyOS4yMzcgMjIuNSAyOS4yMzcgMjIuNSBMIDI5LjAzNyAyMy41IEMgMjguOTM3IDIzLjkgMjkuMjM3IDI0LjMgMjkuNjM3IDI0LjMgTCAzMy4wMzcgMjQuMyBDIDMzLjUzNyAyNC4zIDM0LjAzNyAyMy45IDM0LjEzNyAyMy40IEwgMzYuMTM3IDEwLjYgQyAzNi4yMzcgMTAuNCAzNS44MzcgMTAgMzUuNDM3IDEwIFogTSAzMC4zMzcgMTcuMiBDIDI5LjkzNyAxOS4zIDI4LjMzNyAyMC44IDI2LjEzNyAyMC44IEMgMjUuMDM3IDIwLjggMjQuMjM3IDIwLjUgMjMuNjM3IDE5LjggQyAyMy4wMzcgMTkuMSAyMi44MzcgMTguMiAyMy4wMzcgMTcuMiBDIDIzLjMzNyAxNS4xIDI1LjEzNyAxMy42IDI3LjIzNyAxMy42IEMgMjguMzM3IDEzLjYgMjkuMTM3IDE0IDI5LjczNyAxNC42IEMgMzAuMjM3IDE1LjMgMzAuNDM3IDE2LjIgMzAuMzM3IDE3LjIgWiI+PC9wYXRoPjxwYXRoIGZpbGw9IiMwMDMwODciIGQ9Ik0gNTUuMzM3IDEwIEwgNTEuNjM3IDEwIEMgNTEuMjM3IDEwIDUwLjkzNyAxMC4yIDUwLjczNyAxMC41IEwgNDUuNTM3IDE4LjEgTCA0My4zMzcgMTAuOCBDIDQzLjIzNyAxMC4zIDQyLjczNyAxMCA0Mi4zMzcgMTAgTCAzOC42MzcgMTAgQyAzOC4yMzcgMTAgMzcuODM3IDEwLjQgMzguMDM3IDEwLjkgTCA0Mi4xMzcgMjMgTCAzOC4yMzcgMjguNCBDIDM3LjkzNyAyOC44IDM4LjIzNyAyOS40IDM4LjczNyAyOS40IEwgNDIuNDM3IDI5LjQgQyA0Mi44MzcgMjkuNCA0My4xMzcgMjkuMiA0My4zMzcgMjguOSBMIDU1LjgzNyAxMC45IEMgNTYuMTM3IDEwLjYgNTUuODM3IDEwIDU1LjMzNyAxMCBaIj48L3BhdGg+PHBhdGggZmlsbD0iIzAwOWNkZSIgZD0iTSA2Ny43MzcgMi44IEwgNTkuOTM3IDIuOCBDIDU5LjQzNyAyLjggNTguOTM3IDMuMiA1OC44MzcgMy43IEwgNTUuNzM3IDIzLjYgQyA1NS42MzcgMjQgNTUuOTM3IDI0LjMgNTYuMzM3IDI0LjMgTCA2MC4zMzcgMjQuMyBDIDYwLjczNyAyNC4zIDYxLjAzNyAyNCA2MS4wMzcgMjMuNyBMIDYxLjkzNyAxOCBDIDYyLjAzNyAxNy41IDYyLjQzNyAxNy4xIDYzLjAzNyAxNy4xIEwgNjUuNTM3IDE3LjEgQyA3MC42MzcgMTcuMSA3My42MzcgMTQuNiA3NC40MzcgOS43IEMgNzQuNzM3IDcuNiA3NC40MzcgNS45IDczLjQzNyA0LjcgQyA3Mi4yMzcgMy41IDcwLjMzNyAyLjggNjcuNzM3IDIuOCBaIE0gNjguNjM3IDEwLjEgQyA2OC4yMzcgMTIuOSA2Ni4wMzcgMTIuOSA2NC4wMzcgMTIuOSBMIDYyLjgzNyAxMi45IEwgNjMuNjM3IDcuNyBDIDYzLjYzNyA3LjQgNjMuOTM3IDcuMiA2NC4yMzcgNy4yIEwgNjQuNzM3IDcuMiBDIDY2LjEzNyA3LjIgNjcuNDM3IDcuMiA2OC4xMzcgOCBDIDY4LjYzNyA4LjQgNjguNzM3IDkuMSA2OC42MzcgMTAuMSBaIj48L3BhdGg+PHBhdGggZmlsbD0iIzAwOWNkZSIgZD0iTSA5MC45MzcgMTAgTCA4Ny4yMzcgMTAgQyA4Ni45MzcgMTAgODYuNjM3IDEwLjIgODYuNjM3IDEwLjUgTCA4Ni40MzcgMTEuNSBMIDg2LjEzNyAxMS4xIEMgODUuMzM3IDkuOSA4My41MzcgOS41IDgxLjczNyA5LjUgQyA3Ny42MzcgOS41IDc0LjEzNyAxMi42IDczLjQzNyAxNyBDIDczLjAzNyAxOS4yIDczLjUzNyAyMS4zIDc0LjgzNyAyMi43IEMgNzUuOTM3IDI0IDc3LjYzNyAyNC42IDc5LjUzNyAyNC42IEMgODIuODM3IDI0LjYgODQuNzM3IDIyLjUgODQuNzM3IDIyLjUgTCA4NC41MzcgMjMuNSBDIDg0LjQzNyAyMy45IDg0LjczNyAyNC4zIDg1LjEzNyAyNC4zIEwgODguNTM3IDI0LjMgQyA4OS4wMzcgMjQuMyA4OS41MzcgMjMuOSA4OS42MzcgMjMuNCBMIDkxLjYzNyAxMC42IEMgOTEuNjM3IDEwLjQgOTEuMzM3IDEwIDkwLjkzNyAxMCBaIE0gODUuNzM3IDE3LjIgQyA4NS4zMzcgMTkuMyA4My43MzcgMjAuOCA4MS41MzcgMjAuOCBDIDgwLjQzNyAyMC44IDc5LjYzNyAyMC41IDc5LjAzNyAxOS44IEMgNzguNDM3IDE5LjEgNzguMjM3IDE4LjIgNzguNDM3IDE3LjIgQyA3OC43MzcgMTUuMSA4MC41MzcgMTMuNiA4Mi42MzcgMTMuNiBDIDgzLjczNyAxMy42IDg0LjUzNyAxNCA4NS4xMzcgMTQuNiBDIDg1LjczNyAxNS4zIDg1LjkzNyAxNi4yIDg1LjczNyAxNy4yIFoiPjwvcGF0aD48cGF0aCBmaWxsPSIjMDA5Y2RlIiBkPSJNIDk1LjMzNyAzLjMgTCA5Mi4xMzcgMjMuNiBDIDkyLjAzNyAyNCA5Mi4zMzcgMjQuMyA5Mi43MzcgMjQuMyBMIDk1LjkzNyAyNC4zIEMgOTYuNDM3IDI0LjMgOTYuOTM3IDIzLjkgOTcuMDM3IDIzLjQgTCAxMDAuMjM3IDMuNSBDIDEwMC4zMzcgMy4xIDEwMC4wMzcgMi44IDk5LjYzNyAyLjggTCA5Ni4wMzcgMi44IEMgOTUuNjM3IDIuOCA5NS40MzcgMyA5NS4zMzcgMy4zIFoiPjwvcGF0aD48L3N2Zz4"
+                                                    data-v-b01da731="" alt="" role="presentation"
+                                                    class="paypal-logo paypal-logo-paypal paypal-logo-color-blue"></div>
+                                            <div class="paypal-button-spinner"></div>
+                                        </div>
+                                    </button>
+
+                                </form>
+                            </h1>
                         </div>
                     </div>
                     <div class="tab-pane active" id="stripe" role="tabpanel">
-                        <div class="stripe_form_container" >
-                            <form action="{{ route('stripe.post') }}" >
+                        <div class="stripe_form_container">
+                            <form action="{{ route('stripe.post') }}"
+                                  method="post"
+                                  class="require-validation"
+                                  data-cc-on-file="false"
+                                  data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
 
-                                <div class="row">
-                                    <div class="col-lg-6 bg-white">
-                                        <img width="100%" class="p-4" src="https://pool-plus.com/wp-content/uploads/secure-payment.jpg" alt="">
+                            >
+                                @csrf
+                                <div class="row align-items-center justify-content-center">
+                                    <div class="col-lg-4 bg-white">
+                                        <img width="100%" class="p-4"
+                                             src="https://pool-plus.com/wp-content/uploads/secure-payment.jpg" alt="">
                                     </div>
-                                    <div class="card stripe_form col-lg-6">
+                                    <div class="card stripe_form col-lg-8">
 
                                         <div class="card-body">
 
-                                            <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
-                                                <h4 class="mb-10 font-weight-bold text-dark">Enter your Payment Details</h4>
+                                            <div class="pb-5" data-wizard-type="step-content"
+                                                 data-wizard-state="current">
+                                                <h4 class="mb-10 font-weight-bold text-dark">Enter your Payment Details ($500 per month)
+                                                </h4>
                                                 <div class="row">
                                                     <div class="col-xl-6">
                                                         <!--begin::Input-->
-                                                        <div class="form-group fv-plugins-icon-container">
+                                                        <div class="form-group fv-plugins-icon-container required">
                                                             <label>Name on Card</label>
-                                                            <input type="text" class="form-control form-control-solid form-control-lg"
-                                                                   name="ccname" placeholder="Card Name" value="John Wick">
+                                                            <input type="text"
+                                                                   class="form-control form-control-solid form-control-lg"
+                                                                   name="ccname" placeholder="Card Name"
+                                                                   value="John Wick">
                                                             <span class="form-text text-muted">Please enter your Card Name.</span>
                                                             <div class="fv-plugins-message-container"></div>
                                                         </div>
@@ -113,11 +156,12 @@
                                                     </div>
                                                     <div class="col-xl-6">
                                                         <!--begin::Input-->
-                                                        <div class="form-group fv-plugins-icon-container">
+                                                        <div class="form-group fv-plugins-icon-container required">
                                                             <label>Card Number</label>
-                                                            <input type="text" class="form-control form-control-solid form-control-lg"
+                                                            <input type="text"
+                                                                   class="form-control form-control-solid form-control-lg card-number"
                                                                    name="ccnumber" placeholder="Card Number"
-                                                                   value="4444 3333 2222 1111">
+                                                                   value="4242 4242 4242 4242">
                                                             <span class="form-text text-muted">Please enter your Address.</span>
                                                             <div class="fv-plugins-message-container"></div>
                                                         </div>
@@ -128,9 +172,11 @@
                                                     <div class="col-xl-4">
                                                         <!--begin::Input-->
                                                         <div class="form-group fv-plugins-icon-container">
-                                                            <label>Card Expiry Month</label>
-                                                            <input type="number" class="form-control form-control-solid form-control-lg"
-                                                                   name="ccmonth" placeholder="Card Expiry Month" value="01">
+                                                            <label> Expiry Month</label>
+                                                            <input type="number"
+                                                                   class="form-control form-control-solid form-control-lg card-expiry-month"
+                                                                   name="ccmonth" placeholder="Card Expiry Month"
+                                                                   value="01">
                                                             <span
                                                                 class="form-text text-muted">Please enter your Card Expiry Month.</span>
                                                             <div class="fv-plugins-message-container"></div>
@@ -140,9 +186,11 @@
                                                     <div class="col-xl-4">
                                                         <!--begin::Input-->
                                                         <div class="form-group fv-plugins-icon-container">
-                                                            <label>Card Expiry Year</label>
-                                                            <input type="number" class="form-control form-control-solid form-control-lg"
-                                                                   name="ccyear" placeholder="Card Expire Year" value="21">
+                                                            <label>Expiry Year</label>
+                                                            <input type="number"
+                                                                   class="form-control form-control-solid form-control-lg card-expiry-year"
+                                                                   name="ccyear" placeholder="Card Expire Year"
+                                                                   value="21">
                                                             <span
                                                                 class="form-text text-muted">Please enter your Card Expiry Year.</span>
                                                             <div class="fv-plugins-message-container"></div>
@@ -152,10 +200,11 @@
                                                     <div class="col-xl-4">
                                                         <!--begin::Input-->
                                                         <div class="form-group fv-plugins-icon-container">
-                                                            <label>Card CVV Number</label>
+                                                            <label>CVV Number</label>
                                                             <input type="password"
-                                                                   class="form-control form-control-solid form-control-lg"
-                                                                   name="cccvv" placeholder="Card CVV Number" value="123"
+                                                                   class="form-control form-control-solid form-control-lg card-cvc"
+                                                                   name="cccvv" placeholder="Card CVV Number"
+                                                                   value="123"
                                                                    style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAABKRJREFUWAnNl0tsVGUUxzvTTlslZUaCloZHY6BRFkp9sDBuqgINpaBp02dIDImwKDG6ICQ8jBYlhg0rxUBYEALTpulMgBlqOqHRDSikJkZdGG0CRqAGUuwDovQ1/s7NPTffnTu3zMxGvuT2vP7n8Z3vu+dOi4r+5xUoJH8sFquamZmpTqfTVeIfCARGQ6HQH83NzaP5xsu5gL6+vuVzc3NdJN1Kkhd8Ev1MMYni4uJjra2tt3wwLvUjCxgYGFg8Pj7+MV5dPOUub3/hX0zHIpFId0NDw6Q/jO4tZOzv76+Znp6+AOb5TBw7/YduWC2Hr4J/IhOD/GswGHy7vb39tyw2S+VbAC1/ZXZ29hKoiOE8RrIvaPE5WvyjoS8CX8sRvYPufYpZYtjGS0pKNoD/wdA5bNYCCLaMYMMEWq5IEn8ZDof3P6ql9pF9jp8cma6bFLGeIv5ShdISZUzKzqPIVnISp3l20caTJsaPtwvc3dPTIx06ziZkkyvY0FnoW5l+ng7guAWnpAI5w4MkP6yy0GQy+dTU1JToGm19sqKi4kBjY+PftmwRYn1ErEOq4+i2tLW1DagsNGgKNv+p6tj595nJxUbyOIF38AwipoSfnJyMqZ9SfD8jxlWV5+fnu5VX6iqgt7d3NcFeUiN0n8FbLEOoGkwdgY90dnbu7OjoeE94jG9wd1aZePRp5AOqw+9VMM+qLNRVABXKkLEWzn8S/FtbdAhnuVQE7LdVafBPq04pMYawO0OJ+6XHZkFcBQA0J1xKgyhlB0EChEWGX8RulsgjvOjEBu+5V+icWOSoFawuVwEordluG28oSCmXSs55SGSCHiXhmDzC25ghMHGbdwhJr6sAdpnyQl0FYIyoEX5CeYOuNHg/NhvGiUUxVgfV2VUAxjtqgPecp9oKoE4sNnbX9HcVgMH8nD5nAoWnKM/5ZmKyySRdq3pCmDncR4DxOwVC64eHh0OGLOcur1Vey46xUZ3IcVl5oa4OlJaWXgQwJwZyhUdGRjqE14VtSnk/mokhxnawiwUvsZmsX5u+rgKamprGMDoA5sKhRCLxpDowSpsJ8vpCj2AUPzg4uIiNfKIyNMkH6Z4hF3k+RgTYz6vVAEiKq2bsniZIC0nTtvMVMwBzoBT9tKkTHp8Ak1V8dTrOE+NgJs7VATESTH5WnVAgfHUqlXK6oHpJEI1G9zEZH/Du16leqHyS0UXBNKmeOMf5NvyislJPB8RAFz4g8IuwofLy8k319fUP1EEouw7L7mC3kUTO1nn3sb02MTFxFpsz87FfJuaH4pu5fF+reDz+DEfxkI44Q0ScSbyOpDGe1RqMBN08o+ha0L0JdeKi/6msrGwj98uZMeon1AGaSj+elr9LwK9IkO33n8cN7Hl2vp1N3PcYbUXOBbDz9bwV1/wCmXoS3+B128OPD/l2LLg8l9APXVlZKZfzfDY7ehlQv0PPQDez6zW5JJdYOXdAwHK2dGIv7GH4YtHJIvEOvvunLCHPPzl3QOLKTkl0hPbKaDUvlTU988xtwfMqQBPQ3m/4mf0yBVlDCSr/CRW0CipAMnGzb9XU1NSRvIX7kSgo++Pg9B8wltxxbHKPZgAAAABJRU5ErkJggg==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
                                                             <span class="form-text text-muted">Please enter your Card CVV Number.</span>
                                                             <div class="fv-plugins-message-container"></div>
@@ -169,9 +218,16 @@
                                     </div>
                                 </div>
 
-
+                                <div class='form-row row'>
+                                    <div class='col-md-12 error form-group hide'>
+                                        <div class='alert-danger alert'>Please correct the errors and try
+                                            again.
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-footer mt-4">
-                                    <button type="submit" class="btn btn-primary font-weight-bolder font-size-sm py-3 px-14 float-right"
+                                    <button type="submit"
+                                            class="btn btn-primary font-weight-bolder font-size-sm py-3 px-14 float-right"
                                     >Checkout
                                     </button>
 
@@ -186,8 +242,6 @@
             </div>
             <!--end::Body-->
         </div>
-
-
 
 
         @endsection
@@ -207,5 +261,68 @@
                     $('.payment_btn').on
                 });
 
+            </script>
+
+
+
+            <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+            <script type="text/javascript">
+                $(function () {
+
+                    var $form = $(".require-validation");
+
+                    $('form.require-validation').bind('submit', function (e) {
+                        var $form = $(".require-validation"),
+                            inputSelector = ['input[type=email]', 'input[type=password]',
+                                'input[type=text]', 'input[type=file]',
+                                'textarea'].join(', '),
+                            $inputs = $form.find('.required').find(inputSelector),
+                            $errorMessage = $form.find('div.error'),
+                            valid = true;
+                        $errorMessage.addClass('hide');
+
+                        $('.has-error').removeClass('has-error');
+                        $inputs.each(function (i, el) {
+                            var $input = $(el);
+                            if ($input.val() === '') {
+                                $input.parent().addClass('has-error');
+                                $errorMessage.removeClass('hide');
+                                e.preventDefault();
+                            }
+                        });
+
+                        if (!$form.data('cc-on-file')) {
+                            e.preventDefault();
+                            Stripe.setPublishableKey($form.data('stripe-publishable-key'));
+                            Stripe.createToken({
+                                number: $('.card-number').val(),
+                                cvc: $('.card-cvc').val(),
+                                exp_month: $('.card-expiry-month').val(),
+                                exp_year: $('.card-expiry-year').val()
+                            }, stripeResponseHandler);
+                        }
+
+                    });
+
+                    function stripeResponseHandler(status, response) {
+                        if (response.error) {
+                            $('.error')
+                                .removeClass('hide')
+                                .find('.alert')
+                                .text(response.error.message);
+
+                            // alert(JSON.stringify(response.error))
+                        } else {
+                            /* token contains id, last4, and card type */
+                            var token = response['id'];
+
+                            $form.find('input[type=text]').empty();
+                            $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+                            $form.get(0).submit();
+                        }
+                    }
+
+                });
             </script>
 @endsection
