@@ -127,21 +127,47 @@ License: You must have a valid license purchased only from themeforest(the above
             <!--begin::Content body-->
             <div class="d-flex flex-column-fluid flex-lg-center">
                 <div class="d-flex flex-column justify-content-center">
-                    <h3 class="display-3 font-weight-bold my-7 text-white">Welcome to BNB Trading!</h3>
+                    <h3 class="display-3 font-weight-bold my-7 text-white">The Klingon Signals</h3>
+                    
                     <div class="table-responsive">
                         <table class="table table-bordered" style="background-color:white">
                             {{--                        <table style="overflow: hidden;"  class="table table-head-custom table-vertical-center table-head-bg table-borderless">--}}
                             <thead>
                             <tr class="text-left">
-                                <th data-toggle="tooltip" data-html="true" title="<em>The amount of trade for the entry.</em>"><u>Pair</th></u></th>
+                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Username</th></u></th>
+                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Pair+Leverage</u></th>
+                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Time Frame</u></th>                                
+                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Long/Short</u></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($settings as $setting)
 
-                                <th data-toggle="tooltip" data-html="true" title="<em>The amount of trade for the entry.</em>"><u>QTY</u></th>
-
-                                <th data-toggle="tooltip" data-html="true" title="<em>-DEFAULT-<br> 1 Day DF=1000<br> 12 Hours DF=500 <br> 8 Hours=300 <br> 6 Hours=200<br> 4 Hours=140<br>2 Hours=80<br> 1 Hour=40<br> 30 Minutes=24<br> 15 Minutes=16<br>5 Minutes=12<br>3 Minutes=10 </em>"><u>Delta Time</u></th>
-
-                                <th data-toggle="tooltip" data-html="true" title="<em>This column will show if you have Error on your Delta Time column.</em>"><u>Error</u></th>
-
-                                <th class="text-center" data-toggle="tooltip" data-html="true" title="<em>Order Type of Entry.<br><br><b>Market Order</b> will create your position on realtime based on selected time frame.<br><br><b>Test Order</b> will only record to your Order Entry page and show Win/Lose entries.</em>"><u>Order Type</u></th>
+                                    <tr>
+                                        <td>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">Pairs</span>
+                                        <td>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">TEST1</span>
+                                        </td>
+                      
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3 class="display-3 font-weight-bold my-7 text-white">The Klingon Winners!</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" style="background-color:white">
+                            {{--                        <table style="overflow: hidden;"  class="table table-head-custom table-vertical-center table-head-bg table-borderless">--}}
+                            <thead>
+                            <tr class="text-left">
+                                
+                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Username</th></u></th>
+                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Pair+Leverage</u></th>
+                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Time Frame</u></th>                                
+                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Entry Price</u></th>
+                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Closing Price</u></th>
+                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>PNL</u></th>
 
                             </tr>
                             </thead>
@@ -150,38 +176,23 @@ License: You must have a valid license purchased only from themeforest(the above
 
                                     <tr>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->pair }} {{ $setting->timeframe }}</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg"></span>
+                                        </td>
+                                        
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input  setting_id="{{ $setting->id }}" name="qty" class="quantity form-control form-control-sm" value="{{ $setting->qty }}" size="1"></span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">TEST1</span>
                                         </td>
-
-                                        <input type="hidden" name="setting_volume" class="setting_volume" value="{{ $setting->id }}">
-
+                                        
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_deltaSMA="{{ $setting->id }}" name="deltaSMA" class="deltatimeSMA form-control form-control-sm" value="{{ $setting->deltaSMA }}" size="1"></span>
-                                        </td>
-
-                                        <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg error_log">{{ $setting->Error }}</span>
-                                        </td>
-
-                                        <td class="pr-0" >
-                                            <input
-                                                id="checkbox{{$setting->id}}"
-                                                class="bootstrap_switch" type="checkbox"
-                                                seeting_orderType="{{ $setting->id }}"
-                                                name="switch_{{$setting->id}}" {{ $setting->order_type != "TEST"?'checked':'' }}
-                                                data-on-text="MARKET" data-handle-width="60" data-off-text="TEST"
-                                                data-on-color="primary"
-                                            >
-
-
-                                        </td>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">TEST1</span>
+                                        </td>                                        
+                     
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
+                    
                     {{--                    <p class="font-weight-bold font-size-lg text-white opacity-80">The ultimate Bootstrap, Angular 8, React &amp; VueJS admin theme--}}
                     {{--                        <br />framework for next generation web apps.</p>--}}
                 </div>
