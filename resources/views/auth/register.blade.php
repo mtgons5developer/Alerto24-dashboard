@@ -82,6 +82,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </span>
                                 @enderror
                             </div>
+                            <div class="form-group py-3 m-0">
+                                <input class="form-control @error('username') is-invalid @enderror h-auto border-0 px-0 placeholder-dark-75" type="text" placeholder="Username" value="{{ old('username') }}" name="username" autocomplete="off" />
+                                @error('name')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                             <div class="form-group py-3 border-top m-0">
                                 <input class="form-control @error('email') is-invalid @enderror h-auto border-0 px-0 placeholder-dark-75" type="email" value="{{ old('email') }}" placeholder="Email" name="email" autocomplete="off" />
                                 @error('email')

@@ -20,6 +20,7 @@ class CustomRegistrationController extends Controller
 
             $user = User::create([
                 'name'          => $request->name,
+                'username'      => $request->username,
                 'is_admin'      => "2",
                 'device_token'  => "web",
                 'email'         => $request->email,
