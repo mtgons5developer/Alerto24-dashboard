@@ -111,7 +111,7 @@ License: You must have a valid license purchased only from themeforest(the above
 {{--                            </div>--}}
                             <div class="form-group d-flex flex-wrap flex-center">
                                 <button id="kt_login_signup_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-2">Submit</button>
-                                <button id="kt_login_signup_cancel" type="reset" class="btn btn-outline-primary font-weight-bold px-9 py-4 my-3 mx-2">Cancel</button>
+                                <a  type="button" href="{{route('login')}}" class="btn btn-outline-primary font-weight-bold px-9 py-4 my-3 mx-2">Cancel</a>
                             </div>
                         </form>
                         <!--end::Form-->
