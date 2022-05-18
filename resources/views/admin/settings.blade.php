@@ -138,9 +138,9 @@
                             </th>
                             <th data-toggle="tooltip" data-html="true" title="<em>The amount of trade for the entry.</em>"><u>QTY</u></th>
                             
-                            <th data-toggle="tooltip" data-html="true" title="<em>-DEFAULT-<br> 1 Day DF=1000<br> 12 Hours DF=500 <br> 8 Hours=300 <br> 6 Hours=200<br> 4 Hours=140<br>2 Hours=80<br> 1 Hour=40<br> 30 Minutes=24<br> 15 Minutes=16<br>5 Minutes=12<br>3 Minutes=10 </em>"><u>Delta Time</u></th>
+                            <!-- <th data-toggle="tooltip" data-html="true" title="<em>-DEFAULT-<br> 1 Day DF=1000<br> 12 Hours DF=500 <br> 8 Hours=300 <br> 6 Hours=200<br> 4 Hours=140<br>2 Hours=80<br> 1 Hour=40<br> 30 Minutes=24<br> 15 Minutes=16<br>5 Minutes=12<br>3 Minutes=10 </em>"><u>Delta Time</u></th>
                             
-                            <th data-toggle="tooltip" data-html="true" title="<em>This column will show if you have Error on your Delta Time column.</em>"><u>Error</u></th>
+                            <th data-toggle="tooltip" data-html="true" title="<em>This column will show if you have Error on your Delta Time column.</em>"><u>Error</u></th> -->
                             
                             <th class="text-center" data-toggle="tooltip" data-html="true" title="<em>Order Type of Entry.<br><br><b>Market Order</b> will create your position on realtime based on selected time frame.<br><br><b>Test Order</b> will only record to your Order Entry page and show Win/Lose entries.</em>"><u>Order Type</u></th>
                             
