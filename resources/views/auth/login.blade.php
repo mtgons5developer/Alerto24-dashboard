@@ -246,7 +246,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     });
 
-
+    // TEST
     // var datatable = $('#kt_datatable').DataTable();
 </script>
 <script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>

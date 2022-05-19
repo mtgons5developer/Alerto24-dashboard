@@ -63,6 +63,7 @@
             border-radius: 50%;
         }
 
+
     </style>
 
 
@@ -77,8 +78,10 @@
 
         <!--    </div>-->
         <!--@endif-->
+
         <div class="card">
             <h1 style=" margin-top: 15px; margin-left: 20px;" data-toggle="tooltip" data-html="true" title="<em><u>Tooltip</u></em>"> Settings (Advance)</h1>
+
             <div class="card-body">
                 <div class="row">
                     <form method="post" action="{{route('admin.add_pair')}}">
@@ -139,6 +142,7 @@
                             <th data-toggle="tooltip" data-html="true" title="<em>The amount of trade for the entry.</em>"><u>QTY</u></th>
                             
                             <!-- <th data-toggle="tooltip" data-html="true" title="<em>-DEFAULT-<br> 1 Day DF=1000<br> 12 Hours DF=500 <br> 8 Hours=300 <br> 6 Hours=200<br> 4 Hours=140<br>2 Hours=80<br> 1 Hour=40<br> 30 Minutes=24<br> 15 Minutes=16<br>5 Minutes=12<br>3 Minutes=10 </em>"><u>Delta Time</u></th>
+
                             
                             <th data-toggle="tooltip" data-html="true" title="<em>This column will show if you have Error on your Delta Time column.</em>"><u>Error</u></th> -->
                             
@@ -159,9 +163,9 @@
 
                                     <input type="hidden" name="setting_volume" class="setting_volume" value="{{ $setting->id }}">
                                     
-                                    <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_deltaSMA="{{ $setting->id }}" name="deltaSMA" class="deltatimeSMA form-control form-control-sm" value="{{ $setting->deltaSMA }}" size="1"></span>
-                                    </td>
+                                    <!--<td>-->
+                                    <!--    <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_deltaSMA="{{ $setting->id }}" name="deltaSMA" class="deltatimeSMA form-control form-control-sm" value="{{ $setting->deltaSMA }}" size="1"></span>-->
+                                    <!--</td>-->
                                     
                                     <td>
                                         <span class="text-dark-75 font-weight-bolder d-block font-size-lg error_log">{{ $setting->Error }}</span>
@@ -207,13 +211,24 @@
         @endsection
 
         @section('scripts')
-            <script type="text/javascript">
+           <script type="text/javascript">
 
                 // var datatable = $('#kt_datatable').DataTable(
                 //     {
                 //         "paging":   false,
                 //     }
                 // );
+
+                var values = ["1", "2"];
+                
+                // // event listener
+                // document.getElementById("mySlider").addEventListener("input",function(e){
+                // var text = values[e.target.value];
+                // document.querySelector(".indicator").style.left = Number((e.target.value*25)-(2*e.target.value)) + "%";;
+                // // The subtraction portion ensures that the indicator doesn't go off the screen. Feel free to change the 2 to any value that works for you.
+                // document.querySelector(".indicator").innerHTML = text;
+                // });
+        
                 $('#checkbox16').change(function () {
                     alert($(this).attr('order_entry_id'))
                 });
