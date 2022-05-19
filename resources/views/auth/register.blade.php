@@ -82,6 +82,14 @@ License: You must have a valid license purchased only from themeforest(the above
                                     </span>
                                 @enderror
                             </div>
+                            <div class="form-group py-3 m-0">
+                                <input class="form-control @error('username') is-invalid @enderror h-auto border-0 px-0 placeholder-dark-75" type="text" placeholder="Username" value="{{ old('username') }}" name="username" autocomplete="off" />
+                                @error('name')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                             <div class="form-group py-3 border-top m-0">
                                 <input class="form-control @error('email') is-invalid @enderror h-auto border-0 px-0 placeholder-dark-75" type="email" value="{{ old('email') }}" placeholder="Email" name="email" autocomplete="off" />
                                 @error('email')
@@ -111,7 +119,7 @@ License: You must have a valid license purchased only from themeforest(the above
 {{--                            </div>--}}
                             <div class="form-group d-flex flex-wrap flex-center">
                                 <button id="kt_login_signup_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-2">Submit</button>
-                                <button id="kt_login_signup_cancel" type="reset" class="btn btn-outline-primary font-weight-bold px-9 py-4 my-3 mx-2">Cancel</button>
+                                <a  type="button" href="{{route('login')}}" class="btn btn-outline-primary font-weight-bold px-9 py-4 my-3 mx-2">Cancel</a>
                             </div>
                         </form>
                         <!--end::Form-->
