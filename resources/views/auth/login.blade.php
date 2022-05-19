@@ -128,15 +128,15 @@ License: You must have a valid license purchased only from themeforest(the above
             <div class="d-flex flex-column-fluid flex-lg-center">
                 <div class="d-flex flex-column justify-content-center">
                     <h3 class="display-3 font-weight-bold my-7 text-white">The Klingon Signals</h3>
-                    
+
                     <div class="table-responsive">
                         <table class="table table-bordered" style="background-color:white">
                             {{--                        <table style="overflow: hidden;"  class="table table-head-custom table-vertical-center table-head-bg table-borderless">--}}
                             <thead>
                             <tr class="text-left">
-                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Username</th></u></th>
+                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Username</u></th>
                                 <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Pair+Leverage</u></th>
-                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Time Frame</u></th>                                
+                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Time Frame</u></th>
                                 <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Long/Short</u></th>
                             </tr>
                             </thead>
@@ -149,7 +149,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">TEST1</span>
                                         </td>
-                      
+
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -161,10 +161,10 @@ License: You must have a valid license purchased only from themeforest(the above
                             {{--                        <table style="overflow: hidden;"  class="table table-head-custom table-vertical-center table-head-bg table-borderless">--}}
                             <thead>
                             <tr class="text-left">
-                                
+
                                 <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Username</th></u></th>
                                 <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Pair+Leverage</u></th>
-                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Time Frame</u></th>                                
+                                <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Time Frame</u></th>
                                 <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Entry Price</u></th>
                                 <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>Closing Price</u></th>
                                 <th data-toggle="tooltip" data-html="true" title="<em></em>"><u>PNL</u></th>
@@ -178,21 +178,21 @@ License: You must have a valid license purchased only from themeforest(the above
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg"></span>
                                         </td>
-                                        
+
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">TEST1</span>
                                         </td>
-                                        
+
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">TEST1</span>
-                                        </td>                                        
-                     
+                                        </td>
+
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                    
+
                     {{--                    <p class="font-weight-bold font-size-lg text-white opacity-80">The ultimate Bootstrap, Angular 8, React &amp; VueJS admin theme--}}
                     {{--                        <br />framework for next generation web apps.</p>--}}
                 </div>
