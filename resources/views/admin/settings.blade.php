@@ -317,7 +317,7 @@
                 });
 
 
-
+                // TEST
                 // var datatable = $('#kt_datatable').DataTable();
             </script>
 @endsection
