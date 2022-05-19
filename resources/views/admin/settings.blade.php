@@ -111,10 +111,10 @@
 
                                 <select class="form-control mr-2" name="timeframe" placeholder="Time Frame" style="margin-left: 10px;">
                                 	<option value="">--- Select Time Frame ---</option>
-                                	<option value="3m">3 minutes</option>
+                                	<!-- <option value="3m">3 minutes</option>
                                 	<option value="5m">5 minutes</option>
                                 	<option value="15m">15 minutes</option>
-                                	<option value="30m">30 minutes</option>
+                                	<option value="30m">30 minutes</option> -->
                                 	<option value="1h">1 hour</option>
                                 	<option value="2h">2 hours</option>
                                 	<option value="4h">4 hours</option>
