@@ -18,6 +18,20 @@ class SettingController extends Controller
             ->With('settings', $settings);
     }
 
+    public function apiStore(Request $request)
+    {
+        $user = \auth()->user();
+        if ($request->has('api_key')){
+            $user->api_key = $request->api_key;
+        }if ($request->has('api_secret')){
+            $user->api_secret = $request->api_secret;
+        }
+        $user->save();
+
+
+        return back()->with('success_message', 'Api Saved Successfully.');
+    }
+
     public function add_pair(Request $request)
     {
         $this->validate($request, [

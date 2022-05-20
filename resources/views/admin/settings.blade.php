@@ -2,7 +2,7 @@
 
 @section('content')
     <style>
-  
+
         .switch {
             position: relative;
             display: inline-block;
@@ -67,257 +67,303 @@
     </style>
 
 
-        <!--@if(Session::has('success_message'))-->
-        <!--    <div class="alert alert-success">-->
-        <!--        <i class=" fas fa-fw fa-check" aria-hidden="true"></i>-->
-        <!--        {!! session('success_message') !!}-->
+    <!--@if(Session::has('success_message'))-->
+    <!--    <div class="alert alert-success">-->
+    <!--        <i class=" fas fa-fw fa-check" aria-hidden="true"></i>-->
+    <!--        {!! session('success_message') !!}-->
 
-        <!--        <button type="button" class="close" data-dismiss="alert" aria-label="close">-->
-        <!--            <span aria-hidden="true">&times;</span>-->
-        <!--        </button>-->
+    <!--        <button type="button" class="close" data-dismiss="alert" aria-label="close">-->
+    <!--            <span aria-hidden="true">&times;</span>-->
+    <!--        </button>-->
 
-        <!--    </div>-->
-        <!--@endif-->
+    <!--    </div>-->
+    <!--@endif-->
 
-        <div class="card">
-            <h1 style=" margin-top: 15px; margin-left: 20px;" data-toggle="tooltip" data-html="true" title="<em><u>Tooltip</u></em>"> Settings (Advance)</h1>
+    <div class="card">
+        <h1 style=" margin-top: 15px; margin-left: 20px;" data-toggle="tooltip" data-html="true"
+            title="<em><u>Tooltip</u></em>"> Settings (Advance)</h1>
+        <div class="">
+            <form action="{{ route('admin.api.store') }}"  method="post" class=" px-4">
+                @csrf
 
-            <div class="card-body">
-                <div class="row">
-                    <form method="post" action="{{route('admin.add_pair')}}">
-                        @csrf
-                        <div class="d-flex">
+                <div class="row  align-items-center justify-content-center">
+                    <div class="form-group col">
+                        <label for="" class="font-weight-bolder">API Key</label>
+                        <input type="password" class="form-control"  name="api_key" value="{{ optional(auth()->user())->api_key }}">
 
-                                <select class="form-control mr-2" name="pair" placeholder="Add Pair">
-                                	<option value="">--- Select your Pair ---</option>
-                                	<option value="BTCUSDT">BTCUSDT</option>
-                                	<option value="ETHUSDT">ETHUSDT</option>
-                                	<option value="BNBUSDT">BNBUSDT</option>
-                                	<option value="XRPUSDT">XRPUSDT</option>
-                                	<option value="SOLUSDT">SOLUSDT</option>
-                                	<option value="LUNAUSDT">LUNAUSDT</option>
-                                	<option value="ADAUSDT">ADAUSDT</option>
-                                	<option value="USTUSDT">USTUSDT</option>
-                                	<option value="BUSDUSDT">BUSDUSDT</option>
-                                	<option value="DOGEUSDT">DOGEUSDT</option>
-                                	<option value="AVAXUSDT">AVAXUSDT</option>
-                                	<option value="DOTUSDT">DOTUSDT</option>
-                                	<option value="SHIBUSDT">SHIBUSDT</option>
-                                	<option value="WBTCUSDT">WBTCUSDT</option>
-                                	<option value="DAIUSDT">DAIUSDT</option>
-                                	<option value="MATICUSDT">MATICUSDT</option>
+                    </div>
+                    <div class="form-group col">
+                        <label for="" class="font-weight-bolder">API Secret</label>
+                        <input type="password" class="form-control" name="api_secret" value="{{ optional(auth()->user())->api_secret }}">
 
-                                </select>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary" type="submit">Save Api</button>
 
-                                <select class="form-control mr-2" name="timeframe" placeholder="Time Frame" style="margin-left: 10px;">
-                                	<option value="">--- Select Time Frame ---</option>
-                                	<!-- <option value="3m">3 minutes</option>
-                                	<option value="5m">5 minutes</option>
-                                	<option value="15m">15 minutes</option>
-                                	<option value="30m">30 minutes</option> -->
-                                	<option value="1h">1 hour</option>
-                                	<option value="2h">2 hours</option>
-                                	<option value="4h">4 hours</option>
-                                	<option value="6h">6 hours</option>
-                                	<option value="8h">8 hours</option>
-                                	<option value="12h">12 hours</option>
-                                	<option value="1d">1 day</option>
-
-                                </select>
-
-                                <button type="submit" class="btn btn-success" style="margin-left: 10px;">+ADD</button>
-                                
-                        </div>
-                    </form>
+                    </div>
                 </div>
-                <br>
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="kt_datatable">
-                        {{--                        <table style="overflow: hidden;"  class="table table-head-custom table-vertical-center table-head-bg table-borderless">--}}
-                        <thead>
-                        <tr class="text-left">
-                            <th >
-                                <span class="text-dark-75">Pair</span>
-                            </th>
-                            <th data-toggle="tooltip" data-html="true" title="<em>The amount of trade for the entry.</em>"><u>QTY</u></th>
-                            
-                             <!--<th data-toggle="tooltip" data-html="true" title="<em>-DEFAULT-<br> 1 Day DF=1000<br> 12 Hours DF=500 <br> 8 Hours=300 <br> 6 Hours=200<br> 4 Hours=140<br>2 Hours=80<br> 1 Hour=40<br> 30 Minutes=24<br> 15 Minutes=16<br>5 Minutes=12<br>3 Minutes=10 </em>"><u>Delta Time</u></th>-->
 
-                            
-                            <th data-toggle="tooltip" data-html="true" title="<em>This column will show if you have Error on your Delta Time column.</em>"><u>Error</u></th>
-                            
-                            <th class="text-center" data-toggle="tooltip" data-html="true" title="<em>Order Type of Entry.<br><br><b>Market Order</b> will create your position on realtime based on selected time frame.<br><br><b>Test Order</b> will only record to your Order Entry page and show Win/Lose entries.</em>"><u>Order Type</u></th>
-                            
-                            <th class="text-center" data-toggle="tooltip" data-html="true" title="<em>This will Enable or Disable trading for a specific Pair.<br><br>Red button will remove a specific pair of choice.</em><br><br>Hence: Remove duplicate pair to prevent multiple entries from the same pair.<br>OR<br><b>Activate only a single Pair."><u>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($settings as $setting)
 
-                            <tr>
-                                    <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->pair }} {{ $setting->timeframe }}</span>
-                                    <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input  setting_id="{{ $setting->id }}" name="qty" class="quantity form-control form-control-sm" value="{{ $setting->qty }}" size="1"></span>
-                                    </td>
+            </form>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <form method="post" action="{{route('admin.add_pair')}}">
+                    @csrf
+                    <div class="d-flex">
 
-                                    <input type="hidden" name="setting_volume" class="setting_volume" value="{{ $setting->id }}">
-                                    
-                                    <!--<td>-->
-                                    <!--    <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_deltaSMA="{{ $setting->id }}" name="deltaSMA" class="deltatimeSMA form-control form-control-sm" value="{{ $setting->deltaSMA }}" size="1"></span>-->
-                                    <!--</td>-->
-                                    
-                                    <td>
-                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg error_log">{{ $setting->Error }}</span>
-                                    </td>
-                                    
-                                    <td class="pr-0" >
-                                        <input
-                                            id="checkbox{{$setting->id}}"
-                                            class="bootstrap_switch" type="checkbox"
-                                            seeting_orderType="{{ $setting->id }}"
-                                            name="switch_{{$setting->id}}" {{ $setting->order_type != "TEST"?'checked':'' }}
-                                            data-on-text="MARKET" data-handle-width="60" data-off-text="TEST"
-                                            data-on-color="primary"
-                                        >
+                        <select class="form-control mr-2" name="pair" placeholder="Add Pair">
+                            <option value="">--- Select your Pair ---</option>
+                            <option value="BTCUSDT">BTCUSDT</option>
+                            <option value="ETHUSDT">ETHUSDT</option>
+                            <option value="BNBUSDT">BNBUSDT</option>
+                            <option value="XRPUSDT">XRPUSDT</option>
+                            <option value="SOLUSDT">SOLUSDT</option>
+                            <option value="LUNAUSDT">LUNAUSDT</option>
+                            <option value="ADAUSDT">ADAUSDT</option>
+                            <option value="USTUSDT">USTUSDT</option>
+                            <option value="BUSDUSDT">BUSDUSDT</option>
+                            <option value="DOGEUSDT">DOGEUSDT</option>
+                            <option value="AVAXUSDT">AVAXUSDT</option>
+                            <option value="DOTUSDT">DOTUSDT</option>
+                            <option value="SHIBUSDT">SHIBUSDT</option>
+                            <option value="WBTCUSDT">WBTCUSDT</option>
+                            <option value="DAIUSDT">DAIUSDT</option>
+                            <option value="MATICUSDT">MATICUSDT</option>
 
-                                    </td>
-                                    
-                                    <td class="pr-0" >
-                                        <input
-                                            id="checkbox{{$setting->id}}"
-                                            class="bootstrap_switch" type="checkbox"
-                                            seeting_id="{{ $setting->id }}"
-                                            name="switch_{{$setting->id}}" {{ $setting->toggle != 2?'checked':'' }}
-                                            data-on-text="ON" data-handle-width="30" data-off-text="OFF"
-                                            data-on-color="primary"
-                                        >
-                                        <a href="{{route('admin.settings_delete',['id'=>$setting->id])}}"
-                                           onclick="return confirm(&quot;<b>Click Ok to remove Pair.&quot;)"
-                                           class="btn btn-danger" style="margin-left: 10px;"
-                                        >-</a>
-                                    </td>
+                        </select>
 
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        <select class="form-control mr-2" name="timeframe" placeholder="Time Frame"
+                                style="margin-left: 10px;">
+                            <option value="">--- Select Time Frame ---</option>
+                            <!-- <option value="3m">3 minutes</option>
+                            <option value="5m">5 minutes</option>
+                            <option value="15m">15 minutes</option>
+                            <option value="30m">30 minutes</option> -->
+                            <option value="1h">1 hour</option>
+                            <option value="2h">2 hours</option>
+                            <option value="4h">4 hours</option>
+                            <option value="6h">6 hours</option>
+                            <option value="8h">8 hours</option>
+                            <option value="12h">12 hours</option>
+                            <option value="1d">1 day</option>
+
+                        </select>
+
+                        <button type="submit" class="btn btn-success" style="margin-left: 10px;">+ADD</button>
+
+                    </div>
+                </form>
             </div>
+            <br>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="kt_datatable">
+                    {{--                        <table style="overflow: hidden;"  class="table table-head-custom table-vertical-center table-head-bg table-borderless">--}}
+                    <thead>
+                    <tr class="text-left">
+                        <th>
+                            <span class="text-dark-75">Pair</span>
+                        </th>
+                        <th data-toggle="tooltip" data-html="true" title="<em>The amount of trade for the entry.</em>">
+                            <u>QTY</u></th>
+
+                        <!--<th data-toggle="tooltip" data-html="true" title="<em>-DEFAULT-<br> 1 Day DF=1000<br> 12 Hours DF=500 <br> 8 Hours=300 <br> 6 Hours=200<br> 4 Hours=140<br>2 Hours=80<br> 1 Hour=40<br> 30 Minutes=24<br> 15 Minutes=16<br>5 Minutes=12<br>3 Minutes=10 </em>"><u>Delta Time</u></th>-->
 
 
+                        <th data-toggle="tooltip" data-html="true"
+                            title="<em>This column will show if you have Error on your Delta Time column.</em>">
+                            <u>Error</u></th>
+
+                        <th class="text-center" data-toggle="tooltip" data-html="true"
+                            title="<em>Order Type of Entry.<br><br><b>Market Order</b> will create your position on realtime based on selected time frame.<br><br><b>Test Order</b> will only record to your Order Entry page and show Win/Lose entries.</em>">
+                            <u>Order Type</u></th>
+
+                        <th class="text-center" data-toggle="tooltip" data-html="true"
+                            title="<em>This will Enable or Disable trading for a specific Pair.<br><br>Red button will remove a specific pair of choice.</em><br><br>Hence: Remove duplicate pair to prevent multiple entries from the same pair.<br>OR<br><b>Activate only a single Pair.">
+                            <u>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($settings as $setting)
+
+                        <tr>
+                            <td>
+                                <span
+                                    class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $setting->pair }} {{ $setting->timeframe }}</span>
+                            <td>
+                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input
+                                        setting_id="{{ $setting->id }}" name="qty"
+                                        class="quantity form-control form-control-sm" value="{{ $setting->qty }}"
+                                        size="1"></span>
+                            </td>
+
+                            <input type="hidden" name="setting_volume" class="setting_volume"
+                                   value="{{ $setting->id }}">
+
+                            <!--<td>-->
+                        <!--    <span class="text-dark-75 font-weight-bolder d-block font-size-lg"><input setting_deltaSMA="{{ $setting->id }}" name="deltaSMA" class="deltatimeSMA form-control form-control-sm" value="{{ $setting->deltaSMA }}" size="1"></span>-->
+                            <!--</td>-->
+
+                            <td>
+                                <span
+                                    class="text-dark-75 font-weight-bolder d-block font-size-lg error_log">{{ $setting->Error }}</span>
+                            </td>
+
+                            <td class="pr-0">
+                                <input
+                                    id="checkbox{{$setting->id}}"
+                                    class="bootstrap_switch" type="checkbox"
+                                    seeting_orderType="{{ $setting->id }}"
+                                    name="switch_{{$setting->id}}" {{ $setting->order_type != "TEST"?'checked':'' }}
+                                    data-on-text="MARKET" data-handle-width="60" data-off-text="TEST"
+                                    data-on-color="primary"
+                                >
+
+                            </td>
+
+                            <td class="pr-0">
+                                <input
+                                    id="checkbox{{$setting->id}}"
+                                    class="bootstrap_switch" type="checkbox"
+                                    seeting_id="{{ $setting->id }}"
+                                    name="switch_{{$setting->id}}" {{ $setting->toggle != 2?'checked':'' }}
+                                    data-on-text="ON" data-handle-width="30" data-off-text="OFF"
+                                    data-on-color="primary"
+                                >
+                                <a href="{{route('admin.settings_delete',['id'=>$setting->id])}}"
+                                   onclick="return confirm(&quot;<b>Click Ok to remove Pair.&quot;)"
+                                   class="btn btn-danger" style="margin-left: 10px;"
+                                >-</a>
+                            </td>
+
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        @endsection
 
-        @section('scripts')
-           <script type="text/javascript">
+    </div>
 
-                // var datatable = $('#kt_datatable').DataTable(
-                //     {
-                //         "paging":   false,
-                //     }
-                // );
+@endsection
 
-                var values = ["1", "2"];
-                
-                // // event listener
-                // document.getElementById("mySlider").addEventListener("input",function(e){
-                // var text = values[e.target.value];
-                // document.querySelector(".indicator").style.left = Number((e.target.value*25)-(2*e.target.value)) + "%";;
-                // // The subtraction portion ensures that the indicator doesn't go off the screen. Feel free to change the 2 to any value that works for you.
-                // document.querySelector(".indicator").innerHTML = text;
-                // });
-        
-                $('#checkbox16').change(function () {
-                    alert($(this).attr('order_entry_id'))
-                });
+@section('scripts')
+    <script type="text/javascript">
 
-                var KTBootstrapSwitch = function () {
+        // var datatable = $('#kt_datatable').DataTable(
+        //     {
+        //         "paging":   false,
+        //     }
+        // );
 
-                    // Private functions
-                    var demos = function () {
-                        // minimum setup
-                        $('.bootstrap_switch').bootstrapSwitch({
-                            onSwitchChange: function (event, state) 
-                            {
-                                let seeting_orderType = $(event.target).attr('seeting_orderType');
-                                $.get("{{ route('change_setting_orderType') }}", {seeting_orderType: seeting_orderType, status: state});
+        var values = ["1", "2"];
 
-                                let seeting_id = $(event.target).attr('seeting_id');
-                                $.get("{{ route('change_setting_toggle') }}", {seeting_id: seeting_id, status: state});
-                                
-                                if(state == true){
-                                    var parent = $(this).parent().parent().parent().parent();
-                                    parent.find('.error_log').text("0");
-                                }
+        // // event listener
+        // document.getElementById("mySlider").addEventListener("input",function(e){
+        // var text = values[e.target.value];
+        // document.querySelector(".indicator").style.left = Number((e.target.value*25)-(2*e.target.value)) + "%";;
+        // // The subtraction portion ensures that the indicator doesn't go off the screen. Feel free to change the 2 to any value that works for you.
+        // document.querySelector(".indicator").innerHTML = text;
+        // });
 
-                            }
+        $('#checkbox16').change(function () {
+            alert($(this).attr('order_entry_id'))
+        });
+
+        var KTBootstrapSwitch = function () {
+
+            // Private functions
+            var demos = function () {
+                // minimum setup
+                $('.bootstrap_switch').bootstrapSwitch({
+                    onSwitchChange: function (event, state) {
+                        let seeting_orderType = $(event.target).attr('seeting_orderType');
+                        $.get("{{ route('change_setting_orderType') }}", {
+                            seeting_orderType: seeting_orderType,
+                            status: state
                         });
-                    };
 
-                    $("body").on('keyup','.quantity',function (){
+                        let seeting_id = $(event.target).attr('seeting_id');
+                        $.get("{{ route('change_setting_toggle') }}", {seeting_id: seeting_id, status: state});
 
-                        var setting_id = $(this).attr('setting_id');
-                        var quantity   = $(this).val();
-                        // console.log(quantity);
-                        $.get("{{ route('admin.add.qty') }}", {setting_id: setting_id, quantity: quantity});
-                    });
+                        if (state == true) {
+                            var parent = $(this).parent().parent().parent().parent();
+                            parent.find('.error_log').text("0");
+                        }
 
-                    $("body").on('keyup','.drsiLong',function (){
-
-                        var setting_rsiLong = $(this).attr('setting_rsiLong');
-                        var drsiLong   = $(this).val();
-                        // console.log(drsiLong);
-                        $.get("{{ route('admin.add.rsiLong') }}", {setting_rsiLong: setting_rsiLong, drsiLong: drsiLong});
-                    });
-
-                    $("body").on('keyup','.drsiShort',function (){
-
-                        var setting_rsiShort = $(this).attr('setting_rsiShort');
-                        var drsiShort   = $(this).val();
-                        // console.log(drsiShort);
-                        $.get("{{ route('admin.add.rsiShort') }}", {setting_rsiShort: setting_rsiShort, drsiShort: drsiShort});
-                    });
-                    
-                    $("body").on('keyup','.deltatimeSMA',function (){
-
-                        var setting_deltaSMA = $(this).attr('setting_deltaSMA');
-                        var deltatimeSMA   = $(this).val();
-                        // console.log(deltatime);
-                        $.get("{{ route('admin.add.deltaSMA') }}", {setting_deltaSMA: setting_deltaSMA, deltatimeSMA: deltatimeSMA});
-                    });
-
-                    $("body").on('keyup','.deltatimeRSI',function (){
-
-                        var setting_deltaRSI = $(this).attr('setting_deltaRSI');
-                        var deltatimeRSI   = $(this).val();
-                        // console.log(deltatime);
-                        $.get("{{ route('admin.add.deltaRSI') }}", {setting_deltaRSI: setting_deltaRSI, deltatimeRSI: deltatimeRSI});
-                    });
-                    
-                    $("body").on('keyup','.volume',function (){
-
-                        var setting_volume = $(this).attr('setting_volume');
-                        var volume   = $(this).val();
-                        // console.log(volume);
-                        $.get("{{ route('admin.add.vol') }}", {setting_volume: setting_volume, volume: volume});
-                    });
-
-                    return {
-                        // public functions
-                        init: function () {
-                            demos();
-                        },
-                    };
-                }();
-
-                jQuery(document).ready(function () {
-                    KTBootstrapSwitch.init();
+                    }
                 });
+            };
+
+            $("body").on('keyup', '.quantity', function () {
+
+                var setting_id = $(this).attr('setting_id');
+                var quantity = $(this).val();
+                // console.log(quantity);
+                $.get("{{ route('admin.add.qty') }}", {setting_id: setting_id, quantity: quantity});
+            });
+
+            $("body").on('keyup', '.drsiLong', function () {
+
+                var setting_rsiLong = $(this).attr('setting_rsiLong');
+                var drsiLong = $(this).val();
+                // console.log(drsiLong);
+                $.get("{{ route('admin.add.rsiLong') }}", {setting_rsiLong: setting_rsiLong, drsiLong: drsiLong});
+            });
+
+            $("body").on('keyup', '.drsiShort', function () {
+
+                var setting_rsiShort = $(this).attr('setting_rsiShort');
+                var drsiShort = $(this).val();
+                // console.log(drsiShort);
+                $.get("{{ route('admin.add.rsiShort') }}", {setting_rsiShort: setting_rsiShort, drsiShort: drsiShort});
+            });
+
+            $("body").on('keyup', '.deltatimeSMA', function () {
+
+                var setting_deltaSMA = $(this).attr('setting_deltaSMA');
+                var deltatimeSMA = $(this).val();
+                // console.log(deltatime);
+                $.get("{{ route('admin.add.deltaSMA') }}", {
+                    setting_deltaSMA: setting_deltaSMA,
+                    deltatimeSMA: deltatimeSMA
+                });
+            });
+
+            $("body").on('keyup', '.deltatimeRSI', function () {
+
+                var setting_deltaRSI = $(this).attr('setting_deltaRSI');
+                var deltatimeRSI = $(this).val();
+                // console.log(deltatime);
+                $.get("{{ route('admin.add.deltaRSI') }}", {
+                    setting_deltaRSI: setting_deltaRSI,
+                    deltatimeRSI: deltatimeRSI
+                });
+            });
+
+            $("body").on('keyup', '.volume', function () {
+
+                var setting_volume = $(this).attr('setting_volume');
+                var volume = $(this).val();
+                // console.log(volume);
+                $.get("{{ route('admin.add.vol') }}", {setting_volume: setting_volume, volume: volume});
+            });
+
+            return {
+                // public functions
+                init: function () {
+                    demos();
+                },
+            };
+        }();
+
+        jQuery(document).ready(function () {
+            KTBootstrapSwitch.init();
+        });
 
 
-                // TEST
-                // var datatable = $('#kt_datatable').DataTable();
-            </script>
+        // TEST
+        // var datatable = $('#kt_datatable').DataTable();
+    </script>
 @endsection

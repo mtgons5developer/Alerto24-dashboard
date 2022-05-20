@@ -43,6 +43,7 @@ Route::prefix('admin')->group(function () {
 
 
     Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'settings'])->name('admin.settings');
+    Route::post('/api/store', [App\Http\Controllers\Admin\SettingController::class, 'apiStore'])->name('admin.api.store');
     Route::get('/settings/delete/{id}', [App\Http\Controllers\Admin\SettingController::class, 'settings_delete'])->name('admin.settings_delete');
     Route::post('/add-pair', [App\Http\Controllers\Admin\SettingController::class, 'add_pair'])->name('admin.add_pair');
     Route::get('/trade-history', [App\Http\Controllers\Admin\SettingController::class, 'trade_history'])->name('admin.trade.history');
