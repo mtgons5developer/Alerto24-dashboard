@@ -81,6 +81,12 @@ License: You must have a valid license purchased only from themeforest(the above
             /*opacity: 0.5;*/
             background-image: linear-gradient(to top, rgba(0, 0, 0, .8) 0, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, .8) 100%);
         }
+        body{
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+
+        }
 
     </style>
 </head>
@@ -88,7 +94,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!--begin::Body-->
 <body id="kt_body"
       class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading"
-      style="background-image: url({{ asset('images/bg.jpg') }});background-repeat: round;background-size: 100%">
+      style="background-image: url({{ asset('images/bg.jpg') }});background-repeat: no-repeat;">
 <!-- Google Tag Manager (noscript) -->
 <noscript>
     <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5FS8GGP" height="0" width="0"
