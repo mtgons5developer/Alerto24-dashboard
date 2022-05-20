@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
     use HasFactory;
-    protected $fillable=[
+    protected $fillable = [
         'qty',
         'deltaRSI',
         'deltaSMA',
@@ -19,7 +19,8 @@ class Setting extends Model
         'toggle',
         'Error',
         'order_type',
-        'pair'
+        'pair',
+        'user_id'
     ];
     public $timestamps = false;
 }
