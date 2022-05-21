@@ -98,7 +98,7 @@
 
                     </div>
                     <div class="col">
-                        <button class="btn btn-primary" type="submit">Save Api</button>
+                        <button class="btn btn-primary" type="submit">Save API</button>
 
                     </div>
                 </div>
