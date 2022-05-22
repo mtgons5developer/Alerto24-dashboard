@@ -8,6 +8,7 @@ use App\Models\Setting;
 use App\Models\TradeHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class SettingController extends Controller
 {
@@ -21,10 +22,11 @@ class SettingController extends Controller
     public function apiStore(Request $request)
     {
         $user = \auth()->user();
-        if ($request->has('api_key')){
-            $user->api_key = $request->api_key;
-        }if ($request->has('api_secret')){
-            $user->api_secret = $request->api_secret;
+        if ($request->has('api_key')) {
+            $user->api_key = Crypt::encryptString($request->api_key);
+        }
+        if ($request->has('api_secret')) {
+            $user->api_secret = Crypt::encryptString($request->api_secret);
         }
         $user->save();
 
